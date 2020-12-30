@@ -1,0 +1,7 @@
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/bin/Debug/core.dragon
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/bin/Debug/IDragon.exe
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/bin/Debug/IDragon.pdb
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/obj/Debug/IDragon.csprojAssemblyReference.cache
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/obj/Debug/IDragon.csproj.CoreCompileInputs.cache
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/obj/Debug/IDragon.exe
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IDragon/obj/Debug/IDragon.pdb

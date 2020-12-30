@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B0BF2AB-18A9-43E0-AF75-C4B657F8A930}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ECX.Core</RootNamespace>
+    <AssemblyName>ECX.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>9</LangVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <SignAssembly>True</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="Dependency\Resolver\CircularDependencyException.cs" />
+    <Compile Include="Dependency\DepConstraint.cs" />
+    <Compile Include="Dependency\DepNode.cs" />
+    <Compile Include="Dependency\DepOps.cs" />
+    <Compile Include="Dependency\Resolver\DepResolver.cs" />
+    <Compile Include="Dependency\DepVersion.cs" />
+    <Compile Include="Module\DomainStillReferencedException.cs" />
+    <Compile Include="Loader\InvalidModuleException.cs" />
+    <Compile Include="Loader\ModuleController.cs" />
+    <Compile Include="Loader\ModuleImageException.cs" />
+    <Compile Include="Module\ModuleInfo.cs" />
+    <Compile Include="Loader\ModuleLoader.cs" />
+    <Compile Include="Loader\ModuleNotFoundException.cs" />
+    <Compile Include="Module\ModuleRole.cs" />
+    <Compile Include="Loader\UnresolvedDependencyException.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Antlr3 Include="Dependency\Parser\ECX.g" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECMSBuildTasks\ECMSBuildTasks.csproj">
+      <Project>{c7c9b0a7-123e-49ab-bccc-5ccd9ae34b5a}</Project>
+      <Name>ECMSBuildTasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECX.Core.Module\ECX.Core.Module.csproj">
+      <Project>{074CA33C-46E0-44B6-8D30-7100CF2B3B94}</Project>
+      <Name>ECX.Core.Module</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Antlr3">
+      <Version>3.5.2-rc1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Antlr3.Runtime">
+      <Version>3.5.2-rc1</Version>
+    </PackageReference>
+    <PackageReference Include="Theraot.Core">
+      <Version>3.2.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\ECMSBuildTasks\resources\ECMSBuildTasks.tasks" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets. -->
+  <Target Name="Antlr" Inputs="@(Antlr)" Outputs="@(Antlr-&gt;%(filename)Parser.cs;@(Antlr-&gt;%(filename)Lexer.cs)">
+    <AntlrTask Sources="@(Antlr)" />
+  </Target>
+  <PropertyGroup>
+    <BuildDependsOn>
+      Antlr;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+</Project>

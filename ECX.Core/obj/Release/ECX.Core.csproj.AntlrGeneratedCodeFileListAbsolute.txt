@@ -1,0 +1,2 @@
+D:\Documents\Source\Repos\EternityChronicles\ECX.Core\obj\Release\ECXParser.cs
+D:\Documents\Source\Repos\EternityChronicles\ECX.Core\obj\Release\ECXLexer.cs

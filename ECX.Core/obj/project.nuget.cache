@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "dgSpecHash": "Y+5pouNzktRoHjwCZWM1l0CFs6qf94s3rKNUIa36DnqDWiNDSiqid4nhBnbL4W3kkenuRiJY/9GXgKH/cXUQzg==",
+  "success": true,
+  "projectFilePath": "/home/nihilist/dev/EternityChronicles/ECX.Core/ECX.Core.csproj",
+  "expectedPackageFiles": [
+    "/home/nihilist/.nuget/packages/antlr3/3.5.2-rc1/antlr3.3.5.2-rc1.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/antlr3.codegenerator/3.5.2-rc1/antlr3.codegenerator.3.5.2-rc1.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/antlr3.runtime/3.5.2-rc1/antlr3.runtime.3.5.2-rc1.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.collections.nongeneric/4.0.0/system.collections.nongeneric.4.0.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.componentmodel.annotations/4.0.0/system.componentmodel.annotations.4.0.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.diagnostics.debug/4.0.10/system.diagnostics.debug.4.0.10.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.globalization/4.0.10/system.globalization.4.0.10.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.resources.resourcemanager/4.0.0/system.resources.resourcemanager.4.0.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.runtime/4.0.20/system.runtime.4.0.20.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.runtime.compilerservices.unsafe/4.5.0/system.runtime.compilerservices.unsafe.4.5.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.runtime.extensions/4.0.10/system.runtime.extensions.4.0.10.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.security.accesscontrol/4.4.0/system.security.accesscontrol.4.4.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.security.permissions/4.4.0/system.security.permissions.4.4.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.security.principal.windows/4.4.0/system.security.principal.windows.4.4.0.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.threading/4.0.10/system.threading.4.0.10.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/system.threading.tasks.extensions/4.5.1/system.threading.tasks.extensions.4.5.1.nupkg.sha512",
+    "/home/nihilist/.nuget/packages/theraot.core/3.2.1/theraot.core.3.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}

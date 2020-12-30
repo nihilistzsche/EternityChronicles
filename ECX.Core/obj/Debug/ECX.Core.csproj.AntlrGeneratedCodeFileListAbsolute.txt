@@ -1,0 +1,2 @@
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/ECX.Core/obj/Debug/ECXParser.cs
+/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/ECX.Core/obj/Debug/ECXLexer.cs

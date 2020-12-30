@@ -1,0 +1,10 @@
+
+.fake
+.ionide
+coverage
+.nyc_output
+.idea
+.vs
+packages
+*.user
+TestResult.xml
