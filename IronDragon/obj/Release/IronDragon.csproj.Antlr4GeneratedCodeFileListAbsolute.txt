@@ -1,3 +1,0 @@
-D:\Documents\Source\Repos\EternityChronicles\IronDragon\obj\Release\DragonParser.cs
-D:\Documents\Source\Repos\EternityChronicles\IronDragon\obj\Release\DragonParserVisitor.cs
-D:\Documents\Source\Repos\EternityChronicles\IronDragon\obj\Release\DragonParserBaseVisitor.cs

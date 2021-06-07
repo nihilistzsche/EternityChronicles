@@ -1,3 +1,0 @@
-/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IronDragon/obj/Debug/DragonParser.cs
-/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IronDragon/obj/Debug/DragonParserVisitor.cs
-/home/nihilist/ext_mnt/spiderman/dev/EternityChronicles/IronDragon/obj/Debug/DragonParserBaseVisitor.cs
