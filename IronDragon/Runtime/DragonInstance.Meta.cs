@@ -48,7 +48,7 @@ namespace IronDragon.Runtime
 
             private static DynamicMetaObject DMO(dynamic val)
             {
-                return Create(val, Expression.Constant(val));
+                return Create(val, System.Linq.Expressions.Expression.Constant(val));
             }
 
             private static List<FunctionArgument> L(params FunctionArgument[] args)
