@@ -3,8 +3,8 @@
 namespace IronDragon.Runtime {
     // Used to throw a Dragon-based exception class
     [DragonDoNotExport]
-    public class DragonException : Exception {
-        public DragonException(DragonInstance obj) {
+    public class DragonSystemException : Exception {
+        public DragonSystemException(DragonInstance obj) {
             var klass = obj.Class;
 
             var exceptionFound = false;
@@ -22,7 +22,7 @@ namespace IronDragon.Runtime {
                 InnerObject = obj;
             }
             else {
-                ExceptionClass = Dragon.Box(typeof (DragonException));
+                ExceptionClass = Dragon.Box(typeof (DragonSystemException));
                 InnerObject = null;
             }
         }
