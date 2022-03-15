@@ -21,15 +21,18 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class InvokeExpression : DragonExpression {
-        internal InvokeExpression(Expression type, Expression method, List<FunctionArgument> arguments) {
+    public class InvokeExpression : DragonExpression
+    {
+        internal InvokeExpression(Expression type, Expression method, List<FunctionArgument> arguments)
+        {
             TargetType = type;
-            Method = method;
-            Arguments = arguments;
+            Method     = method;
+            Arguments  = arguments;
         }
 
         public Expression TargetType { get; }
@@ -38,22 +41,25 @@ namespace IronDragon.Expressions {
 
         public List<FunctionArgument> Arguments { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var args = new List<FunctionArgument>();
             Arguments.ForEach(arg => args.Add(new FunctionArgument(arg.Name, Variable(Constant(arg.Name)))));
-            return Operation.Invoke(typeof (object), TargetType, Method, Constant(args), Constant(Scope));
+            return Operation.Invoke(typeof(object), TargetType, Method, Constant(args), Constant(Scope));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             TargetType.SetScope(scope);
             Method.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("[InvokeExpression: TargetType={0}, Method={1}, Arguments={2}, Type={3}]", TargetType,
-                Method, Arguments, Type);
+            Method, Arguments, Type);
         }
     }
 }

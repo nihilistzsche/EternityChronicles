@@ -15,8 +15,10 @@
 
 using System;
 
-namespace IronDragon.Runtime {
-    public class DragonBoxedClass : DragonClass {
+namespace IronDragon.Runtime
+{
+    public class DragonBoxedClass : DragonClass
+    {
         public Type BoxedType { get; internal set; }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -100,10 +100,7 @@ namespace DragonMUD.Network
 
                 ClearFlag("no-message");
 
-                foreach (var hook in OutputHooks.Select(outputHook => outputHook.Value))
-                {
-                    hook.Process(coordinator);
-                }
+                foreach (var hook in OutputHooks.Select(outputHook => outputHook.Value)) hook.Process(coordinator);
             }
             catch (Exception)
             {
@@ -139,7 +136,7 @@ namespace DragonMUD.Network
             if (inputString.Length == 0 || inputString[0] == '\x04')
             {
                 Log.LogMessage("dragonmud", LogLevel.Info,
-                               $"Encountered end-of-file from socket {socket.Handle.ToInt32()}, closing connection...");
+                $"Encountered end-of-file from socket {socket.Handle.ToInt32()}, closing connection...");
                 owner.Owner.RemoveConnection(this);
                 return;
             }

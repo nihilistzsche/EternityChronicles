@@ -20,20 +20,26 @@ using System.Linq.Expressions;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonPartialFunction : IDragonDynamicMetaObjectProvider {
-        public new DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/ parameter) {
+    public partial class DragonPartialFunction : IDragonDynamicMetaObjectProvider
+    {
+        public new DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/parameter)
+        {
             var m = new Meta(parameter, BindingRestrictions.Empty, this);
             m.SetScope(Scope);
             return m;
         }
 
-        internal new sealed class Meta : DragonMetaObject<DragonPartialFunction> {
+        internal new sealed class Meta : DragonMetaObject<DragonPartialFunction>
+        {
             public Meta(Expression expression, BindingRestrictions restrictions, DragonPartialFunction value)
-                : base(expression, restrictions, value) {}
+                : base(expression, restrictions, value)
+            {
+            }
         }
     }
 }

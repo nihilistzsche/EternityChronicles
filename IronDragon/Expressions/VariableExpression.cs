@@ -20,18 +20,22 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class VariableExpression : DragonExpression {
-        internal VariableExpression(Expression name) {
+    public class VariableExpression : DragonExpression
+    {
+        internal VariableExpression(Expression name)
+        {
             Name = name;
         }
 
-        internal VariableExpression(Symbol sym) {
+        internal VariableExpression(Symbol sym)
+        {
             HasSym = true;
-            Sym = sym;
+            Sym    = sym;
         }
 
         public Expression Name { get; }
@@ -40,19 +44,22 @@ namespace IronDragon.Expressions {
 
         internal bool HasSym { get; set; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             return HasSym
-                ? Operation.ResolveSymbol(typeof (object), Constant(Sym), Constant(Scope))
-                : Operation.Resolve(typeof (object), Name, Constant(Scope));
+                ? Operation.ResolveSymbol(typeof(object), Constant(Sym), Constant(Scope))
+                : Operation.Resolve(typeof(object), Name, Constant(Scope));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Name.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Name.ToString();
         }
     }

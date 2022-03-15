@@ -20,13 +20,16 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     Represents a unary operator expression in Dragon.
     /// </summary>
-    public class UnaryExpression : DragonExpression {
-        internal UnaryExpression(Expression expr, ExpressionType type) {
-            Expression = expr;
+    public class UnaryExpression : DragonExpression
+    {
+        internal UnaryExpression(Expression expr, ExpressionType type)
+        {
+            Expression    = expr;
             UnaryNodeType = type;
         }
 
@@ -34,28 +37,33 @@ namespace IronDragon.Expressions {
 
         public ExpressionType UnaryNodeType { get; }
 
-        public override Type Type => UnaryNodeType == ExpressionType.Not ? typeof (bool) : typeof (object);
+        public override Type Type => UnaryNodeType == ExpressionType.Not ? typeof(bool) : typeof(object);
 
-        private static Expression Convert<T>(Expression e) {
-            return Convert(e, typeof (T));
+        private static Expression Convert<T>(Expression e)
+        {
+            return Convert(e, typeof(T));
         }
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             return Operation.Unary(Type, Convert<object>(Expression), Constant(UnaryNodeType), Constant(Scope));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Expression.SetScope(scope);
         }
 
-        public override string ToString() {
-            switch (UnaryNodeType) {
-                case ExpressionType.OnesComplement:
-                    return string.Format("~{0}", Expression);
-                case ExpressionType.Not:
-                    return string.Format("!{0}", Expression);
-                default:
-                    return MakeUnary(UnaryNodeType, Expression, Type).ToString();
+        public override string ToString()
+        {
+            switch (UnaryNodeType)
+            {
+            case ExpressionType.OnesComplement:
+                return string.Format("~{0}", Expression);
+            case ExpressionType.Not:
+                return string.Format("!{0}", Expression);
+            default:
+                return MakeUnary(UnaryNodeType, Expression, Type).ToString();
             }
         }
     }

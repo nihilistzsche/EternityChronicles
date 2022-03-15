@@ -1,29 +1,37 @@
 using System;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     // Used to throw a Dragon-based exception class
     [DragonDoNotExport]
-    public class DragonSystemException : Exception {
-        public DragonSystemException(DragonInstance obj) {
+    public class DragonSystemException : Exception
+    {
+        public DragonSystemException(DragonInstance obj)
+        {
             var klass = obj.Class;
 
             var exceptionFound = false;
-            var _class = obj.Class;
-            do {
-                if (_class.Name.Equals("Exception")) {
+            var _class         = obj.Class;
+            do
+            {
+                if (_class.Name.Equals("Exception"))
+                {
                     exceptionFound = true;
                     break;
                 }
+
                 _class = _class.Parent;
             } while (!exceptionFound && _class != null);
 
-            if (exceptionFound) {
+            if (exceptionFound)
+            {
                 ExceptionClass = klass;
-                InnerObject = obj;
+                InnerObject    = obj;
             }
-            else {
-                ExceptionClass = Dragon.Box(typeof (DragonSystemException));
-                InnerObject = null;
+            else
+            {
+                ExceptionClass = Dragon.Box(typeof(DragonSystemException));
+                InnerObject    = null;
             }
         }
 

@@ -20,11 +20,27 @@ using IronDragon.Expressions;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonFunction {
+    public partial class DragonFunction
+    {
+        public DragonFunction(string name, List<FunctionArgument> arguments, BlockExpression body, DragonScope context)
+        {
+            Name      = name;
+            Arguments = arguments;
+            Body      = body;
+            Context   = context;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[DragonFunction: Arguments={0}, Name={1}, Body={2}, Context={3}, Scope={4}]",
+            Arguments, Name, Body, Context, Scope);
+        }
+
         #region Properties
 
         public List<FunctionArgument> Arguments { get; internal set; }
@@ -42,17 +58,5 @@ namespace IronDragon.Runtime {
         internal bool IsSingleton { get; set; }
 
         #endregion
-
-        public DragonFunction(string name, List<FunctionArgument> arguments, BlockExpression body, DragonScope context) {
-            Name = name;
-            Arguments = arguments;
-            Body = body;
-            Context = context;
-        }
-
-        public override string ToString() {
-            return string.Format("[DragonFunction: Arguments={0}, Name={1}, Body={2}, Context={3}, Scope={4}]",
-                Arguments, Name, Body, Context, Scope);
-        }
     }
 }

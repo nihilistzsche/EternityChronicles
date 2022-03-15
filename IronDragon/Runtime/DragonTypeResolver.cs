@@ -17,25 +17,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IronDragon.Runtime {
-    public static class DragonTypeResolver {
+namespace IronDragon.Runtime
+{
+    public static class DragonTypeResolver
+    {
         private static readonly List<string> _includedNamespaces = new();
 
-        static DragonTypeResolver() {
+        static DragonTypeResolver()
+        {
             _includedNamespaces.Add(""); // So you can specify the namespace yourself
             _includedNamespaces.Add("System");
         }
 
-        public static void Include(string @namespace) {
+        public static void Include(string @namespace)
+        {
             _includedNamespaces.Add(@namespace);
         }
 
-        public static Type Resolve(string name) {
+        public static Type Resolve(string name)
+        {
             var mq =
-                _includedNamespaces.Where(@namespace => Type.GetType(string.Format("{0}.{1}", @namespace, name)) != null);
-            if (mq.Any()) {
-                return Type.GetType(string.Format("{0}.{1}", mq.First(), name));
-            }
+                _includedNamespaces.Where(
+                @namespace => Type.GetType(string.Format("{0}.{1}", @namespace, name)) != null);
+            if (mq.Any()) return Type.GetType(string.Format("{0}.{1}", mq.First(), name));
             return null;
         }
     }

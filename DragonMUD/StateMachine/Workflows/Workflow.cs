@@ -148,9 +148,9 @@ namespace DragonMUD.StateMachine.Workflows
 
             var ok = true;
             xsteps.ForEach(obj =>
-                           {
-                               if (ok) ok = CheckState(obj);
-                           });
+            {
+                if (ok) ok = CheckState(obj);
+            });
             if (!ok)
                 return null;
 
@@ -166,10 +166,10 @@ namespace DragonMUD.StateMachine.Workflows
             var curState = firstStep;
 
             xsteps.ForEach(state =>
-                           {
-                               wf.InsertStepAfter(curState, state);
-                               curState = state;
-                           });
+            {
+                wf.InsertStepAfter(curState, state);
+                curState = state;
+            });
 
             return wf;
         }

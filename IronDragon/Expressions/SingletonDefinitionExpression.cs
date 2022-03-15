@@ -21,28 +21,31 @@ using System.Linq.Expressions;
 using IronDragon.Parser;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
-    public class SingletonDefinitionExpression : FunctionDefinitionExpression {
+namespace IronDragon.Expressions
+{
+    public class SingletonDefinitionExpression : FunctionDefinitionExpression
+    {
         public SingletonDefinitionExpression(Expression singleton, string name, List<FunctionArgument> arguments,
-            Expression body) : base(name, arguments, body) {
+        Expression                                      body) : base(name, arguments, body)
+        {
             Singleton = singleton;
         }
 
         public Expression Singleton { get; }
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var ci = 0;
             Arguments.ForEach(arg => arg.Index = ci++);
-            var realBody = new List<Expression>(((BlockExpression) Body).Body);
-            if (Name == "new") {
-                realBody.Add(Return(new List<FunctionArgument> {new(null, Variable(Constant("self")))}));
-            }
-            realBody.Add(Label(DragonParser.ReturnTarget, Constant(null, typeof (object))));
+            var realBody = new List<Expression>(((BlockExpression)Body).Body);
+            if (Name == "new")
+                realBody.Add(Return(new List<FunctionArgument> { new(null, Variable(Constant("self"))) }));
+            realBody.Add(Label(DragonParser.ReturnTarget, Constant(null, typeof(object))));
 
-            return Operation.SingletonDefine(typeof (DragonFunction), Constant(Singleton), Constant(Name),
-                Constant(Arguments),
-                Constant(DragonParser.CreateBlock(realBody)),
-                Constant(Scope));
+            return Operation.SingletonDefine(typeof(DragonFunction), Constant(Singleton), Constant(Name),
+            Constant(Arguments),
+            Constant(DragonParser.CreateBlock(realBody)),
+            Constant(Scope));
         }
     }
 }

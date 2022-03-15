@@ -20,13 +20,16 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ConditionalAccessSetExpression : AccessSetExpression {
-        internal ConditionalAccessSetExpression(Expression container, List<FunctionArgument> arguments, Expression value,
-            DragonExpressionType conditionalAssignmentType)
+    public class ConditionalAccessSetExpression : AccessSetExpression
+    {
+        internal ConditionalAccessSetExpression(Expression container, List<FunctionArgument> arguments,
+        Expression                                         value,
+        DragonExpressionType                               conditionalAssignmentType)
             : base(container, arguments, value, ExpressionType.Assign)
         {
             ConditionalAssignmentType = conditionalAssignmentType;
@@ -34,9 +37,10 @@ namespace IronDragon.Expressions {
 
         public DragonExpressionType ConditionalAssignmentType { get; }
 
-        public override Expression Reduce() {
-            return Operation.ConditionalAccessSet(Type, Container, Constant(Arguments), Convert(Value, typeof (object)),
-                Constant(ConditionalAssignmentType), Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.ConditionalAccessSet(Type, Container, Constant(Arguments), Convert(Value, typeof(object)),
+            Constant(ConditionalAssignmentType), Constant(Scope));
         }
     }
 }

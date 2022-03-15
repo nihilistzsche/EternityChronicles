@@ -20,28 +20,34 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class TypeofExpression : DragonExpression {
-        internal TypeofExpression(Expression e) {
+    public class TypeofExpression : DragonExpression
+    {
+        internal TypeofExpression(Expression e)
+        {
             Expression = e;
         }
 
         public Expression Expression { get; }
 
-        public override Type Type => typeof (Type);
+        public override Type Type => typeof(Type);
 
-        public override Expression Reduce() {
-            return Operation.Typeof(typeof (Type), Convert(Expression, typeof (object)));
+        public override Expression Reduce()
+        {
+            return Operation.Typeof(typeof(Type), Convert(Expression, typeof(object)));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Expression.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("typeof({0})", Expression);
         }
     }

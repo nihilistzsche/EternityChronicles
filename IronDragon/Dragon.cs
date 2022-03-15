@@ -20,21 +20,23 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using IronDragon;
 using IronDragon.Builtins;
 using IronDragon.Runtime;
 using Microsoft.Scripting.Hosting;
 
-namespace IronDragon {
+namespace IronDragon
+{
     /// <summary>
     ///     Main class for users of Dragon.
     /// </summary>
-    public static class Dragon {
+    public static class Dragon
+    {
         private static readonly LanguageSetup _DragonSetup =
             new("IronDragon.Runtime.DragonContext,IronDragon,Version=0.5.0.0,Culture=neutral",
-                "IronDragon 0.5", new[] {"IronDragon"}, new[] {".dragon", ".drg"});
+            "IronDragon 0.5", new[] { "IronDragon" }, new[] { ".dragon", ".drg" });
 
-        static Dragon() {
+        static Dragon()
+        {
             Globals = new DragonGlobalScope();
             new Kernel();
         }
@@ -48,7 +50,8 @@ namespace IronDragon {
         /// <example>(Where testfunc is a Dragon dynamic function): testfunc(Dragon.Arg("b",2),10);</example>
         /// <param name="name">Name of the argument.</param>
         /// <param name="value">Value for the argument.</param>
-        public static FunctionArgument Arg(dynamic name, dynamic value) {
+        public static FunctionArgument Arg(dynamic name, dynamic value)
+        {
             return new FunctionArgument(name.ToString(), Expression.Constant(value));
         }
 
@@ -58,30 +61,36 @@ namespace IronDragon {
         /// </summary>
         /// <example>scope.SetVariable("sa",Dragon.GetFunctionArgumentGenerator())</example>
         /// <returns>A DragonNativeFuncton dynamic wrapper around Dragon.Arg(name,value).</returns>
-        public static dynamic GetFunctionArgumentGenerator() {
-            return new DragonNativeFunction(typeof (Dragon),
-                typeof (Dragon).GetMethod("Arg", BindingFlags.Public | BindingFlags.Static));
+        public static dynamic GetFunctionArgumentGenerator()
+        {
+            return new DragonNativeFunction(typeof(Dragon),
+            typeof(Dragon).GetMethod("Arg", BindingFlags.Public | BindingFlags.Static));
         }
 
-        public static dynamic Box(object obj, DragonScope scope = null) {
+        public static dynamic Box(object obj, DragonScope scope = null)
+        {
             return DragonBoxedInstance.Box(obj, scope ?? new DragonScope());
         }
 
-        public static dynamic BoxNoCache(object obj, DragonScope scope = null) {
+        public static dynamic BoxNoCache(object obj, DragonScope scope = null)
+        {
             return DragonBoxedInstance.BoxNoCache(obj, scope ?? new DragonScope());
         }
 
-        public static ScriptRuntime CreateRuntime(params LanguageSetup[] setups) {
+        public static ScriptRuntime CreateRuntime(params LanguageSetup[] setups)
+        {
             var setup = new ScriptRuntimeSetup();
             setups.ToList().ForEach(lsetup => setup.LanguageSetups.Add(lsetup));
             return new ScriptRuntime(setup);
         }
 
-        public static ScriptRuntime CreateRuntime() {
+        public static ScriptRuntime CreateRuntime()
+        {
             return CreateRuntime(_DragonSetup);
         }
 
-        public static LanguageSetup CreateDragonSetup() {
+        public static LanguageSetup CreateDragonSetup()
+        {
             return _DragonSetup;
         }
 
@@ -99,13 +108,16 @@ namespace IronDragon {
             return Execute(source, Globals);
         }
 
-        public static dynamic Box(Type type) {
+        public static dynamic Box(Type type)
+        {
             return DragonClass.BoxClass(type);
         }
     }
 
-    public static class DragonExtensions {
-        public static dynamic Eval(this string source) {
+    public static class DragonExtensions
+    {
+        public static dynamic Eval(this string source)
+        {
             return Dragon.Execute(source);
         }
     }

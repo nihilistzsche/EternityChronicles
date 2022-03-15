@@ -51,8 +51,8 @@ namespace ECX.Core.Module
         /// <param name="basetype">The basetype of the role.</param>
         /// <param name="regHandler">The registration handler for the role.</param>
         /// <param name="unregHandler">The unregistration handler for the role.</param>
-        public ModuleRole(string  name, Type basetype, RoleRegisterHandler regHandler,
-            RoleUnregisterHandler unregHandler)
+        public ModuleRole(string name, Type basetype, RoleRegisterHandler regHandler,
+        RoleUnregisterHandler    unregHandler)
         {
             BaseType              = basetype;
             RoleName              = name;

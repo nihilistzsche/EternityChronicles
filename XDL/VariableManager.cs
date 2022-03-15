@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,7 +35,7 @@ namespace XDL
             var lines = File.ReadAllLines(FileName);
 
             foreach (var parts in lines.Where(line => line.Length > 0 && line[0] != '#').Select(line => line.Split('='))
-                                       .Where(parts => parts.Count() > 1))
+                .Where(parts => parts.Count() > 1))
             {
                 var name  = parts[0];
                 var value = parts[1];
@@ -56,13 +56,11 @@ namespace XDL
             using (var fs = new FileStream(FileName, FileMode.OpenOrCreate))
             {
                 foreach (var bytes in (from key in Variables.Keys
-                                       let value = Variables[key]
-                                       select $"{key}={value};{Environment.NewLine}"
-                                      ).Select(varString => Encoding.UTF8.GetBytes(varString))
-                        )
-                {
+                let value = Variables[key]
+                select $"{key}={value};{Environment.NewLine}"
+                ).Select(varString => Encoding.UTF8.GetBytes(varString))
+                )
                     fs.Write(bytes, 0, bytes.Length);
-                }
             }
 
             return true;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace CSLog
@@ -27,10 +27,7 @@ namespace CSLog
             foreach (var key in GlobalListeners.Keys)
             {
                 channel.Listeners[key] = new List<IListener>();
-                foreach (var listener in GlobalListeners[key])
-                {
-                    channel.Listeners[key].Add(listener);
-                }
+                foreach (var listener in GlobalListeners[key]) channel.Listeners[key].Add(listener);
             }
         }
 
@@ -38,9 +35,7 @@ namespace CSLog
         {
             if (levels != null)
                 foreach (var level in levels)
-                {
                     channel.RegisterListener(listener, level);
-                }
             else
                 channel.RegisterListener(listener, LogLevel.Any);
         }
@@ -49,15 +44,11 @@ namespace CSLog
         {
             if (channels != null)
                 foreach (var channel in channels.Select(channelName => Channels[channelName])
-                                                .Where(channel => channel != null))
-                {
+                    .Where(channel => channel != null))
                     RegisterListener(channel, listener, levels);
-                }
             else
                 foreach (var channel in Channels.Keys.Select(channelName => Channels[channelName]))
-                {
                     RegisterListener(channel, listener, levels);
-                }
         }
 
         public void LogMessage(string message, string channelName, LogLevel level)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -19,8 +19,8 @@ namespace EternityChronicles
             Controller = new ModuleController();
 
             Controller.RegisterNewRole("Core", typeof(ICore),
-                                       (asm, basetype) => { Core = (ICore)asm.CreateInstance(basetype.ToString()); },
-                                       asm => { });
+            (asm, basetype) => { Core = (ICore)asm.CreateInstance(basetype.ToString()); },
+            asm => { });
 
             Controller.LoadModule("EternityChronicles.Core");
 
@@ -28,9 +28,7 @@ namespace EternityChronicles
             int?                                              res;
             while ((res = Core?.Main(sockets != null, sockets, args)) == 9999)
                 //// 9999 is soft reboot
-            {
                 SoftReboot(ref sockets);
-            }
 
             return res ?? 1;
         }

@@ -22,24 +22,29 @@ using System.Linq.Expressions;
 using System.Text;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class IncludeExpression : DragonExpression {
-        internal IncludeExpression(List<string> names) {
+    public class IncludeExpression : DragonExpression
+    {
+        internal IncludeExpression(List<string> names)
+        {
             Names = names;
         }
 
         public List<string> Names { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
-            return Operation.Include(typeof (object), Constant(Names));
+        public override Expression Reduce()
+        {
+            return Operation.Include(typeof(object), Constant(Names));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var str = new StringBuilder("include ");
             Names.ForEach(name => str.AppendFormat("{0}::", name));
             str.Remove(str.Length - 2, 2);

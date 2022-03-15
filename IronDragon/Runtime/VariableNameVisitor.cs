@@ -20,30 +20,30 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class VariableNameVisitor : DragonExpressionVisitor {
-        private readonly List<string> _variableNames = new();
-
+    public class VariableNameVisitor : DragonExpressionVisitor
+    {
         /// <summary>
         ///     Initializes a new instance of the {CollectParameterVisitor} class.
         /// </summary>
-        public VariableNameVisitor() {
-            _variableNames = new List<string>();
+        public VariableNameVisitor()
+        {
+            VariableNames = new List<string>();
         }
 
         /// <summary>
         ///     Gets the paramter variables this visitor collects from the tree.
         /// </summary>
-        public List<string> VariableNames => _variableNames;
+        public List<string> VariableNames { get; } = new();
 
-        protected override Expression VisitVariable(VariableExpression node) {
+        protected override Expression VisitVariable(VariableExpression node)
+        {
             var name = CompilerServices.CreateLambdaForExpression(node.Name)();
-            if (name is string) {
-                _variableNames.Add(name);
-            }
+            if (name is string) VariableNames.Add(name);
             return node;
         }
     }

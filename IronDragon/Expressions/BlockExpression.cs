@@ -23,19 +23,23 @@ using System.Linq.Expressions;
 using System.Text;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class BlockExpression : DragonExpression {
-        internal BlockExpression(List<Expression> body, DragonScope scope) {
+    public class BlockExpression : DragonExpression
+    {
+        internal BlockExpression(List<Expression> body, DragonScope scope)
+        {
             body.RemoveAll(e => e == null);
 
             Body = body;
             SetScope(scope);
         }
 
-        internal BlockExpression(List<Expression> body) {
+        internal BlockExpression(List<Expression> body)
+        {
             Body = body;
         }
 
@@ -43,22 +47,25 @@ namespace IronDragon.Expressions {
 
         public override Type Type => Body.Last().Type;
 
-        public override void SetChildrenScopes(DragonScope scope) {
-            foreach (var expr in Body) {
-                expr.SetScope(scope);
-            }
+        public override void SetChildrenScopes(DragonScope scope)
+        {
+            foreach (var expr in Body) expr.SetScope(scope);
         }
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             return Block(Body);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var str = new StringBuilder("{ ");
-            foreach (var e in Body) {
+            foreach (var e in Body)
+            {
                 str.Append(e);
                 str.Append("; ");
             }
+
             str.Append("}");
             return str.ToString();
         }

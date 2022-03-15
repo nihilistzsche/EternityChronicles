@@ -107,10 +107,7 @@ namespace ECX.Core.Loader
 
         public void LoadAllModules(List<string> modules)
         {
-            foreach (var module in modules)
-            {
-                LoadModule(module);
-            }
+            foreach (var module in modules) LoadModule(module);
         }
 
         /// <summary>
@@ -154,10 +151,7 @@ namespace ECX.Core.Loader
             // gets inc ref'd twice, for both A and B).
 
             // Entry handlers
-            foreach (var asm in _domain.GetAssemblies())
-            {
-                CallEntryHandler(asm);
-            }
+            foreach (var asm in _domain.GetAssemblies()) CallEntryHandler(asm);
 
             // Set up roles.
             CallRoleHandlers(_info);
@@ -205,10 +199,7 @@ namespace ECX.Core.Loader
             if (node == null)
                 return;
 
-            foreach (var child in node.Children)
-            {
-                DecRefs(child);
-            }
+            foreach (var child in node.Children) DecRefs(child);
 
             DecRef(AppDomainMap[node.Constraint.Name]);
         }
@@ -237,7 +228,7 @@ namespace ECX.Core.Loader
 
             if (RefCounts[domain] > 1)
                 throw new DomainStillReferencedException(
-                    $"The domain holding the module {name} cannot be unloaded because it is still being referenced.");
+                $"The domain holding the module {name} cannot be unloaded because it is still being referenced.");
 
             // okay, everything's good.  This will remove the domain from the reference list since its reference count is now 0.
             DecRef(domain);
@@ -345,10 +336,7 @@ namespace ECX.Core.Loader
 
             Roles.Add(_role);
 
-            foreach (var _key in InfoMap.Keys)
-            {
-                CallRoleHandlers(InfoMap[_key], _role);
-            }
+            foreach (var _key in InfoMap.Keys) CallRoleHandlers(InfoMap[_key], _role);
         }
 
         /// <summary>
@@ -371,10 +359,7 @@ namespace ECX.Core.Loader
                 return;
 
             Roles.Remove(_role);
-            foreach (var _key in InfoMap.Keys)
-            {
-                CallRoleUnregisterHandlers(InfoMap[_key], _role);
-            }
+            foreach (var _key in InfoMap.Keys) CallRoleUnregisterHandlers(InfoMap[_key], _role);
         }
 
         #endregion
@@ -393,9 +378,9 @@ namespace ECX.Core.Loader
             if (role == null) return ret;
 
             var modules = from s in SearchPath
-                          where Directory.Exists(s)
-                          from f in Directory.GetFiles(s, "*.dll")
-                          select f;
+                where Directory.Exists(s)
+                from f in Directory.GetFiles(s, "*.dll")
+                select f;
 
             foreach (var module in modules)
             {
@@ -450,10 +435,7 @@ namespace ECX.Core.Loader
         /// <param name="_info">The <see cref="ModuleInfo" /> object to determine which role handlers to call.</param>
         protected void CallRoleHandlers(ModuleInfo info)
         {
-            foreach (var _role in Roles)
-            {
-                CallRoleHandlers(info, _role);
-            }
+            foreach (var _role in Roles) CallRoleHandlers(info, _role);
         }
 
         /// <summary>
@@ -495,10 +477,7 @@ namespace ECX.Core.Loader
         /// <param name="_info">The <see cref="ModuleInfo" /> object to determine which role handlers to call.</param>
         protected void CallRoleUnregisterHandlers(ModuleInfo info)
         {
-            foreach (var _role in Roles)
-            {
-                CallRoleUnregisterHandlers(info, _role);
-            }
+            foreach (var _role in Roles) CallRoleUnregisterHandlers(info, _role);
         }
 
         /// <summary>

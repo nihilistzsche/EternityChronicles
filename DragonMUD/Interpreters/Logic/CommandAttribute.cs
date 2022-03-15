@@ -8,7 +8,7 @@ namespace DragonMUD.Interpreters.Logic
     public class CommandAttribute : Attribute
     {
         public CommandAttribute(string name, string aliases, int requiredLevel, string flags, string shortHelp = "",
-            string                     longHelp = "")
+        string                         longHelp = "")
         {
             Name          = name;
             Aliases       = aliases.Split(' ').ToList();

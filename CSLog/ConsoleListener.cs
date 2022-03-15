@@ -15,8 +15,8 @@ namespace CSLog
         public void LogMessage(string message, LogLevel level, string channelName)
         {
             var stream = level == LogLevel.Fatal || level == LogLevel.Critical
-                             ? Console.OpenStandardError()
-                             : Console.OpenStandardOutput();
+                ? Console.OpenStandardError()
+                : Console.OpenStandardOutput();
 
             var formatter = Formatter ?? new DefaultFormatter();
 
@@ -24,25 +24,25 @@ namespace CSLog
 
             switch (level)
             {
-                case LogLevel.Fatal:
-                    colorForMessage = "`R";
-                    break;
-                case LogLevel.Critical:
-                    colorForMessage = "`r";
-                    break;
-                case LogLevel.Warning:
-                    colorForMessage = "`y";
-                    break;
-                case LogLevel.Info:
-                    colorForMessage = "`w";
-                    break;
-                case LogLevel.Debug:
-                    colorForMessage = "`g";
-                    break;
-                case LogLevel.Any:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
+            case LogLevel.Fatal:
+                colorForMessage = "`R";
+                break;
+            case LogLevel.Critical:
+                colorForMessage = "`r";
+                break;
+            case LogLevel.Warning:
+                colorForMessage = "`y";
+                break;
+            case LogLevel.Info:
+                colorForMessage = "`w";
+                break;
+            case LogLevel.Debug:
+                colorForMessage = "`g";
+                break;
+            case LogLevel.Any:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
 
             var temp     = $"{colorForMessage}{message}";

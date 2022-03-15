@@ -19,58 +19,68 @@
 using System.Dynamic;
 using System.Linq.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonInterface : IDragonDynamicMetaObjectProvider {
-        private DragonScope _scope;
-
-        #region IScopeExpression implementation
-
-        public new void SetScope(DragonScope scope) {
-            _scope = scope;
-        }
-
-        public new DragonScope Scope => _scope;
-
-        #endregion
-
-        public new DynamicMetaObject GetMetaObject(Expression /*!*/ parameter) {
+    public partial class DragonInterface : IDragonDynamicMetaObjectProvider
+    {
+        public new DynamicMetaObject GetMetaObject(Expression /*!*/parameter)
+        {
             var m = new Meta(parameter, BindingRestrictions.Empty, this);
             m.SetScope(Scope);
             return m;
         }
 
-        internal new sealed class Meta : DragonMetaObject<DragonInterface> {
+        internal new sealed class Meta : DragonMetaObject<DragonInterface>
+        {
             public Meta(Expression expression, BindingRestrictions restrictions, DragonInterface value)
-                : base(expression, restrictions, value) {}
-
-            public override DynamicMetaObject BindCreateInstance(CreateInstanceBinder binder, DynamicMetaObject[] args) {
-                return new(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                : base(expression, restrictions, value)
+            {
             }
 
-            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args) {
-                return new(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+            public override DynamicMetaObject BindCreateInstance(CreateInstanceBinder binder, DynamicMetaObject[] args)
+            {
+                return new DynamicMetaObject(Expression.Constant(null),
+                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+            }
+
+            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
+            {
+                return new DynamicMetaObject(Expression.Constant(null),
+                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
             public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder,
-                params DynamicMetaObject[] args) {
-                return new(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+            params DynamicMetaObject[]                                            args)
+            {
+                return new DynamicMetaObject(Expression.Constant(null),
+                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
-            public override DynamicMetaObject BindGetMember(GetMemberBinder binder) {
-                return new(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+            public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
+            {
+                return new DynamicMetaObject(Expression.Constant(null),
+                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
-            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value) {
-                return new(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
+            {
+                return new DynamicMetaObject(Expression.Constant(null),
+                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
         }
+
+        #region IScopeExpression implementation
+
+        public new void SetScope(DragonScope scope)
+        {
+            Scope = scope;
+        }
+
+        public new DragonScope Scope { get; private set; }
+
+        #endregion
     }
 }

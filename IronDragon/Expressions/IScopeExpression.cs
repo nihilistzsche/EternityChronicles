@@ -19,39 +19,37 @@
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public interface IScopeExpression {
+    public interface IScopeExpression
+    {
         DragonScope Scope { get; }
 
         void SetScope(DragonScope scope);
-
     }
 
-    public static class ScopeExpressionExtension {
-        public static void SetScope(this Expression expr, DragonScope scope) {
+    public static class ScopeExpressionExtension
+    {
+        public static void SetScope(this Expression expr, DragonScope scope)
+        {
             expr.SetParentScopeIfBlock(scope);
         }
 
         private static void SetParentScope(this Expression expr, DragonScope scope)
         {
             if (!(expr is BlockExpression block)) return;
-            if (block.Scope == null)
-            {
-                block.Scope = new DragonScope();
-            }
+            if (block.Scope == null) block.Scope = new DragonScope();
             block.Scope.ParentScope = scope;
         }
 
-        private static void SetParentScopeIfBlock(this Expression expr, DragonScope scope) {
-            if (expr is BlockExpression) {
+        private static void SetParentScopeIfBlock(this Expression expr, DragonScope scope)
+        {
+            if (expr is BlockExpression)
                 expr.SetParentScope(scope);
-            }
-            else if (expr is IScopeExpression) {
-                (expr as IScopeExpression).SetScope(scope);
-            }
+            else if (expr is IScopeExpression) (expr as IScopeExpression).SetScope(scope);
         }
     }
 }

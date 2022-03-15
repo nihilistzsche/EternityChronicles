@@ -25,31 +25,37 @@ using BlockExpression = IronDragon.Expressions.BlockExpression;
 using SwitchExpression = IronDragon.Expressions.SwitchExpression;
 using UnaryExpression = IronDragon.Expressions.UnaryExpression;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     Base visitor for Dragon expression visitors.
     /// </summary>
-    public abstract class DragonExpressionVisitor : ExpressionVisitor {
-        protected virtual Expression VisitAccess(AccessExpression node) {
+    public abstract class DragonExpressionVisitor : ExpressionVisitor
+    {
+        protected virtual Expression VisitAccess(AccessExpression node)
+        {
             Visit(node.Container);
             node.Arguments.ForEach(arg => Visit(arg.Value));
             return node;
         }
 
-        protected virtual Expression VisitAccessSet(AccessSetExpression node) {
+        protected virtual Expression VisitAccessSet(AccessSetExpression node)
+        {
             Visit(node.Container);
             node.Arguments.ForEach(arg => Visit(arg.Value));
             Visit(node.Value);
             return node;
         }
 
-        protected virtual Expression VisitAlias(AliasExpression node) {
+        protected virtual Expression VisitAlias(AliasExpression node)
+        {
             Visit(node.From);
             Visit(node.To);
             return node;
         }
 
-        protected virtual Expression VisitAssignment(AssignmentExpression node) {
+        protected virtual Expression VisitAssignment(AssignmentExpression node)
+        {
             Visit(node.Left);
             Visit(node.Right);
             return node;
@@ -64,23 +70,27 @@ namespace IronDragon.Runtime {
             return node;
         }
 
-        protected virtual Expression VisitBinary(BinaryExpression node) {
+        protected virtual Expression VisitBinary(BinaryExpression node)
+        {
             Visit(node.Left);
             Visit(node.Right);
             return node;
         }
 
-        protected virtual Expression VisitBlock(BlockExpression node) {
+        protected virtual Expression VisitBlock(BlockExpression node)
+        {
             node.Body.ForEach(arg => Visit(arg));
             return node;
         }
 
-        protected virtual Expression VisitBoolean(BooleanExpression node) {
+        protected virtual Expression VisitBoolean(BooleanExpression node)
+        {
             Visit(node.Value);
             return node;
         }
 
-        protected virtual Expression VisitClassDefinition(ClassDefinitionExpression node) {
+        protected virtual Expression VisitClassDefinition(ClassDefinitionExpression node)
+        {
             node.Contents.ForEach(content => Visit(content));
             return node;
         }
@@ -92,47 +102,55 @@ namespace IronDragon.Runtime {
             return node;
         }
 
-        protected virtual Expression VisitConditionalAccessSet(ConditionalAccessSetExpression node) {
+        protected virtual Expression VisitConditionalAccessSet(ConditionalAccessSetExpression node)
+        {
             Visit(node.Container);
             node.Arguments.ForEach(arg => Visit(arg.Value));
             Visit(node.Value);
             return node;
         }
 
-        protected virtual Expression VisitConditionalAssignment(ConditionalAssignmentExpression node) {
+        protected virtual Expression VisitConditionalAssignment(ConditionalAssignmentExpression node)
+        {
             Visit(node.Left);
             Visit(node.Right);
             return node;
         }
 
-        protected virtual Expression VisitConvert(ConvertExpression node) {
+        protected virtual Expression VisitConvert(ConvertExpression node)
+        {
             Visit(node.Expression);
             return node;
         }
 
-        protected virtual Expression VisitCreateArray(CreateArrayExpression node) {
+        protected virtual Expression VisitCreateArray(CreateArrayExpression node)
+        {
             node.Values.ForEach(expr => Visit(expr));
             return node;
         }
 
-        protected virtual Expression VisitCreateDictionary(CreateDictionaryExpression node) {
+        protected virtual Expression VisitCreateDictionary(CreateDictionaryExpression node)
+        {
             node.Values.ForEach(expr => Visit(expr));
             return node;
         }
 
-        protected virtual Expression VisitDoUntil(DoUntilExpression node) {
+        protected virtual Expression VisitDoUntil(DoUntilExpression node)
+        {
             Visit(node.Test);
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitDoWhile(DoWhileExpression node) {
+        protected virtual Expression VisitDoWhile(DoWhileExpression node)
+        {
             Visit(node.Test);
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitFor(ForExpression node) {
+        protected virtual Expression VisitFor(ForExpression node)
+        {
             Visit(node.Test);
             Visit(node.Step);
             Visit(node.Init);
@@ -140,73 +158,84 @@ namespace IronDragon.Runtime {
             return node;
         }
 
-        protected virtual Expression VisitForIn(ForInExpression node) {
+        protected virtual Expression VisitForIn(ForInExpression node)
+        {
             Visit(node.Enumerator);
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitFunctionCall(FunctionCallExpression node) {
+        protected virtual Expression VisitFunctionCall(FunctionCallExpression node)
+        {
             Visit(node.Function);
             node.Arguments.ForEach(arg => Visit(arg.Value));
             return node;
         }
 
-        protected virtual Expression VisitFunctionDefinition(FunctionDefinitionExpression node) {
-            node.Arguments.ForEach(arg => {
-                if (arg.HasDefault) {
-                    Visit(arg.DefaultValue);
-                }
+        protected virtual Expression VisitFunctionDefinition(FunctionDefinitionExpression node)
+        {
+            node.Arguments.ForEach(arg =>
+            {
+                if (arg.HasDefault) Visit(arg.DefaultValue);
             });
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitIf(IfExpression node) {
+        protected virtual Expression VisitIf(IfExpression node)
+        {
             Visit(node.Test);
             Visit(node.IfTrue);
             Visit(node.IfFalse);
             return node;
         }
 
-        protected virtual Expression VisitInclude(IncludeExpression node) {
+        protected virtual Expression VisitInclude(IncludeExpression node)
+        {
             return node;
         }
 
-        protected virtual Expression VisitInstanceReference(InstanceReferenceExpression node) {
+        protected virtual Expression VisitInstanceReference(InstanceReferenceExpression node)
+        {
             Visit(node.LValue);
             Visit(node.Key);
             return node;
         }
 
-        protected virtual Expression VisitInvoke(InvokeExpression node) {
+        protected virtual Expression VisitInvoke(InvokeExpression node)
+        {
             Visit(node.TargetType);
             Visit(node.Method);
             node.Arguments.ForEach(arg => Visit(arg.Value));
             return node;
         }
 
-        protected virtual Expression VisitKeyValuePair(KeyValuePairExpression node) {
+        protected virtual Expression VisitKeyValuePair(KeyValuePairExpression node)
+        {
             Visit(node.Key);
             Visit(node.Value);
             return node;
         }
 
-        protected virtual Expression VisitLeftHandValue(LeftHandValueExpression node) {
+        protected virtual Expression VisitLeftHandValue(LeftHandValueExpression node)
+        {
             Visit(node.Value);
             return node;
         }
 
-        protected virtual Expression VisitModuleDefinition(ModuleDefinitionExpression node) {
+        protected virtual Expression VisitModuleDefinition(ModuleDefinitionExpression node)
+        {
             node.Contents.ForEach(content => Visit(content));
             return node;
         }
 
-        protected virtual Expression VisitParallelAssignmentExpression(ParallelAssignmentExpression node) {
+        protected virtual Expression VisitParallelAssignmentExpression(ParallelAssignmentExpression node)
+        {
             return node;
         }
 
-        protected virtual Expression VisitPuts(PutsExpression node) {
+        protected virtual Expression VisitPuts(PutsExpression node)
+        {
             Visit(node.Value);
             return node;
         }
@@ -217,41 +246,44 @@ namespace IronDragon.Runtime {
             return node;
         }
 
-        protected virtual Expression VisitReturn(ReturnExpression node) {
+        protected virtual Expression VisitReturn(ReturnExpression node)
+        {
             node.Arguments.ForEach(arg => Visit(arg.Value));
             return node;
         }
 
-        protected virtual Expression VisitSetAssign(SetAssignExpression node) {
+        protected virtual Expression VisitSetAssign(SetAssignExpression node)
+        {
             Visit(node.Left);
             Visit(node.Right);
             return node;
         }
 
-        protected virtual Expression VisitSingletonDefinition(SingletonDefinitionExpression node) {
+        protected virtual Expression VisitSingletonDefinition(SingletonDefinitionExpression node)
+        {
             Visit(node.Singleton);
-            node.Arguments.ForEach(arg => {
-                if (arg.HasDefault) {
-                    Visit(arg.DefaultValue);
-                }
+            node.Arguments.ForEach(arg =>
+            {
+                if (arg.HasDefault) Visit(arg.DefaultValue);
             });
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitString(StringExpression node) {
+        protected virtual Expression VisitString(StringExpression node)
+        {
             return node;
         }
 
-        protected virtual Expression VisitSwitch(SwitchExpression node) {
+        protected virtual Expression VisitSwitch(SwitchExpression node)
+        {
             Visit(node.Test);
-            node.Cases.ForEach(c => {
+            node.Cases.ForEach(c =>
+            {
                 Visit(c.Body);
                 c.TestValues.ToList().ForEach(t => Visit(t));
             });
-            if (node.DefaultBody != null) {
-                Visit(node.DefaultBody);
-            }
+            if (node.DefaultBody != null) Visit(node.DefaultBody);
             return node;
         }
 
@@ -267,40 +299,47 @@ namespace IronDragon.Runtime {
             return node;
         }
 
-        protected virtual Expression VisitTypeof(TypeofExpression node) {
+        protected virtual Expression VisitTypeof(TypeofExpression node)
+        {
             Visit(node.Expression);
             return node;
         }
 
-        protected virtual Expression VisitUnary(UnaryExpression node) {
+        protected virtual Expression VisitUnary(UnaryExpression node)
+        {
             Visit(node.Expression);
             return node;
         }
 
-        protected virtual Expression VisitUnless(UnlessExpression node) {
+        protected virtual Expression VisitUnless(UnlessExpression node)
+        {
             Visit(node.Test);
             Visit(node.IfTrue);
             Visit(node.IfFalse);
             return node;
         }
 
-        protected virtual Expression VisitUntil(UntilExpression node) {
+        protected virtual Expression VisitUntil(UntilExpression node)
+        {
             Visit(node.Test);
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitVariable(VariableExpression node) {
+        protected virtual Expression VisitVariable(VariableExpression node)
+        {
             return node;
         }
 
-        protected virtual Expression VisitWhile(WhileExpression node) {
+        protected virtual Expression VisitWhile(WhileExpression node)
+        {
             Visit(node.Test);
             Visit(node.Body);
             return node;
         }
 
-        protected virtual Expression VisitYield(YieldExpression node) {
+        protected virtual Expression VisitYield(YieldExpression node)
+        {
             node.Arguments.ForEach(arg => Visit(arg.Value));
             return node;
         }
@@ -310,106 +349,107 @@ namespace IronDragon.Runtime {
             return node.GetType() == type ? func(node) : node;
         }
 
-        protected override sealed Expression VisitExtension(Expression node) {
-            node = VisitIf(node, typeof (AccessExpression), myNode => VisitAccess((AccessExpression) myNode));
+        protected sealed override Expression VisitExtension(Expression node)
+        {
+            node = VisitIf(node, typeof(AccessExpression), myNode => VisitAccess((AccessExpression)myNode));
 
-            node = VisitIf(node, typeof (AccessSetExpression), myNode => VisitAccessSet((AccessSetExpression) myNode));
+            node = VisitIf(node, typeof(AccessSetExpression), myNode => VisitAccessSet((AccessSetExpression)myNode));
 
-            node = VisitIf(node, typeof (AssignmentExpression), myNode => VisitAssignment((AssignmentExpression) myNode));
+            node = VisitIf(node, typeof(AssignmentExpression), myNode => VisitAssignment((AssignmentExpression)myNode));
 
-            node = VisitIf(node, typeof (BeginExpression), myNode => VisitBegin((BeginExpression) myNode));
+            node = VisitIf(node, typeof(BeginExpression), myNode => VisitBegin((BeginExpression)myNode));
 
-            node = VisitIf(node, typeof (BinaryExpression), myNode => VisitBinary((BinaryExpression) myNode));
+            node = VisitIf(node, typeof(BinaryExpression), myNode => VisitBinary((BinaryExpression)myNode));
 
-            node = VisitIf(node, typeof (BlockExpression), myNode => VisitBlock((BlockExpression) myNode));
+            node = VisitIf(node, typeof(BlockExpression), myNode => VisitBlock((BlockExpression)myNode));
 
-            node = VisitIf(node, typeof (BooleanExpression), myNode => VisitBoolean((BooleanExpression) myNode));
+            node = VisitIf(node, typeof(BooleanExpression), myNode => VisitBoolean((BooleanExpression)myNode));
 
-            node = VisitIf(node, typeof (ClassDefinitionExpression),
-                myNode => VisitClassDefinition((ClassDefinitionExpression) myNode));
+            node = VisitIf(node, typeof(ClassDefinitionExpression),
+            myNode => VisitClassDefinition((ClassDefinitionExpression)myNode));
 
-            node = VisitIf(node, typeof (ClassOpenExpression),
-                myNode => VisitClassOpen((ClassOpenExpression) myNode));
+            node = VisitIf(node, typeof(ClassOpenExpression),
+            myNode => VisitClassOpen((ClassOpenExpression)myNode));
 
-            node = VisitIf(node, typeof (ConditionalAccessSetExpression),
-                myNode => VisitConditionalAccessSet((ConditionalAccessSetExpression) myNode));
+            node = VisitIf(node, typeof(ConditionalAccessSetExpression),
+            myNode => VisitConditionalAccessSet((ConditionalAccessSetExpression)myNode));
 
-            node = VisitIf(node, typeof (ConditionalAssignmentExpression),
-                myNode => VisitConditionalAssignment((ConditionalAssignmentExpression) myNode));
+            node = VisitIf(node, typeof(ConditionalAssignmentExpression),
+            myNode => VisitConditionalAssignment((ConditionalAssignmentExpression)myNode));
 
-            node = VisitIf(node, typeof (ConvertExpression), myNode => VisitConvert((ConvertExpression) myNode));
+            node = VisitIf(node, typeof(ConvertExpression), myNode => VisitConvert((ConvertExpression)myNode));
 
-            node = VisitIf(node, typeof (CreateArrayExpression),
-                myNode => VisitCreateArray((CreateArrayExpression) myNode));
+            node = VisitIf(node, typeof(CreateArrayExpression),
+            myNode => VisitCreateArray((CreateArrayExpression)myNode));
 
-            node = VisitIf(node, typeof (CreateDictionaryExpression),
-                myNode => VisitCreateDictionary((CreateDictionaryExpression) myNode));
+            node = VisitIf(node, typeof(CreateDictionaryExpression),
+            myNode => VisitCreateDictionary((CreateDictionaryExpression)myNode));
 
-            node = VisitIf(node, typeof (DoUntilExpression), myNode => VisitDoUntil((DoUntilExpression) myNode));
+            node = VisitIf(node, typeof(DoUntilExpression), myNode => VisitDoUntil((DoUntilExpression)myNode));
 
-            node = VisitIf(node, typeof (DoWhileExpression), myNode => VisitDoWhile((DoWhileExpression) myNode));
+            node = VisitIf(node, typeof(DoWhileExpression), myNode => VisitDoWhile((DoWhileExpression)myNode));
 
-            node = VisitIf(node, typeof (ForExpression), myNode => VisitFor((ForExpression) myNode));
+            node = VisitIf(node, typeof(ForExpression), myNode => VisitFor((ForExpression)myNode));
 
-            node = VisitIf(node, typeof (ForInExpression), myNode => VisitForIn((ForInExpression) myNode));
+            node = VisitIf(node, typeof(ForInExpression), myNode => VisitForIn((ForInExpression)myNode));
 
-            node = VisitIf(node, typeof (FunctionCallExpression),
-                myNode => VisitFunctionCall((FunctionCallExpression) myNode));
+            node = VisitIf(node, typeof(FunctionCallExpression),
+            myNode => VisitFunctionCall((FunctionCallExpression)myNode));
 
-            node = VisitIf(node, typeof (FunctionDefinitionExpression),
-                myNode => VisitFunctionDefinition((FunctionDefinitionExpression) myNode));
+            node = VisitIf(node, typeof(FunctionDefinitionExpression),
+            myNode => VisitFunctionDefinition((FunctionDefinitionExpression)myNode));
 
-            node = VisitIf(node, typeof (IfExpression), myNode => node = VisitIf((IfExpression) myNode));
+            node = VisitIf(node, typeof(IfExpression), myNode => node = VisitIf((IfExpression)myNode));
 
-            node = VisitIf(node, typeof (IncludeExpression), myNode => node = VisitInclude((IncludeExpression) myNode));
+            node = VisitIf(node, typeof(IncludeExpression), myNode => node = VisitInclude((IncludeExpression)myNode));
 
-            node = VisitIf(node, typeof (InstanceReferenceExpression),
-                myNode => node = VisitInstanceReference((InstanceReferenceExpression) myNode));
+            node = VisitIf(node, typeof(InstanceReferenceExpression),
+            myNode => node = VisitInstanceReference((InstanceReferenceExpression)myNode));
 
-            node = VisitIf(node, typeof (InvokeExpression), myNode => node = VisitInvoke((InvokeExpression) myNode));
+            node = VisitIf(node, typeof(InvokeExpression), myNode => node = VisitInvoke((InvokeExpression)myNode));
 
-            node = VisitIf(node, typeof (KeyValuePairExpression),
-                myNode => VisitKeyValuePair((KeyValuePairExpression) myNode));
+            node = VisitIf(node, typeof(KeyValuePairExpression),
+            myNode => VisitKeyValuePair((KeyValuePairExpression)myNode));
 
-            node = VisitIf(node, typeof (LeftHandValueExpression),
-                myNode => VisitLeftHandValue((LeftHandValueExpression) myNode));
+            node = VisitIf(node, typeof(LeftHandValueExpression),
+            myNode => VisitLeftHandValue((LeftHandValueExpression)myNode));
 
-            node = VisitIf(node, typeof (ModuleDefinitionExpression),
-                myNode => VisitModuleDefinition((ModuleDefinitionExpression) myNode));
+            node = VisitIf(node, typeof(ModuleDefinitionExpression),
+            myNode => VisitModuleDefinition((ModuleDefinitionExpression)myNode));
 
-            node = VisitIf(node, typeof (PutsExpression), myNode => VisitPuts((PutsExpression) myNode));
+            node = VisitIf(node, typeof(PutsExpression), myNode => VisitPuts((PutsExpression)myNode));
 
-            node = VisitIf(node, typeof (RescueExpression), myNode => VisitRescue((RescueExpression) myNode));
+            node = VisitIf(node, typeof(RescueExpression), myNode => VisitRescue((RescueExpression)myNode));
 
-            node = VisitIf(node, typeof (ReturnExpression), myNode => VisitReturn((ReturnExpression) myNode));
+            node = VisitIf(node, typeof(ReturnExpression), myNode => VisitReturn((ReturnExpression)myNode));
 
-            node = VisitIf(node, typeof (SetAssignExpression),
-                myNode => VisitSetAssign((SetAssignExpression) myNode));
+            node = VisitIf(node, typeof(SetAssignExpression),
+            myNode => VisitSetAssign((SetAssignExpression)myNode));
 
-            node = VisitIf(node, typeof (SingletonDefinitionExpression),
-                myNode => VisitSingletonDefinition((SingletonDefinitionExpression) myNode));
+            node = VisitIf(node, typeof(SingletonDefinitionExpression),
+            myNode => VisitSingletonDefinition((SingletonDefinitionExpression)myNode));
 
-            node = VisitIf(node, typeof (StringExpression), myNode => VisitString((StringExpression) myNode));
+            node = VisitIf(node, typeof(StringExpression), myNode => VisitString((StringExpression)myNode));
 
-            node = VisitIf(node, typeof (SwitchExpression), myNode => VisitSwitch((SwitchExpression) myNode));
+            node = VisitIf(node, typeof(SwitchExpression), myNode => VisitSwitch((SwitchExpression)myNode));
 
-            node = VisitIf(node, typeof (SyncExpression), myNode => VisitSync((SyncExpression) myNode));
+            node = VisitIf(node, typeof(SyncExpression), myNode => VisitSync((SyncExpression)myNode));
 
-            node = VisitIf(node, typeof (ThrowExpression), myNode => VisitThrow((ThrowExpression) myNode));
+            node = VisitIf(node, typeof(ThrowExpression), myNode => VisitThrow((ThrowExpression)myNode));
 
-            node = VisitIf(node, typeof (TypeofExpression), myNode => VisitTypeof((TypeofExpression) myNode));
+            node = VisitIf(node, typeof(TypeofExpression), myNode => VisitTypeof((TypeofExpression)myNode));
 
-            node = VisitIf(node, typeof (UnaryExpression), myNode => VisitUnary((UnaryExpression) myNode));
+            node = VisitIf(node, typeof(UnaryExpression), myNode => VisitUnary((UnaryExpression)myNode));
 
-            node = VisitIf(node, typeof (UnlessExpression), myNode => VisitUnless((UnlessExpression) myNode));
+            node = VisitIf(node, typeof(UnlessExpression), myNode => VisitUnless((UnlessExpression)myNode));
 
-            node = VisitIf(node, typeof (UntilExpression), myNode => VisitUntil((UntilExpression) myNode));
+            node = VisitIf(node, typeof(UntilExpression), myNode => VisitUntil((UntilExpression)myNode));
 
-            node = VisitIf(node, typeof (VariableExpression), myNode => VisitVariable((VariableExpression) myNode));
+            node = VisitIf(node, typeof(VariableExpression), myNode => VisitVariable((VariableExpression)myNode));
 
-            node = VisitIf(node, typeof (WhileExpression), myNode => VisitWhile((WhileExpression) myNode));
+            node = VisitIf(node, typeof(WhileExpression), myNode => VisitWhile((WhileExpression)myNode));
 
-            node = VisitIf(node, typeof (YieldExpression), myNode => VisitYield((YieldExpression) myNode));
+            node = VisitIf(node, typeof(YieldExpression), myNode => VisitYield((YieldExpression)myNode));
 
             return node;
         }

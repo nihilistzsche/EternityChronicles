@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="DragonLexer.cs" Company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -20,89 +20,104 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Scripting;
 using IronDragon.Parser;
+using Microsoft.Scripting;
 
 #pragma warning disable 162
 
-namespace IronDragon.Lexer {
+namespace IronDragon.Lexer
+{
     /// <summary>
     ///     Extra methods for lexer
     /// </summary>
-    public partial class DragonLexer {
+    public partial class DragonLexer
+    {
         private readonly Dictionary<int, int> _lineIndexes = new();
-        private string[] _lines;
+        private          string[]             _lines;
 
-        public string CreateString() {
-            return data.Substring(ts, (te - ts));
+        public string CreateString()
+        {
+            return data.Substring(ts, te - ts);
         }
 
-        public void Token(string name, DragonTokenCategory category = DragonTokenCategory.Normal) {
+        public void Token(string name, DragonTokenCategory category = DragonTokenCategory.Normal)
+        {
             var text = CreateString();
             Queue.AddToken(name, text, text);
         }
 
-        public void Token<T>(string name, T value, DragonTokenCategory category = DragonTokenCategory.Normal) {
+        public void Token<T>(string name, T value, DragonTokenCategory category = DragonTokenCategory.Normal)
+        {
             Queue.AddToken(name, CreateString(), value);
         }
 
-        public void Keyword(string name) {
+        public void Keyword(string name)
+        {
             Token(name, DragonTokenCategory.Keyword);
         }
 
-        public void Symbol(string name) {
+        public void Symbol(string name)
+        {
             Token(name, DragonTokenCategory.Identifier);
         }
 
-        public void Number() {
+        public void Number()
+        {
             var text = CreateString();
             Queue.AddToken("NUMBER", text, double.Parse(text), DragonTokenCategory.Number);
         }
 
-        public void Integer() {
+        public void Integer()
+        {
             var text = CreateString();
             Queue.AddToken("INTEGER", text, int.Parse(text), DragonTokenCategory.Number);
         }
 
-        public void Hex() {
+        public void Hex()
+        {
             var text = CreateString();
-            Queue.AddToken("INTEGER", text, int.Parse(text.Substring(2), NumberStyles.HexNumber), DragonTokenCategory.Number);
+            Queue.AddToken("INTEGER", text, int.Parse(text.Substring(2), NumberStyles.HexNumber),
+            DragonTokenCategory.Number);
         }
 
-        public void String() {
+        public void String()
+        {
             var text = CreateString();
             Queue.AddToken("STRING", text, text.Substring(1, text.Length - 2), DragonTokenCategory.String);
         }
 
-        public void Regex() {
+        public void Regex()
+        {
             var text = CreateString();
             Queue.AddToken("REGEX", text, text.Substring(2, text.Length - 3), DragonTokenCategory.String);
         }
 
-        public void CustomOp() {
+        public void CustomOp()
+        {
             var text = CreateString();
             Queue.AddToken("OP", text, text);
         }
 
-        public void SetLines(DragonParser parser) {
+        public void SetLines(DragonParser parser)
+        {
             parser.Lines = _lines;
         }
 
-        private void SetupLineIndexes(string source) {
-            _lines = source.Split(new[] {"\n", "\r", "\r\n"}, StringSplitOptions.None);
+        private void SetupLineIndexes(string source)
+        {
+            _lines          = source.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.None);
             _lineIndexes[0] = 0;
-            for (var i = 1; i < _lines.Length; i++) {
-                _lineIndexes[i] = _lines[i - 1].Length;
-            }
+            for (var i = 1; i < _lines.Length; i++) _lineIndexes[i] = _lines[i - 1].Length;
         }
 
-        internal SourceSpan GetSourceSpanOfToken() {
+        internal SourceSpan GetSourceSpanOfToken()
+        {
             var ls = _lineIndexes.Where(k => k.Value > ts).Select(k => k.Key).FirstOrDefault();
             var le = _lineIndexes.Where(k => k.Value > te).Select(k => k.Key).FirstOrDefault();
 
-            var start = new SourceLocation(Queue.NumTokens, ls + 1, (ts - _lineIndexes[ls]) + 1);
+            var start = new SourceLocation(Queue.NumTokens, ls + 1, ts - _lineIndexes[ls] + 1);
 
-            var end = new SourceLocation(Queue.NumTokens, le + 1, (te - _lineIndexes[le]) + 1);
+            var end = new SourceLocation(Queue.NumTokens, le + 1, te - _lineIndexes[le] + 1);
             return new SourceSpan(start, end);
         }
     }

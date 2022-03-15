@@ -19,16 +19,19 @@ using System.Collections.Generic;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonPartialFunction : DragonFunction {
+    public partial class DragonPartialFunction : DragonFunction
+    {
         public DragonPartialFunction(DragonFunction function, List<FunctionArgument> args, DragonScope scope)
-            : base(function.Name, new List<FunctionArgument>(), null, null) {
-            WrappedFunction = function;
+            : base(function.Name, new List<FunctionArgument>(), null, null)
+        {
+            WrappedFunction  = function;
             PartialArguments = args;
-            WrappedScope = scope;
+            WrappedScope     = scope;
         }
 
         public DragonFunction WrappedFunction { get; set; }
@@ -37,7 +40,8 @@ namespace IronDragon.Runtime {
 
         internal DragonScope WrappedScope { get; set; }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("[DragonPartialFunction: WrappedFunction={0}, Scope={1}]", WrappedFunction, Scope);
         }
     }

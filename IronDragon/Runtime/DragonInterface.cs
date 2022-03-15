@@ -16,32 +16,45 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IronDragon.Runtime {
-    public partial class DragonInterface : DragonClass {
+namespace IronDragon.Runtime
+{
+    public partial class DragonInterface : DragonClass
+    {
         public DragonInterface(string name, DragonInterface parent, List<DragonFunction> classMethods,
-            List<DragonFunction> instanceMethods) : base(name, parent, classMethods, instanceMethods) {}
+        List<DragonFunction>          instanceMethods) : base(name, parent, classMethods, instanceMethods)
+        {
+        }
 
-        internal DragonInterface() {}
+        internal DragonInterface()
+        {
+        }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var builder = new StringBuilder("DragonInterface: ");
             builder.Append(Name);
             builder.AppendLine(":");
             builder.AppendLine("  Class Methods:");
-            foreach (var func in ClassMethods) {
+            foreach (var func in ClassMethods)
+            {
                 builder.AppendFormat("    {0}", func);
                 builder.AppendLine();
             }
+
             builder.AppendLine("  Instance Methods:");
-            foreach (var func in InstanceMethods) {
+            foreach (var func in InstanceMethods)
+            {
                 builder.AppendFormat("    {0}", func);
                 builder.AppendLine();
             }
-            if (Parent != null) {
+
+            if (Parent != null)
+            {
                 builder.AppendLine("Parent: ");
                 builder.Append(Parent);
                 builder.AppendLine();
             }
+
             return builder.ToString();
         }
     }

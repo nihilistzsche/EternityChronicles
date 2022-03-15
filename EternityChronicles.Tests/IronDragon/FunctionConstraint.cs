@@ -40,7 +40,7 @@ namespace EternityChronicles.Tests.IronDragon
                 Assert.That(real.Name,      Is.EqualTo(Expected.Name));
                 Assert.That(real.Arguments, Is.EqualTo(Expected.Arguments));
                 Assert.That(real.Body.ToString().Substring(0, Expected.Body.ToString().Length).Replace("; {", "; }"),
-                            Is.EqualTo(Expected.Body.ToString()));
+                Is.EqualTo(Expected.Body.ToString()));
                 success = true;
             }
             catch (AssertionException)

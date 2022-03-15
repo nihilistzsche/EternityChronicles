@@ -14,47 +14,48 @@ using IronDragon.Expressions;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
-    internal class MetaObjectBuilder {
-        private Expression _metaResult;
+namespace IronDragon.Runtime
+{
+    internal class MetaObjectBuilder
+    {
+        private Expression          _metaResult;
         private BindingRestrictions _restrictions;
 
-        public MetaObjectBuilder(DragonMetaObject target, DynamicMetaObject[] args) {
+        public MetaObjectBuilder(DragonMetaObject target, DynamicMetaObject[] args)
+        {
             _restrictions = null;
-            if (target.Restrictions != BindingRestrictions.Empty) {
-                _restrictions = target.Restrictions;
-            }
+            if (target.Restrictions != BindingRestrictions.Empty) _restrictions = target.Restrictions;
         }
 
-        protected void AddRestrictions(DynamicMetaObject[] args) {
-            foreach (var arg in args) {
-                if (arg.Restrictions != BindingRestrictions.Empty) {
+        protected void AddRestrictions(DynamicMetaObject[] args)
+        {
+            foreach (var arg in args)
+            {
+                if (arg.Restrictions != BindingRestrictions.Empty)
                     AddRestriction(arg.Restrictions);
-                }
-                else {
-                    // Runtime check!
+                else // Runtime check!
                     AddRestriction(
-                        BindingRestrictions.GetExpressionRestriction(DragonExpression.Binary(arg.Expression,
-                            Expression.Constant(arg.Value), ExpressionType.Equal)));
-                }
+                    BindingRestrictions.GetExpressionRestriction(DragonExpression.Binary(arg.Expression,
+                    Expression.Constant(arg.Value), ExpressionType.Equal)));
             }
         }
 
-        public void SetMetaResult(Expression result) {
+        public void SetMetaResult(Expression result)
+        {
             _metaResult = result;
         }
 
-        public void AddRestriction(BindingRestrictions restriction) {
-            if (_restrictions == null) {
+        public void AddRestriction(BindingRestrictions restriction)
+        {
+            if (_restrictions == null)
                 _restrictions = restriction;
-            }
-            else {
+            else
                 _restrictions.Merge(restriction);
-            }
         }
 
-        public DynamicMetaObject CreateMetaObject(IInteropBinder binder) {
-            return new(_metaResult, _restrictions);
+        public DynamicMetaObject CreateMetaObject(IInteropBinder binder)
+        {
+            return new DynamicMetaObject(_metaResult, _restrictions);
         }
     }
 }

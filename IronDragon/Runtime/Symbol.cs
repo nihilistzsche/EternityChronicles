@@ -16,26 +16,33 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     Symbols are like variable names except they are unique in any given execution environment.
     /// </summary>
-    public class Symbol {
-        private Symbol(string name) {
+    public class Symbol
+    {
+        private Symbol(string name)
+        {
             Name = name;
         }
 
         public string Name { get; set; }
 
-        public static Symbol NewSymbol(string name) {
+        public static Symbol NewSymbol(string name)
+        {
             Symbol sym;
-            if (DragonScope.Symbols.ContainsKey(name)) {
+            if (DragonScope.Symbols.ContainsKey(name))
+            {
                 sym = DragonScope.Symbols[name];
             }
-            else {
-                sym = new Symbol(name);
+            else
+            {
+                sym                       = new Symbol(name);
                 DragonScope.Symbols[name] = sym;
             }
+
             return sym;
         }
     }

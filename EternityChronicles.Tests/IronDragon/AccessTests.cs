@@ -58,7 +58,7 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect =
                 SD(new Dictionary<object, object>
-                   { { XS("hello"), "world" }, { XS("john"), "doe" }, { XS("jack"), "black" } });
+                    { { XS("hello"), "world" }, { XS("john"), "doe" }, { XS("jack"), "black" } });
 
             var real = CompileAndExecute("{:hello => 'world',:john => 'doe',:jack => 'black'};");
 
@@ -75,7 +75,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestArrayAccess2()
         {
             Assert.That(CompileAndExecute("i = [1,2,3]; z = 0; for(x = 0; x < 3; x += 1) { z += i[x]; };"),
-                        Is.EqualTo(6));
+            Is.EqualTo(6));
         }
 
         [Test]
@@ -140,11 +140,11 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestNestedArray()
         {
             var expect = new DragonArray
-                         {
-                             new DragonArray { 1, 2, 3 },
-                             new DragonArray { 4, 5, 6 },
-                             new DragonArray { 7, 8, 9 }
-                         };
+            {
+                new DragonArray { 1, 2, 3 },
+                new DragonArray { 4, 5, 6 },
+                new DragonArray { 7, 8, 9 }
+            };
 
             var real = CompileAndExecute("x = [[1,2,3],[4,5,6],[7,8,9]];");
             Assert.That(real, Is.EqualTo(expect));
@@ -154,11 +154,11 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestNestedArrayAssignment()
         {
             var expect = new DragonArray
-                         {
-                             new DragonArray { 1, 6, 3 },
-                             new DragonArray { 4, 10, 6 },
-                             new DragonArray { 7, 14, 9 }
-                         };
+            {
+                new DragonArray { 1, 6, 3 },
+                new DragonArray { 4, 10, 6 },
+                new DragonArray { 7, 14, 9 }
+            };
 
             var real =
                 CompileAndExecute("x = [[1,2,3],[4,5,6],[7,8,9]]; x[0][1] = 6; x[1][1] = 10; x[2][1] = 14; x;");

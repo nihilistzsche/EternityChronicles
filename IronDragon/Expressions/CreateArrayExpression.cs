@@ -23,37 +23,39 @@ using System.Text;
 using IronDragon.Builtins;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class CreateArrayExpression : DragonExpression {
-        internal CreateArrayExpression(List<Expression> values) {
+    public class CreateArrayExpression : DragonExpression
+    {
+        internal CreateArrayExpression(List<Expression> values)
+        {
             Values = values;
         }
 
         public List<Expression> Values { get; }
 
-        public override Type Type => typeof (DragonArray);
+        public override Type Type => typeof(DragonArray);
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             return Operation.CreateArray(Type, Constant(Values));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var str = new StringBuilder("[");
-            foreach (var e in Values) {
-                str.AppendFormat("{0},", e);
-            }
+            foreach (var e in Values) str.AppendFormat("{0},", e);
             str.Remove(str.Length - 1, 1);
             str.Append("]");
             return str.ToString();
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
-            foreach (var value in Values) {
-                value.SetScope(scope);
-            }
+        public override void SetChildrenScopes(DragonScope scope)
+        {
+            foreach (var value in Values) value.SetScope(scope);
         }
     }
 }

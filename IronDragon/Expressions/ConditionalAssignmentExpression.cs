@@ -19,14 +19,17 @@
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     using CS = CompilerServices;
 
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ConditionalAssignmentExpression : AssignmentExpression {
-        internal ConditionalAssignmentExpression(LeftHandValueExpression left, Expression right, DragonExpressionType conditionalAssignmentType)
+    public class ConditionalAssignmentExpression : AssignmentExpression
+    {
+        internal ConditionalAssignmentExpression(LeftHandValueExpression left, Expression right,
+        DragonExpressionType                                             conditionalAssignmentType)
             : base(left, right, ExpressionType.Assign)
         {
             ConditionalAssignmentType = conditionalAssignmentType;
@@ -34,25 +37,22 @@ namespace IronDragon.Expressions {
 
         public DragonExpressionType ConditionalAssignmentType { get; }
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var rl = Left.Reduce();
-            if (rl is VariableExpression) {
-                return Operation.ConditionalAssign(Right.Type, Constant(rl), Convert(Right, typeof (object)),
-                    Constant(ConditionalAssignmentType), Constant(IsConst), Constant(Scope));
-            }
+            if (rl is VariableExpression)
+                return Operation.ConditionalAssign(Right.Type, Constant(rl), Convert(Right, typeof(object)),
+                Constant(ConditionalAssignmentType), Constant(IsConst), Constant(Scope));
             return
                 Convert(
-                    ConditionalAccessSet((rl as AccessExpression).Container,
-                        (rl as AccessExpression).Arguments, Right, ConditionalAssignmentType), Type);
+                ConditionalAccessSet((rl as AccessExpression).Container,
+                (rl as AccessExpression).Arguments, Right, ConditionalAssignmentType), Type);
         }
 
         public override string ToString()
         {
-            var opStr = "||=";
-            if (ConditionalAssignmentType == DragonExpressionType.IfNotNullAssign)
-            {
-                opStr = "&&=";
-            }
+            var opStr                                                                    = "||=";
+            if (ConditionalAssignmentType == DragonExpressionType.IfNotNullAssign) opStr = "&&=";
             return string.Format("{0} {1} {2}", Left, opStr, Right);
         }
     }

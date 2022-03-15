@@ -24,17 +24,20 @@ using System.Text;
 using IronDragon.Expressions;
 using IronDragon.Parser;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     using E = ExpressionType;
 
-    public class InstanceReference {
+    public class InstanceReference
+    {
         public Expression LValue { get; set; }
-        public string Key { get; set; }
+        public string     Key    { get; set; }
     }
 
-    public static partial class RuntimeOperations {
-        private static int _classDefineRefCount = 0; // for nested class
-        private static string _className;
+    public static partial class RuntimeOperations
+    {
+        private static int         _classDefineRefCount; // for nested class
+        private static string      _className;
         private static DragonScope _currentClassScope;
 
         private static void IncClassDefineRef()
@@ -55,12 +58,10 @@ namespace IronDragon.Runtime {
         }
 
         internal static dynamic DefineClass(object rawName, object rawParent, List<Expression> contents,
-            object                                 rawScope)
+        object                                     rawScope)
         {
             if (Resolve(rawName, rawScope) != null)
-            {
                 return DefineCategory(Resolve(rawName, rawScope), contents, rawScope);
-            }
 
             var scope       = (DragonScope)rawScope;
             var defineScope = IsInsideClassDefine() ? scope : Dragon.Globals;
@@ -68,10 +69,7 @@ namespace IronDragon.Runtime {
             DragonClass parent;
             if (rawParent == null)
             {
-                if (Dragon.Globals["Object"] == null)
-                {
-                    Dragon.Globals["Object"] = Dragon.Box(typeof(object));
-                }
+                if (Dragon.Globals["Object"] == null) Dragon.Globals["Object"] = Dragon.Box(typeof(object));
 
                 parent = Dragon.Globals["Object"];
             }
@@ -80,22 +78,18 @@ namespace IronDragon.Runtime {
                 var dParent = Resolve(rawParent as string, scope);
                 if (dParent == null)
                 {
-					DecClassDefineRef();
+                    DecClassDefineRef();
                     return null;
                 }
 
                 if (dParent is Type)
-                {
                     parent = Dragon.Box(dParent);
-                }
                 else
-                {
                     parent = dParent as DragonClass;
-                }
 
                 if (parent == null)
                 {
-					DecClassDefineRef();
+                    DecClassDefineRef();
                     return null;
                 }
             }
@@ -121,14 +115,9 @@ namespace IronDragon.Runtime {
                     var index = 0;
                     names.ForEach(mname =>
                     {
-                        if ((module is DragonModule))
-                        {
-                            module = module.Context[mname];
-                        }
-                        else if (index == 0)
-                        {
-                            module = Resolve(mname, scope);
-                        }
+                        if (module is DragonModule)
+                            module                  = module.Context[mname];
+                        else if (index == 0) module = Resolve(mname, scope);
 
                         index = index + 1;
                     });
@@ -143,31 +132,23 @@ namespace IronDragon.Runtime {
                                 {
                                     if ((mcon as DragonFunction).IsSingleton ||
                                     (mcon as DragonFunction).Name == "new")
-                                    {
                                         DragonClass.AddMethod(
                                         @class.ClassMethods,
                                         mcon as DragonFunction);
-                                    }
                                     else
-                                    {
                                         DragonClass.AddMethod(
                                         @class.InstanceMethods,
                                         mcon as DragonFunction);
-                                    }
 
                                     if (@class.RemovedMethods.Contains(
                                         (mcon as DragonFunction).Name))
-                                    {
                                         @class.RemovedMethods.Remove(
                                         (mcon as DragonFunction).Name);
-                                    }
 
                                     if (@class.UndefinedMethods.Contains(
                                         (mcon as DragonFunction).Name))
-                                    {
                                         @class.UndefinedMethods.Remove(
                                         (mcon as DragonFunction).Name);
-                                    }
                                 }
                             });
 
@@ -190,29 +171,20 @@ namespace IronDragon.Runtime {
                     {
                         if ((result as DragonFunction).IsSingleton ||
                         (result as DragonFunction).Name == "new")
-                        {
                             DragonClass.AddMethod(@class.ClassMethods, result as DragonFunction);
-                        }
                         else
-                        {
                             DragonClass.AddMethod(@class.InstanceMethods, result as DragonFunction);
-                        }
 
                         if (@class.RemovedMethods.Contains((result as DragonFunction).Name))
-                        {
                             @class.RemovedMethods.Remove((result as DragonFunction).Name);
-                        }
 
                         if (@class.UndefinedMethods.Contains((result as DragonFunction).Name))
-                        {
                             @class.UndefinedMethods.Remove((result as DragonFunction).Name);
-                        }
                     }
                 }
             });
 
             if (!@class.ClassMethods.ContainsKey("new"))
-            {
                 DragonClass.AddMethod(@class.ClassMethods,
                 new DragonFunction("new", new List<FunctionArgument>(),
                 DragonExpression.DragonBlock(
@@ -232,7 +204,6 @@ namespace IronDragon.Runtime {
                 Expression.Constant(
                 null, typeof(object)))),
                 new DragonScope()));
-            }
 
             @class.Context           = xScope;
             defineScope[@class.Name] = @class;
@@ -241,111 +212,102 @@ namespace IronDragon.Runtime {
         }
 
 
-        internal static dynamic DefineCategory(DragonClass @class, List<Expression> contents, object rawScope) {
-                var scope = (DragonScope) rawScope;
-                IncClassDefineRef();
-                _className = @class.Name;
+        internal static dynamic DefineCategory(DragonClass @class, List<Expression> contents, object rawScope)
+        {
+            var scope = (DragonScope)rawScope;
+            IncClassDefineRef();
+            _className = @class.Name;
 
-                scope["self"] = @class;
-                scope[_className] = @class;
-                _currentClassScope = @class.Context;
+            scope["self"]      = @class;
+            scope[_className]  = @class;
+            _currentClassScope = @class.Context;
 
-                contents.ForEach(content => {
-                    if (content is IncludeExpression) {
-                        // We only include modules here so make sure this include references a module
-                        var names = ((IncludeExpression) content).Names;
+            contents.ForEach(content =>
+            {
+                if (content is IncludeExpression)
+                {
+                    // We only include modules here so make sure this include references a module
+                    var names = ((IncludeExpression)content).Names;
 
-                        dynamic module = null;
+                    dynamic module = null;
 
-                        var index = 0;
-                        names.ForEach(mname => {
-                            if (module != null && (module is DragonModule)) {
-                                module = module.Context[mname];
-                            }
-                            else if (index == 0) {
-                                module = scope[mname];
-                            }
-                            index = index + 1;
-                        });
+                    var index = 0;
+                    names.ForEach(mname =>
+                    {
+                        if (module != null && module is DragonModule)
+                            module                  = module.Context[mname];
+                        else if (index == 0) module = scope[mname];
+                        index = index + 1;
+                    });
 
-                        if (module != null) {
-                            if (module is DragonModule) {
-                                ((DragonModule) module).Contents.ForEach(mcon => {
-                                    if (mcon is DragonFunction) {
-                                        if ((mcon as DragonFunction).IsSingleton ||
-                                            (mcon as DragonFunction).Name == "new") {
-                                            DragonClass.AddMethod(@class.ClassMethods, mcon as DragonFunction);
-                                        }
-                                        else {
-                                            DragonClass.AddMethod(@class.InstanceMethods, mcon as DragonFunction);
-                                        }
-                                        if (@class.RemovedMethods.Contains((mcon as DragonFunction).Name))
-                                        {
-                                            @class.RemovedMethods.Remove((mcon as DragonFunction).Name);
-                                        }
-                                        if (@class.UndefinedMethods.Contains((mcon as DragonFunction).Name))
-                                        {
-                                            @class.UndefinedMethods.Remove((mcon as DragonFunction).Name);
-                                        }
-                                    }
-                                });
+                    if (module != null)
+                    {
+                        if (module is DragonModule)
+                        {
+                            ((DragonModule)module).Contents.ForEach(mcon =>
+                            {
+                                if (mcon is DragonFunction)
+                                {
+                                    if ((mcon as DragonFunction).IsSingleton ||
+                                    (mcon as DragonFunction).Name == "new")
+                                        DragonClass.AddMethod(@class.ClassMethods, mcon as DragonFunction);
+                                    else
+                                        DragonClass.AddMethod(@class.InstanceMethods, mcon as DragonFunction);
+                                    if (@class.RemovedMethods.Contains((mcon as DragonFunction).Name))
+                                        @class.RemovedMethods.Remove((mcon as DragonFunction).Name);
+                                    if (@class.UndefinedMethods.Contains((mcon as DragonFunction).Name))
+                                        @class.UndefinedMethods.Remove((mcon as DragonFunction).Name);
+                                }
+                            });
 
-                                scope.MergeWithScope(module.Context);
-                            }
-                            else if (module is DragonClass) {
-                                scope[((DragonClass) module).Name] = module;
-                            }
+                            scope.MergeWithScope(module.Context);
+                        }
+                        else if (module is DragonClass)
+                        {
+                            scope[((DragonClass)module).Name] = module;
                         }
                     }
-                });
+                }
+            });
 
-                contents.ForEach(content => {
-                    if (!(content is IncludeExpression)) {
-                        var result = CompilerServices.CompileExpression(content, scope);
-                        if (result is DragonFunction) {
-                            if ((result as DragonFunction).IsSingleton) {
-                                DragonClass.AddMethod(@class.ClassMethods, result as DragonFunction);
-                            }
-                            else {
-                                DragonClass.AddMethod(@class.InstanceMethods, result as DragonFunction);
-                            }
-                            if (@class.RemovedMethods.Contains((result as DragonFunction).Name))
-                            {
-                                @class.RemovedMethods.Remove((result as DragonFunction).Name);
-                            }
-                            if (@class.UndefinedMethods.Contains((result as DragonFunction).Name))
-                            {
-                                @class.UndefinedMethods.Remove((result as DragonFunction).Name);
-                            }
-                        }
+            contents.ForEach(content =>
+            {
+                if (!(content is IncludeExpression))
+                {
+                    var result = CompilerServices.CompileExpression(content, scope);
+                    if (result is DragonFunction)
+                    {
+                        if ((result as DragonFunction).IsSingleton)
+                            DragonClass.AddMethod(@class.ClassMethods, result as DragonFunction);
+                        else
+                            DragonClass.AddMethod(@class.InstanceMethods, result as DragonFunction);
+                        if (@class.RemovedMethods.Contains((result as DragonFunction).Name))
+                            @class.RemovedMethods.Remove((result as DragonFunction).Name);
+                        if (@class.UndefinedMethods.Contains((result as DragonFunction).Name))
+                            @class.UndefinedMethods.Remove((result as DragonFunction).Name);
                     }
-                });
+                }
+            });
 
-                @class.Context.MergeWithScope(scope);
+            @class.Context.MergeWithScope(scope);
 
-                DecClassDefineRef();
-                return @class;
+            DecClassDefineRef();
+            return @class;
         }
 
         internal static dynamic DefineClassOpen(object rawValue, List<Expression> contents, object rawScope)
         {
-            var scope = (DragonScope) rawScope;
+            var scope = (DragonScope)rawScope;
 
-            var value = CompilerServices.CompileExpression((Expression) rawValue, scope);
+            var value = CompilerServices.CompileExpression((Expression)rawValue, scope);
 
             if (value == null)
                 return null;
 
             var @class = value as DragonClass;
-            if (@class != null)
-            {
-                return DefineCategory(@class, contents, scope);
-            }
+            if (@class != null) return DefineCategory(@class, contents, scope);
             var instance = value as DragonInstance;
-            if (instance != null)
-            {
-                return DefineCategory(instance.Class, contents, scope);
-            }
+            if (instance != null) return DefineCategory(instance.Class, contents, scope);
             var newVal = Dragon.Box(value);
             return DefineCategory(((DragonInstance)newVal).Class, contents, scope);
         }
@@ -358,7 +320,7 @@ namespace IronDragon.Runtime {
             var name = (string)rawName;
 
             var xScope = new DragonScope(scope);
-            
+
             var module = new DragonModule { Name = name, Context = xScope };
 
             contents.ForEach(content => module.Contents.Add(CompilerServices.CompileExpression(content, xScope)));
@@ -369,59 +331,56 @@ namespace IronDragon.Runtime {
             return module;
         }
 
-        internal static dynamic InstanceRef(Expression lvalue, object key) {
+        internal static dynamic InstanceRef(Expression lvalue, object key)
+        {
             // Try to compile lvalue to check for type
-            return new InstanceReference {LValue = lvalue, Key = (string) key};
+            return new InstanceReference { LValue = lvalue, Key = (string)key };
         }
 
-        internal static dynamic Include(List<string> names) {
+        internal static dynamic Include(List<string> names)
+        {
             // this has a different meaning when were defining classes
-            if (!IsInsideClassDefine()) {
+            if (!IsInsideClassDefine())
+            {
                 var s = new StringBuilder();
                 names.ForEach(name => s.AppendFormat("{0}.", name));
                 s.Remove(s.Length - 1, 1);
                 DragonTypeResolver.Include(s.ToString());
                 return null;
             }
+
             return null;
         }
 
         internal static dynamic Sync(object rawName, object rawBlock, object rawScope)
         {
-            var varName = (string) rawName;
-            var block = (Expression) rawBlock;
-            var scope = (DragonScope) rawScope;
+            var varName = (string)rawName;
+            var block   = (Expression)rawBlock;
+            var scope   = (DragonScope)rawScope;
 
             var var = scope[varName];
 
             dynamic retVal = null;
 
-            lock (var)
-            {
-                retVal = CompilerServices.CompileExpression(block, scope);
-            }
+            lock (var) retVal = CompilerServices.CompileExpression(block, scope);
 
             return retVal;
         }
 
         internal static dynamic ObjectMethodChange(object rawSelf, object rawName, bool isRemove, object rawScope)
         {
-            var scope = (DragonScope) rawScope;
-            var name = (string)rawName;
+            var scope = (DragonScope)rawScope;
+            var name  = (string)rawName;
 
-            var self = CompilerServices.CompileExpression((Expression) rawSelf, scope);
+            var self = CompilerServices.CompileExpression((Expression)rawSelf, scope);
 
             var @class = self as DragonClass;
             if (@class != null)
             {
                 if (isRemove)
-                {
                     @class.RemovedMethods.Add(name);
-                }
                 else
-                {
                     @class.UndefinedMethods.Add(name);
-                }
             }
             else
             {
@@ -429,25 +388,17 @@ namespace IronDragon.Runtime {
                 if (instance != null)
                 {
                     if (isRemove)
-                    {
                         instance.RemovedMethods.Add(name);
-                    }
                     else
-                    {
                         instance.UndefinedMethods.Add(name);
-                    }
                 }
                 else
                 {
                     var newVal = Dragon.Box(self);
                     if (isRemove)
-                    {
                         ((DragonInstance)newVal).RemovedMethods.Add(name);
-                    }
                     else
-                    {
                         ((DragonInstance)newVal).UndefinedMethods.Add(name);
-                    }
                 }
             }
 
@@ -457,50 +408,41 @@ namespace IronDragon.Runtime {
 
         internal static dynamic MethodChange(object rawName, bool isRemove)
         {
-            if (!IsInsideClassDefine())
-            {
-                return null;
-            }
+            if (!IsInsideClassDefine()) return null;
 
             var name = (string)rawName;
 
 
             DragonClass @class = _currentClassScope[_className];
             if (isRemove)
-            {
                 @class.RemovedMethods.Add(name);
-            }
             else
-            {
                 @class.UndefinedMethods.Add(name);
-            }
 
             return null;
         }
 
         internal static dynamic Switch(object rawTest, List<SwitchCase> cases, object rawDefaultBlock, object rawScope)
         {
-            var test = (Expression) rawTest;
+            var test = (Expression)rawTest;
             var defaultBlock = rawDefaultBlock != null
-                ? (Expression) rawDefaultBlock
+                ? (Expression)rawDefaultBlock
                 : DragonExpression.DragonBlock(Expression.Default(cases.First().Body.Type));
-            var scope = (DragonScope) rawScope;
+            var scope = (DragonScope)rawScope;
 
             dynamic retVal = null;
 
             var found = false;
-            var tval = CompilerServices.CompileExpression(test, scope);
-            foreach (var @case in cases.Where(@case => @case.TestValues.Select(testValue => CompilerServices.CompileExpression(testValue, scope))
+            var tval  = CompilerServices.CompileExpression(test, scope);
+            foreach (var @case in cases.Where(@case => @case.TestValues
+                .Select(testValue => CompilerServices.CompileExpression(testValue, scope))
                 .Any(xval => Binary(tval, xval, E.Equal, scope))))
             {
-                found = true;
+                found  = true;
                 retVal = CompilerServices.CompileExpression(@case.Body, scope);
             }
 
-            if (!found)
-            {
-                retVal = CompilerServices.CompileExpression(defaultBlock, scope);
-            }
+            if (!found) retVal = CompilerServices.CompileExpression(defaultBlock, scope);
 
             return retVal;
         }

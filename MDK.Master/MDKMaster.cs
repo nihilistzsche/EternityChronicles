@@ -26,7 +26,7 @@ namespace MDK.Master
             var constructorTypes = new List<Type>();
             args.ToList().ForEach(arg => constructorTypes.Add(arg.GetType()));
             return genericTypeDefinition.MakeGenericType(typeArgs).GetConstructor(constructorTypes.ToArray())
-                                       ?.Invoke(args);
+                ?.Invoke(args);
         }
     }
 
@@ -49,12 +49,12 @@ namespace MDK.Master
         public void StartServer(string dataDir)
         {
             var info = new ProcessStartInfo
-                       {
-                           FileName               = "/usr/bin/mongod",
-                           UseShellExecute        = false,
-                           RedirectStandardOutput = true,
-                           Arguments              = $"--dbpath \"{dataDir}\""
-                       };
+            {
+                FileName               = "/usr/bin/mongod",
+                UseShellExecute        = false,
+                RedirectStandardOutput = true,
+                Arguments              = $"--dbpath \"{dataDir}\""
+            };
 
             Log.LogMessage("mdk", LogLevel.Info, $"Starting MongoDB server with the data directory: {dataDir}");
             Process = Process.Start(info);
@@ -64,15 +64,15 @@ namespace MDK.Master
         public void InitializeData()
         {
             var mdkTypes = from a in AppDomain.CurrentDomain.GetAssemblies()
-                           from t in a.GetTypes()
-                           where t.GetInterface("IMDKDataSchema") != null
-                           select t;
+                from t in a.GetTypes()
+                where t.GetInterface("IMDKDataSchema") != null
+                select t;
 
             foreach (var type in mdkTypes)
             {
                 Databases.Add(type,
-                              (IMDKDatabase)typeof(MDKDatabase<>).CreateGenericInstance(
-                                  new[] { type }, new object[] { this }));
+                (IMDKDatabase)typeof(MDKDatabase<>).CreateGenericInstance(
+                new[] { type }, new object[] { this }));
             }
         }
 

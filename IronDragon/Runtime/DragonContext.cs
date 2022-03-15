@@ -16,32 +16,37 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
-    using Microsoft.Scripting.Runtime;
-    using Microsoft.Scripting;
-    using Expressions;
-	using Parser;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using IronDragon.Expressions;
+using IronDragon.Parser;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
-    /// <summary>
-	/// TODO: Update summary.
+namespace IronDragon.Runtime
+{
+	/// <summary>
+	///     TODO: Update summary.
 	/// </summary>
-	public class DragonContext : LanguageContext {
-		public DragonContext(ScriptDomainManager domainManager, IDictionary<string, object> options) : base(domainManager) {
+	public class DragonContext : LanguageContext
+    {
+        public DragonContext(ScriptDomainManager domainManager, IDictionary<string, object> options) : base(
+        domainManager)
+        {
+        }
 
-		}
+        public override ScriptCode CompileSourceCode(SourceUnit sourceUnit, CompilerOptions options,
+        ErrorSink                                               errorSink)
+        {
+            var res = DragonParser.Parse(sourceUnit.GetCode(), sourceUnit);
 
-		public override ScriptCode CompileSourceCode(SourceUnit sourceUnit, CompilerOptions options, ErrorSink errorSink)
-		{
-		    var res = DragonParser.Parse(sourceUnit.GetCode(), sourceUnit);
+            if (res != null)
+            {
+                Expression mainBlock = DragonExpression.DragonBlock(res);
+                return new DragonScriptCode(mainBlock, sourceUnit);
+            }
 
-			if (res != null) {
-				Expression mainBlock = DragonExpression.DragonBlock (res);
-				return new DragonScriptCode(mainBlock, sourceUnit);
-			} else {
-				throw new SyntaxErrorException("Syntax error", sourceUnit, SourceSpan.None, 0, Severity.Error);
-			}
-		}
-	}
+            throw new SyntaxErrorException("Syntax error", sourceUnit, SourceSpan.None, 0, Severity.Error);
+        }
+    }
 }

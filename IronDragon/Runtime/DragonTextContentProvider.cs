@@ -16,24 +16,27 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
 using System.IO;
 using System.Text;
 using Microsoft.Scripting;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class DragonTextContentProvider : TextContentProvider {
-        public DragonTextContentProvider(string source) {
+    public class DragonTextContentProvider : TextContentProvider
+    {
+        public DragonTextContentProvider(string source)
+        {
             Source = source;
         }
 
-        public String Source { get; }
+        public string Source { get; }
 
-        public override SourceCodeReader GetReader() {
-            return new(new StringReader(Source), Encoding.UTF8);
+        public override SourceCodeReader GetReader()
+        {
+            return new SourceCodeReader(new StringReader(Source), Encoding.UTF8);
         }
     }
 }

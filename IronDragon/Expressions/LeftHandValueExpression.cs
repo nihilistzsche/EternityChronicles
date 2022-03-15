@@ -20,12 +20,15 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class LeftHandValueExpression : DragonExpression {
-        internal LeftHandValueExpression(Expression value) {
+    public class LeftHandValueExpression : DragonExpression
+    {
+        internal LeftHandValueExpression(Expression value)
+        {
             Value = value;
         }
 
@@ -33,23 +36,26 @@ namespace IronDragon.Expressions {
 
         public override Type Type => Value.Type;
 
-        public override Expression Reduce() {
-            if (Value is IndexExpression) {
-                var i = (IndexExpression) Value;
+        public override Expression Reduce()
+        {
+            if (Value is IndexExpression)
+            {
+                var i   = (IndexExpression)Value;
                 var obj = i.Object;
-                if (obj is VariableExpression) {
-                    return i.Update((obj as VariableExpression).Reduce(), i.Arguments);
-                }
+                if (obj is VariableExpression) return i.Update((obj as VariableExpression).Reduce(), i.Arguments);
                 return i;
             }
+
             return Value;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("lvalue({0})", Value);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Value.SetScope(scope);
         }
     }

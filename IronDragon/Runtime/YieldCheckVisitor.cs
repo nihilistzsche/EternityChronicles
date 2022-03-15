@@ -19,27 +19,29 @@
 using System.Linq.Expressions;
 using IronDragon.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class YieldCheckVisitor : DragonExpressionVisitor {
-        private bool _hasYield;
-
+    public class YieldCheckVisitor : DragonExpressionVisitor
+    {
         /// <summary>
         ///     Initializes a new instance of the {YieldCheckVisitor} class.
         /// </summary>
-        public YieldCheckVisitor() {
-            _hasYield = false;
+        public YieldCheckVisitor()
+        {
+            HasYield = false;
         }
 
         /// <summary>
         ///     Gets the paramter variables this visitor collects from the tree.
         /// </summary>
-        public bool HasYield => _hasYield;
+        public bool HasYield { get; private set; }
 
-        protected override Expression VisitYield(YieldExpression node) {
-            _hasYield = true;
+        protected override Expression VisitYield(YieldExpression node)
+        {
+            HasYield = true;
             return node;
         }
     }

@@ -20,14 +20,17 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class IfExpression : DragonExpression {
-        internal IfExpression(Expression test, Expression ifTrue, Expression ifFalse) {
-            Test = test;
-            IfTrue = ifTrue;
+    public class IfExpression : DragonExpression
+    {
+        internal IfExpression(Expression test, Expression ifTrue, Expression ifFalse)
+        {
+            Test    = test;
+            IfTrue  = ifTrue;
             IfFalse = ifFalse;
         }
 
@@ -39,26 +42,25 @@ namespace IronDragon.Expressions {
 
         public override Type Type => IfTrue.Type;
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var rt = IfTrue;
             var rf = IfFalse;
             if (rf != null)
-            {
                 if (rf.Type != rt.Type)
-                {
                     rf = Convert(rf, rt.Type);
-                }
-            }
             return Condition(Boolean(Test), rt, rf ?? Default(rt.Type), Type);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Test.SetScope(scope);
             IfTrue.SetScope(scope);
             IfFalse.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "";
         }
     }

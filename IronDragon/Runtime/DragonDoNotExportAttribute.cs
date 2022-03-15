@@ -15,8 +15,11 @@
 
 using System;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     [AttributeUsage(
-        AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method | AttributeTargets.Struct)]
-    public class DragonDoNotExportAttribute : Attribute {}
+    AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method | AttributeTargets.Struct)]
+    public class DragonDoNotExportAttribute : Attribute
+    {
+    }
 }

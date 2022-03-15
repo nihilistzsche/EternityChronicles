@@ -20,25 +20,29 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Parser;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class DoWhileExpression : WhileExpression {
-        internal DoWhileExpression(Expression test, Expression body) : base(test, body) {}
+    public class DoWhileExpression : WhileExpression
+    {
+        internal DoWhileExpression(Expression test, Expression body) : base(test, body)
+        {
+        }
 
-        public override Expression Reduce() {
-            var whileLabel = Label("<dragon_do_while>");
+        public override Expression Reduce()
+        {
+            var                 whileLabel  = Label("<dragon_do_while>");
             ParameterExpression whileReturn = null;
-            var useReturn = true;
-            if (Body.Type == typeof (void)) {
+            var                 useReturn   = true;
+            if (Body.Type == typeof(void))
                 useReturn = false;
-            }
-            else {
+            else
                 whileReturn = Variable(Body.Type, "<dragon_do_while_return>");
-            }
-            var whileTest = Variable(typeof (bool), "<dragon_do_while_test>");
-            var realBody = new List<Expression> {
+            var whileTest = Variable(typeof(bool), "<dragon_do_while_test>");
+            var realBody = new List<Expression>
+            {
                 Label(whileLabel),
                 Label(DragonParser.RetryTarget),
                 useReturn ? Assign(whileReturn, Body) : Body,
@@ -48,16 +52,18 @@ namespace IronDragon.Expressions {
                 Label(DragonParser.BreakTarget)
             };
 
-            if (useReturn) {
+            if (useReturn)
+            {
                 realBody.Add(whileReturn);
 
-                return Block(new[] {
+                return Block(new[]
+                {
                     whileTest,
                     whileReturn
                 }, realBody);
             }
 
-            return Block(new[] {whileTest}, realBody);
+            return Block(new[] { whileTest }, realBody);
         }
     }
 }

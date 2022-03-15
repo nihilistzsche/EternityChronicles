@@ -37,14 +37,14 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestAlias()
         {
             Assert.That(CompileAndExecute("def osize(s) { return s; }; alias osize size; size(25);"),
-                        Is.EqualTo(25));
+            Is.EqualTo(25));
         }
 
         [Test]
         public void TestAliasConstDoesNotPollute()
         {
             Assert.That(CompileAndExecute("num = 10; alias num x; def func(y) { x = 10; x + y; }; func(7);"),
-                        Is.EqualTo(17));
+            Is.EqualTo(17));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestAliasOverwriteChildScope()
         {
             Assert.That(CompileAndExecute("num = 20; xnum = 40; do { alias xnum num; num; } while(0);"),
-                        Is.EqualTo(40));
+            Is.EqualTo(40));
         }
 
         [Test]
@@ -271,7 +271,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestLocalConstOkay()
         {
             Assert.That(CompileAndExecute("def func(a) { const _lx = 7; }; func(5); _lx = 5; _lx;"),
-                        Is.EqualTo(5));
+            Is.EqualTo(5));
         }
 
         [Test]
@@ -486,9 +486,9 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestCustomAssignOp()
         {
             Assert.That(
-                (int)CompileAndExecute(
-                    "class Number { def +*=(v) { self += v; self *= v; self; }; };  x = 2; x +*= 3; x;"),
-                Is.EqualTo(15));
+            (int)CompileAndExecute(
+            "class Number { def +*=(v) { self += v; self *= v; self; }; };  x = 2; x +*= 3; x;"),
+            Is.EqualTo(15));
         }
     }
 }

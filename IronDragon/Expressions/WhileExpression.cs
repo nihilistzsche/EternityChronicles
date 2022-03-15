@@ -22,12 +22,15 @@ using System.Linq.Expressions;
 using IronDragon.Parser;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     Represents a while expression for Dragon.
     /// </summary>
-    public class WhileExpression : DragonExpression {
-        internal WhileExpression(Expression test, Expression body) {
+    public class WhileExpression : DragonExpression
+    {
+        internal WhileExpression(Expression test, Expression body)
+        {
             Test = test;
             Body = body;
         }
@@ -38,18 +41,18 @@ namespace IronDragon.Expressions {
 
         public override Type Type => Body.Type;
 
-        public override Expression Reduce() {
-            var whileLabel = Label("<dragon_while>");
+        public override Expression Reduce()
+        {
+            var                 whileLabel  = Label("<dragon_while>");
             ParameterExpression whileReturn = null;
-            var useReturn = true;
-            if (Body.Type == typeof (void)) {
+            var                 useReturn   = true;
+            if (Body.Type == typeof(void))
                 useReturn = false;
-            }
-            else {
+            else
                 whileReturn = Variable(Body.Type, "<dragon_while_return>");
-            }
-            var whileTest = Variable(typeof (bool), "<dragon_while_test>");
-            var realBody = new List<Expression> {
+            var whileTest = Variable(typeof(bool), "<dragon_while_test>");
+            var realBody = new List<Expression>
+            {
                 Label(whileLabel),
                 Label(DragonParser.ContinueTarget),
                 Assign(whileTest, Boolean(Test)),
@@ -60,21 +63,24 @@ namespace IronDragon.Expressions {
                 IfThen(whileTest, Goto(whileLabel)),
                 Label(DragonParser.BreakTarget)
             };
-            if (useReturn) {
+            if (useReturn)
+            {
                 realBody.Add(Convert(whileReturn, Body.Type));
 
-                return Block(new[] {whileTest, whileReturn}, realBody);
+                return Block(new[] { whileTest, whileReturn }, realBody);
             }
 
-            return Block(new[] {whileTest}, realBody);
+            return Block(new[] { whileTest }, realBody);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Test.SetScope(scope);
             Body.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "";
         }
     }

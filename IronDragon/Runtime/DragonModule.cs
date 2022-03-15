@@ -1,14 +1,18 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace IronDragon.Runtime {
-    public class DragonModule {
-        public DragonModule(string name, DragonScope context, List<object> contents) {
-            Name = name;
+namespace IronDragon.Runtime
+{
+    public class DragonModule
+    {
+        public DragonModule(string name, DragonScope context, List<object> contents)
+        {
+            Name     = name;
             Contents = contents;
-            Context = context;
+            Context  = context;
         }
 
-        internal DragonModule() {
+        internal DragonModule()
+        {
             Contents = new List<object>();
         }
 

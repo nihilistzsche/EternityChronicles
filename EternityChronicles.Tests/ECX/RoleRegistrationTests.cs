@@ -53,8 +53,8 @@ namespace EternityChronicles.Tests.ECX
         }
     }
 
-// TODO: Build a wrapper type that has a default constructor that creates an instance of Wonder and implements the members of IWonder by
-// calling the methods on the backing object.
+    // TODO: Build a wrapper type that has a default constructor that creates an instance of Wonder and implements the members of IWonder by
+    // calling the methods on the backing object.
     [TestFixture]
     public class RoleRegistrationTests
     {
@@ -87,7 +87,7 @@ namespace EternityChronicles.Tests.ECX
         public void GenericRegister(Assembly asm, Type type)
         {
             di = typeof(RoleRegisterTest<Dummy>).CreateGenericInstance(new[] { type },
-                                                                       new[] { asm.CreateInstance(type.ToString()) });
+            new[] { asm.CreateInstance(type.ToString()) });
         }
 
         public void GenericUnregister(Assembly asm)
@@ -151,10 +151,7 @@ namespace EternityChronicles.Tests.ECX
 
             Assert.AreEqual(new List<string> { "ecx-rs-01a", "ecx-rs-01c" }, m);
 
-            foreach (var _m in m)
-            {
-                Assert.AreEqual(false, _mc.IsLoaded(_m));
-            }
+            foreach (var _m in m) Assert.AreEqual(false, _mc.IsLoaded(_m));
         }
     }
 }

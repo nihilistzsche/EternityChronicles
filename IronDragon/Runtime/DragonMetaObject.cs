@@ -37,145 +37,166 @@ using IronDragon.Expressions;
  *
  * ***************************************************************************/
 
-namespace IronDragon.Runtime {
-    public interface IDragonDynamicMetaObjectProvider : IDynamicMetaObjectProvider, IScopeExpression {}
+namespace IronDragon.Runtime
+{
+    public interface IDragonDynamicMetaObjectProvider : IDynamicMetaObjectProvider, IScopeExpression
+    {
+    }
 
-    public abstract class DragonMetaObject : DynamicMetaObject, IScopeExpression {
-        private DragonScope _scope;
-
-        #region IScopeExpression implementation
-
-        public void SetScope(DragonScope scope) {
-            _scope = scope;
-        }
-
-        public DragonScope Scope => _scope;
-
-        #endregion
-
+    public abstract class DragonMetaObject : DynamicMetaObject, IScopeExpression
+    {
         internal DragonMetaObject(Expression expression, BindingRestrictions restrictions, object value)
-            : base(expression, restrictions, value) {}
-
-        internal static BindingRestrictions GetRes() {
-            return
-                BindingRestrictions.GetExpressionRestriction(Expression.Equal(new TrueOnce(), Expression.Constant(true)));
+            : base(expression, restrictions, value)
+        {
         }
 
-        public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args) {
+        internal static BindingRestrictions GetRes()
+        {
+            return
+                BindingRestrictions.GetExpressionRestriction(
+                Expression.Equal(new TrueOnce(), Expression.Constant(true)));
+        }
+
+        public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
+        {
             return InteropBinder.Invoke.Bind(new InteropBinder.Invoke(Scope, binder.CallInfo), this, args);
         }
 
-        public override DynamicMetaObject BindGetIndex(GetIndexBinder binder, DynamicMetaObject[] indexes) {
+        public override DynamicMetaObject BindGetIndex(GetIndexBinder binder, DynamicMetaObject[] indexes)
+        {
             return InteropBinder.GetIndex.Bind(new InteropBinder.GetIndex(Scope, binder.CallInfo), this, indexes);
         }
 
         public override DynamicMetaObject BindSetIndex(SetIndexBinder binder, DynamicMetaObject[] indexes,
-            DynamicMetaObject value) {
-            return InteropBinder.SetIndex.Bind(new InteropBinder.SetIndex(Scope, binder.CallInfo), this, indexes, value);
+        DynamicMetaObject                                             value)
+        {
+            return InteropBinder.SetIndex.Bind(new InteropBinder.SetIndex(Scope, binder.CallInfo), this, indexes,
+            value);
         }
 
-        private static FunctionArgument Arg(object val) {
+        private static FunctionArgument Arg(object val)
+        {
             return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
         }
 
-        private static DynamicMetaObject DMO(dynamic val) {
+        private static DynamicMetaObject DMO(dynamic val)
+        {
             return Create(val, Expression.Constant(val));
         }
 
-        private static List<FunctionArgument> L(params FunctionArgument[] args) {
-            return new(args);
+        private static List<FunctionArgument> L(params FunctionArgument[] args)
+        {
+            return new List<FunctionArgument>(args);
         }
 
-        private static DynamicMetaObject[] _DMO(params DynamicMetaObject[] args) {
+        private static DynamicMetaObject[] _DMO(params DynamicMetaObject[] args)
+        {
             return args;
         }
 
-        public override DynamicMetaObject BindUnaryOperation(UnaryOperationBinder binder) {
-            if (Value is DragonInstance) {
+        public override DynamicMetaObject BindUnaryOperation(UnaryOperationBinder binder)
+        {
+            if (Value is DragonInstance)
+            {
                 // Check to see which method we should try to call
                 var DragonName = InteropBinder.MapExpressionType(binder.Operation);
 
-                if (DragonName == null) {
-                    return InteropBinder.Unary.Bind(binder, this);
-                }
+                if (DragonName == null) return InteropBinder.Unary.Bind(binder, this);
 
                 if (
-                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance) Value).Class, DragonName,
-                        (DragonInstance) Value, L(), true) != null) {
+                InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, DragonName,
+                (DragonInstance)Value, L(), true) != null)
                     return
                         InteropBinder.InvokeMember.Bind(
-                            new InteropBinder.InvokeMember(DragonName, new CallInfo(0), Scope), this, _DMO(DMO(Scope)));
-                }
+                        new InteropBinder.InvokeMember(DragonName, new CallInfo(0), Scope), this, _DMO(DMO(Scope)));
                 var clrName = InteropBinder.ToClrOperatorName(DragonName);
                 if (
-                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance) Value).Class, clrName,
-                        (DragonInstance) Value, L(), true) != null) {
+                InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, clrName,
+                (DragonInstance)Value, L(), true) != null)
                     return InteropBinder.Unary.Bind(binder, this);
-                }
 
                 return new DynamicMetaObject(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
             return InteropBinder.Unary.Bind(binder, this);
         }
 
-        public override DynamicMetaObject BindBinaryOperation(BinaryOperationBinder binder, DynamicMetaObject arg) {
-            if (Value is DragonInstance) {
+        public override DynamicMetaObject BindBinaryOperation(BinaryOperationBinder binder, DynamicMetaObject arg)
+        {
+            if (Value is DragonInstance)
+            {
                 var DragonName = InteropBinder.MapExpressionType(binder.Operation);
-                if (DragonName == null) {
-                    return InteropBinder.Binary.Bind(binder, this, arg);
-                }
+                if (DragonName == null) return InteropBinder.Binary.Bind(binder, this, arg);
 
                 if (
-                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance) Value).Class, DragonName,
-                        (DragonInstance) Value, L(Arg(arg.Value)), true) != null) {
+                InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, DragonName,
+                (DragonInstance)Value, L(Arg(arg.Value)), true) != null)
                     return
                         InteropBinder.InvokeMember.Bind(
-                            new InteropBinder.InvokeMember(DragonName, new CallInfo(0), Scope), this,
-                            _DMO(DMO(Scope), DMO(Arg(arg.Value))));
-                }
+                        new InteropBinder.InvokeMember(DragonName, new CallInfo(0), Scope), this,
+                        _DMO(DMO(Scope), DMO(Arg(arg.Value))));
                 var clrName = InteropBinder.ToClrOperatorName(DragonName);
                 if (
-                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance) Value).Class, clrName,
-                        (DragonInstance) Value, L(Arg(arg.Value)), true) != null) {
+                InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, clrName,
+                (DragonInstance)Value, L(Arg(arg.Value)), true) != null)
                     return
                         InteropBinder.InvokeMember.Bind(
-                            new InteropBinder.InvokeMember(clrName, new CallInfo(0), Scope), this,
-                            _DMO(DMO(Scope), DMO(Arg(arg.Value))));
-                }
+                        new InteropBinder.InvokeMember(clrName, new CallInfo(0), Scope), this,
+                        _DMO(DMO(Scope), DMO(Arg(arg.Value))));
                 return InteropBinder.Binary.Bind(binder, this, arg);
             }
+
             return InteropBinder.Binary.Bind(binder, this, arg);
         }
 
-        private class TrueOnce : DragonExpression {
+        private class TrueOnce : DragonExpression
+        {
             private bool _return;
 
-            public TrueOnce() {
+            public TrueOnce()
+            {
                 _return = true;
             }
 
-            public override Type Type => typeof (bool);
+            public override Type Type => typeof(bool);
 
-            public override string ToString() {
+            public override string ToString()
+            {
                 return string.Format("[TrueOnce: Type={0}]", Type);
             }
 
-            public override Expression Reduce() {
-                if (_return) {
+            public override Expression Reduce()
+            {
+                if (_return)
+                {
                     _return = false;
                     return Constant(true);
                 }
+
                 return Constant(false);
             }
         }
+
+        #region IScopeExpression implementation
+
+        public void SetScope(DragonScope scope)
+        {
+            Scope = scope;
+        }
+
+        public DragonScope Scope { get; private set; }
+
+        #endregion
     }
 
-    public abstract class DragonMetaObject<T> : DragonMetaObject {
+    public abstract class DragonMetaObject<T> : DragonMetaObject
+    {
         protected DragonMetaObject(Expression expression, BindingRestrictions restrictions, T value)
-            : base(expression, restrictions, value) {}
+            : base(expression, restrictions, value)
+        {
+        }
 
-        public new T Value => (T) base.Value;
+        public new T Value => (T)base.Value;
     }
 }

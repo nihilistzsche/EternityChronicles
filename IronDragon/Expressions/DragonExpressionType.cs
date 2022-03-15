@@ -16,11 +16,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public enum DragonExpressionType {
+    public enum DragonExpressionType
+    {
         Compare,
         LogicalXor,
         Match,
@@ -29,6 +31,6 @@ namespace IronDragon.Expressions {
         IfNotNullAssign,
         ForwardPipe,
         BackwardPipe,
-        Empty,
+        Empty
     }
 }

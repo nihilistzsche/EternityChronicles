@@ -91,10 +91,7 @@ namespace ECX.Core.Dependency
         private string GenDepthString(int depth)
         {
             var sb = new StringBuilder();
-            for (var i = 0; i < depth; i++)
-            {
-                sb.Append(" ");
-            }
+            for (var i = 0; i < depth; i++) sb.Append(" ");
 
             return sb.ToString();
         }
@@ -107,21 +104,21 @@ namespace ECX.Core.Dependency
         protected string OpToString(DepOps op)
         {
             return op switch
-                   {
-                       DepOps.And              => "&&",
-                       DepOps.Equal            => "==",
-                       DepOps.GreaterThan      => ">>",
-                       DepOps.GreaterThanEqual => ">=",
-                       DepOps.LessThan         => "<<",
-                       DepOps.LessThanEqual    => "<=",
-                       DepOps.Loaded           => "##",
-                       DepOps.NotLoaded        => "!#",
-                       DepOps.NotEqual         => "!=",
-                       DepOps.Opt              => "??",
-                       DepOps.Or               => "||",
-                       DepOps.Xor              => "^^",
-                       _                       => ""
-                   };
+            {
+                DepOps.And              => "&&",
+                DepOps.Equal            => "==",
+                DepOps.GreaterThan      => ">>",
+                DepOps.GreaterThanEqual => ">=",
+                DepOps.LessThan         => "<<",
+                DepOps.LessThanEqual    => "<=",
+                DepOps.Loaded           => "##",
+                DepOps.NotLoaded        => "!#",
+                DepOps.NotEqual         => "!=",
+                DepOps.Opt              => "??",
+                DepOps.Or               => "||",
+                DepOps.Xor              => "^^",
+                _                       => ""
+            };
         }
 
         /// <summary>
@@ -136,10 +133,10 @@ namespace ECX.Core.Dependency
             if (Constraint != null) sb.AppendFormat(" {0}", Constraint);
             sb.AppendLine();
             Children.ForEach(node =>
-                             {
-                                 sb.AppendFormat(node.ToString(depth + 2));
-                                 sb.AppendLine();
-                             });
+            {
+                sb.AppendFormat(node.ToString(depth + 2));
+                sb.AppendLine();
+            });
             return sb.ToString();
         }
 

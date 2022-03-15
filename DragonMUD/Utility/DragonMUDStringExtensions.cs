@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace DragonMUD.Utility
 {
@@ -14,10 +14,7 @@ namespace DragonMUD.Utility
                 var spacing   = new StringBuilder();
                 var clrString = hook.ProcessMessage(s, false);
                 var i         = clrString.Length;
-                while (i++ < 78)
-                {
-                    spacing.Append(" ");
-                }
+                while (i++ < 78) spacing.Append(" ");
 
                 return spacing.ToString();
             }

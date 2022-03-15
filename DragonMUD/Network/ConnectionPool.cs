@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using DragonMUD.StateMachine;
@@ -42,18 +42,12 @@ namespace DragonMUD.Network
 
         public void WriteToAllConnections(string message)
         {
-            foreach (var coordinator in Connections)
-            {
-                coordinator.SendMessage(message);
-            }
+            foreach (var coordinator in Connections) coordinator.SendMessage(message);
         }
 
         public static void WriteToConnections(List<ConnectionCoordinator> connections, string message)
         {
-            foreach (var coordinator in connections)
-            {
-                coordinator.SendMessage(message);
-            }
+            foreach (var coordinator in connections) coordinator.SendMessage(message);
         }
 
         public void RemoveConnection(ConnectionCoordinator coordinator)

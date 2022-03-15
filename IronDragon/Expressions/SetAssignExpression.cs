@@ -20,11 +20,14 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
-    public class SetAssignExpression : DragonExpression {
-        internal SetAssignExpression(Expression left, Expression right, ExpressionType type) {
-            Left = left;
-            Right = right;
+namespace IronDragon.Expressions
+{
+    public class SetAssignExpression : DragonExpression
+    {
+        internal SetAssignExpression(Expression left, Expression right, ExpressionType type)
+        {
+            Left        = left;
+            Right       = right;
             SetNodeType = type;
         }
 
@@ -46,7 +49,8 @@ namespace IronDragon.Expressions {
         ///     Reduces this expression to base DLR variables.
         /// </summary>
         /// <returns></returns>
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var expr = new AssignmentExpression(Left as LeftHandValueExpression, Right, SetNodeType);
 
             expr.SetScope(Scope.ParentScope);
@@ -59,8 +63,9 @@ namespace IronDragon.Expressions {
         ///     Converts this expression to a string representing its contents.
         /// </summary>
         /// <returns>A string representation of this object.</returns>
-        public override string ToString() {
-            return "set " + (new AssignmentExpression(Left as LeftHandValueExpression, Right, SetNodeType));
+        public override string ToString()
+        {
+            return "set " + new AssignmentExpression(Left as LeftHandValueExpression, Right, SetNodeType);
         }
 
         /// <summary>
@@ -68,13 +73,15 @@ namespace IronDragon.Expressions {
         /// </summary>
         /// <param name="visitor">The visitor.</param>
         /// <returns>A new expression with the modified children.</returns>
-        protected override Expression VisitChildren(ExpressionVisitor visitor) {
-            Left = visitor.Visit(Left);
+        protected override Expression VisitChildren(ExpressionVisitor visitor)
+        {
+            Left  = visitor.Visit(Left);
             Right = visitor.Visit(Right);
             return new SetAssignExpression(Left, Right, SetNodeType);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Left.SetScope(scope);
             Right.SetScope(scope);
         }

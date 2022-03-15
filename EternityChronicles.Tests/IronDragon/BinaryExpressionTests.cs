@@ -217,7 +217,7 @@ namespace EternityChronicles.Tests.IronDragon
             var rubyengine = GetRuntime().GetEngine("IronRuby");
             var rubysource =
                 rubyengine.CreateScriptSourceFromString(
-                    "class AddTest; def initialize(num); @num = num; end; def +(other); @num + other; end; end; x = AddTest.new(5);");
+                "class AddTest; def initialize(num); @num = num; end; def +(other); @num + other; end; end; x = AddTest.new(5);");
 
             var x = rubysource.Execute(rubyengine.CreateScope());
 
@@ -278,7 +278,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestRegex1()
         {
             Assert.That(CompileAndExecute("r = %/(H(?<a>el+)o) ([A-Z](?<b>.+)d)./; x = 'Hello World!'; x =~ r; a;"),
-                        Is.EqualTo("ell"));
+            Is.EqualTo("ell"));
         }
 
         [Test]
@@ -286,8 +286,8 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect = new DragonArray { "ell", "orl" };
             Assert.That(
-                CompileAndExecute("x = 'Hello World!'; x =~ %/[^e]+(?<test>el+).+W(?<word>o.+)d/; [test,word];"),
-                Is.EqualTo(expect));
+            CompileAndExecute("x = 'Hello World!'; x =~ %/[^e]+(?<test>el+).+W(?<word>o.+)d/; [test,word];"),
+            Is.EqualTo(expect));
         }
 
         [Test]
@@ -295,8 +295,8 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect = new DragonRange(2, 6);
             Assert.That(
-                CompileAndExecute("2..6;"),
-                Is.EqualTo(expect)
+            CompileAndExecute("2..6;"),
+            Is.EqualTo(expect)
             );
         }
 
@@ -305,8 +305,8 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect = new DragonRange(2, 6, true);
             Assert.That(
-                CompileAndExecute("2...6;"),
-                Is.EqualTo(expect)
+            CompileAndExecute("2...6;"),
+            Is.EqualTo(expect)
             );
         }
     }

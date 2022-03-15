@@ -32,17 +32,17 @@ namespace DragonMUD.StateMachine.Helpers
         {
             if (sortKey != null)
                 Items = Items.OrderBy(item =>
-                                      {
-                                          var memberInfo = item.GetType()
-                                                               .GetField(
-                                                                    sortKey,
-                                                                    BindingFlags.Instance | BindingFlags.Public |
-                                                                    BindingFlags.NonPublic);
-                                          if (memberInfo != null)
-                                              return memberInfo
-                                                 .GetValue(item);
-                                          return null;
-                                      }).ToList();
+                {
+                    var memberInfo = item.GetType()
+                        .GetField(
+                        sortKey,
+                        BindingFlags.Instance | BindingFlags.Public |
+                        BindingFlags.NonPublic);
+                    if (memberInfo != null)
+                        return memberInfo
+                            .GetValue(item);
+                    return null;
+                }).ToList();
 
             coordinator.SendMessage(Message);
             RealItems.Clear();
@@ -64,7 +64,7 @@ namespace DragonMUD.StateMachine.Helpers
                     else
                     {
                         Log.LogMessage("dragonmud", LogLevel.Info,
-                                       "Non-conforming menu item.  Your user will see a broken menu and will not be able to progress.");
+                        "Non-conforming menu item.  Your user will see a broken menu and will not be able to progress.");
                         return;
                     }
                 }
@@ -74,25 +74,25 @@ namespace DragonMUD.StateMachine.Helpers
 
             coordinator.SendMessage("`@");
             coordinator.SendMessage(Items[0].KeyForInfo != null
-                                        ? $"Please make your selection (`c1`x - `c#{Items.Count()}`x) or type info <selection> for more information:"
-                                        : $"Please make your selection (`c1`x - `c#{Items.Count()}`x):");
+                ? $"Please make your selection (`c1`x - `c#{Items.Count()}`x) or type info <selection> for more information:"
+                : $"Please make your selection (`c1`x - `c#{Items.Count()}`x):");
         }
 
         public dynamic GetSelection(ConnectionCoordinator coordinator, string selection, string sortKey = null)
         {
             if (sortKey != null)
                 Items = Items.OrderBy(item =>
-                                      {
-                                          var memberInfo = item.GetType()
-                                                               .GetField(
-                                                                    sortKey,
-                                                                    BindingFlags.Instance | BindingFlags.Public |
-                                                                    BindingFlags.NonPublic);
-                                          if (memberInfo != null)
-                                              return memberInfo
-                                                 .GetValue(item);
-                                          return null;
-                                      }).ToList();
+                {
+                    var memberInfo = item.GetType()
+                        .GetField(
+                        sortKey,
+                        BindingFlags.Instance | BindingFlags.Public |
+                        BindingFlags.NonPublic);
+                    if (memberInfo != null)
+                        return memberInfo
+                            .GetValue(item);
+                    return null;
+                }).ToList();
             coordinator.SetFlag("no-message");
             var sel = -1;
             try
@@ -133,10 +133,10 @@ namespace DragonMUD.StateMachine.Helpers
                             if (item.KeyForInfo != null)
                             {
                                 var info = item.GetType()
-                                               .GetField(item.KeyForInfo,
-                                                         BindingFlags.Instance | BindingFlags.Public |
-                                                         BindingFlags.NonPublic)
-                                               .GetValue(item);
+                                    .GetField(item.KeyForInfo,
+                                    BindingFlags.Instance | BindingFlags.Public |
+                                    BindingFlags.NonPublic)
+                                    .GetValue(item);
                                 coordinator.SendMessage($"\n\r#{info}\n\r");
                             }
                             else

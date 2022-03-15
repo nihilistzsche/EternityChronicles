@@ -21,14 +21,17 @@ using System.Linq.Expressions;
 using System.Reflection;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class PutsExpression : DragonExpression {
-        private static readonly MethodInfo Method = typeof (Console).GetMethod("WriteLine", new[] {typeof (string)});
+    public class PutsExpression : DragonExpression
+    {
+        private static readonly MethodInfo Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) });
 
-        internal PutsExpression(Expression value) {
+        internal PutsExpression(Expression value)
+        {
             Value = value;
         }
 
@@ -36,15 +39,18 @@ namespace IronDragon.Expressions {
 
         public override Type Type => Method.ReturnType;
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             return Call(null, Method, Value);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Value.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("puts {0}", Value);
         }
     }

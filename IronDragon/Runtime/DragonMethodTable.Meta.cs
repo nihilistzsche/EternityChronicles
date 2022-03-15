@@ -22,25 +22,33 @@ using System.Linq.Expressions;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonMethodTable : IDragonDynamicMetaObjectProvider {
-        public new DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/ parameter) {
+    public partial class DragonMethodTable : IDragonDynamicMetaObjectProvider
+    {
+        public new DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/parameter)
+        {
             var m = new Meta(parameter, BindingRestrictions.Empty, this);
             m.SetScope(Scope);
             return m;
         }
 
-        internal new sealed class Meta : DragonMetaObject<DragonMethodTable> {
+        internal new sealed class Meta : DragonMetaObject<DragonMethodTable>
+        {
             public Meta(Expression expression, BindingRestrictions restrictions, DragonMethodTable value)
-                : base(expression, restrictions, value) {}
+                : base(expression, restrictions, value)
+            {
+            }
 
             private static bool DragonScopeFound { get; set; }
 
-            private static object Arg(object val) {
-                if (val is DragonScope) {
+            private static object Arg(object val)
+            {
+                if (val is DragonScope)
+                {
                     DragonScopeFound = true;
                     return val;
                 }
@@ -48,19 +56,17 @@ namespace IronDragon.Runtime {
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args) {
+            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
+            {
                 var realArgs = new List<object>();
                 args.ToList().ForEach(arg => realArgs.Add(Arg(arg.Value)));
-                if (DragonScopeFound) {
-                    realArgs.RemoveAt(0);
-                }
+                if (DragonScopeFound) realArgs.RemoveAt(0);
                 DragonScopeFound = false;
-                var _args = realArgs.ConvertAll(arg => (FunctionArgument) arg);
-                var func = Value.Resolve(_args);
-                if (func == null) {
+                var _args = realArgs.ConvertAll(arg => (FunctionArgument)arg);
+                var func  = Value.Resolve(_args);
+                if (func == null)
                     return new DynamicMetaObject(Expression.Constant(null),
-                        BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
-                }
+                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
                 return func.GetMetaObject(Expression).BindInvoke(binder, args);
             }
         }

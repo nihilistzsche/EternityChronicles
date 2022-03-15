@@ -18,15 +18,23 @@
 
 using System;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ConstantException : Exception {
-        public ConstantException(string message, Exception innerException) : base(message, innerException) {}
+    public class ConstantException : Exception
+    {
+        public ConstantException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
 
-        public ConstantException(string message) : this(message, null) {}
+        public ConstantException(string message) : this(message, null)
+        {
+        }
 
-        public ConstantException() : this(null, null) {}
+        public ConstantException() : this(null, null)
+        {
+        }
     }
 }

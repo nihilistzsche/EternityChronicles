@@ -21,13 +21,16 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class KeyValuePairExpression : DragonExpression {
-        internal KeyValuePairExpression(Expression key, Expression value) {
-            Key = key;
+    public class KeyValuePairExpression : DragonExpression
+    {
+        internal KeyValuePairExpression(Expression key, Expression value)
+        {
+            Key   = key;
             Value = value;
         }
 
@@ -35,18 +38,21 @@ namespace IronDragon.Expressions {
 
         public Expression Value { get; }
 
-        public override Type Type => typeof (KeyValuePair<object, object>);
+        public override Type Type => typeof(KeyValuePair<object, object>);
 
-        public override Expression Reduce() {
-            return Operation.KeyValuePair(typeof (KeyValuePair<object, object>), Convert(Key, typeof (object)),
-                Convert(Value, typeof (object)));
+        public override Expression Reduce()
+        {
+            return Operation.KeyValuePair(typeof(KeyValuePair<object, object>), Convert(Key, typeof(object)),
+            Convert(Value,                                                                   typeof(object)));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("{0} => {1}", Key, Value);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Key.SetScope(scope);
             Value.SetScope(scope);
         }

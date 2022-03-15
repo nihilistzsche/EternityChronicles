@@ -20,18 +20,23 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class AccessSetExpression : AccessExpression {
+    public class AccessSetExpression : AccessExpression
+    {
         internal AccessSetExpression(Expression container, List<FunctionArgument> arguments, Expression value)
-            : this(container, arguments, value, ExpressionType.Assign) {}
+            : this(container, arguments, value, ExpressionType.Assign)
+        {
+        }
 
         internal AccessSetExpression(Expression container, List<FunctionArgument> arguments, Expression value,
-            ExpressionType extra)
-            : base(container, arguments) {
-            Value = value;
+        ExpressionType                          extra)
+            : base(container, arguments)
+        {
+            Value         = value;
             ExtraNodeType = extra;
         }
 
@@ -39,12 +44,14 @@ namespace IronDragon.Expressions {
 
         public ExpressionType ExtraNodeType { get; }
 
-        public override Expression Reduce() {
-            return Operation.AccessSet(Type, Container, Constant(Arguments), Convert(Value, typeof (object)),
-                Constant(ExtraNodeType), Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.AccessSet(Type, Container, Constant(Arguments), Convert(Value, typeof(object)),
+            Constant(ExtraNodeType), Constant(Scope));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             base.SetChildrenScopes(scope);
             Value.SetScope(scope);
         }

@@ -13,14 +13,15 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-namespace IronDragon.Runtime {
-    internal class DragonDoNotWrapBoolean {
-        private readonly bool _value;
-
-        public DragonDoNotWrapBoolean(bool value) {
-            _value = value;
+namespace IronDragon.Runtime
+{
+    internal class DragonDoNotWrapBoolean
+    {
+        public DragonDoNotWrapBoolean(bool value)
+        {
+            Value = value;
         }
 
-        public bool Value => _value;
+        public bool Value { get; }
     }
 }

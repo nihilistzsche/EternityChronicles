@@ -1,6 +1,6 @@
-using System;
-using IronDragon.Parser;
+﻿using System;
 using Antlr4.Runtime;
+using IronDragon.Parser;
 
 namespace IronDragon.Lexer
 {
@@ -13,7 +13,8 @@ namespace IronDragon.Lexer
             return new DragonToken<string>(type, text);
         }
 
-        public IToken Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start, int stop, int line, int charPositionInLine)
+        public IToken Create(Tuple<ITokenSource, ICharStream> source, int type, string text, int channel, int start,
+        int                                                   stop,   int line, int    charPositionInLine)
         {
             return Create(type, text);
         }
@@ -25,7 +26,7 @@ namespace IronDragon.Lexer
             {
                 var field = klass.GetField(name);
 
-                return (int) field.GetValue(Parser);
+                return (int)field.GetValue(Parser);
             }
             catch (Exception)
             {

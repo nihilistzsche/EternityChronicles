@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
 using IronDragon.Runtime;
 
 namespace IronDragon.Expressions
@@ -30,12 +29,12 @@ namespace IronDragon.Expressions
     public class BeginExpression : DragonExpression
     {
         internal BeginExpression(Expression tryBlock, List<Expression> rescueBlocks, Expression ensureBlock,
-            Expression elseBlock)
+        Expression                          elseBlock)
         {
-            TryBlock = tryBlock;
+            TryBlock     = tryBlock;
             RescueBlocks = rescueBlocks;
-            EnsureBlock = ensureBlock;
-            ElseBlock = elseBlock;
+            EnsureBlock  = ensureBlock;
+            ElseBlock    = elseBlock;
         }
 
         public Expression TryBlock { get; }
@@ -52,7 +51,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.Begin(Type, Constant(TryBlock), Constant(RescueBlocks), Constant(EnsureBlock),
-                Constant(ElseBlock), Constant(Scope));
+            Constant(ElseBlock), Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

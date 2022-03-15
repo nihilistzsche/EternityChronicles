@@ -21,14 +21,17 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     using CS = CompilerServices;
 
-    public class ClassDefinitionExpression : DragonExpression {
+    public class ClassDefinitionExpression : DragonExpression
+    {
         internal ClassDefinitionExpression(string name, string parent,
-            List<Expression> contents) {
-            Name = name;
-            Parent = parent;
+        List<Expression>                          contents)
+        {
+            Name     = name;
+            Parent   = parent;
             Contents = contents;
         }
 
@@ -38,18 +41,21 @@ namespace IronDragon.Expressions {
 
         public List<Expression> Contents { get; }
 
-        public override Type Type => typeof (DragonClass);
+        public override Type Type => typeof(DragonClass);
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "";
         }
 
-        public override Expression Reduce() {
-            return Operation.DefineClass(typeof (DragonClass), Constant(Name), Constant(Parent), Constant(Contents),
-                Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.DefineClass(typeof(DragonClass), Constant(Name), Constant(Parent), Constant(Contents),
+            Constant(Scope));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Contents.ForEach(content => content.SetScope(scope));
         }
     }

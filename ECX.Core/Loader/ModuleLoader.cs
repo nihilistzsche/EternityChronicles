@@ -94,17 +94,17 @@ namespace ECX.Core.Loader
         public string SearchForModule(string name)
         {
             var res = (from s in SearchPath
-                       where Directory.Exists(s)
-                       from f in Directory.GetFiles(s, "*.dll")
-                       let _f = f.Replace(s, "").Replace(Path.DirectorySeparatorChar.ToString(), "")
-                       where _f.Substring(0, _f.Length - 4) == name
-                       select s + Path.DirectorySeparatorChar + _f).FirstOrDefault() ??
-                      (from f in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll")
-                       let _f =
-                           f.Replace(Directory.GetCurrentDirectory(), "")
-                            .Replace(Path.DirectorySeparatorChar.ToString(), "")
-                       where _f.Substring(0, _f.Length - 4) == name
-                       select Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + _f).FirstOrDefault();
+                where Directory.Exists(s)
+                from f in Directory.GetFiles(s, "*.dll")
+                let _f = f.Replace(s, "").Replace(Path.DirectorySeparatorChar.ToString(), "")
+                where _f.Substring(0, _f.Length - 4) == name
+                select s + Path.DirectorySeparatorChar + _f).FirstOrDefault() ??
+                (from f in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll")
+                let _f =
+                    f.Replace(Directory.GetCurrentDirectory(), "")
+                        .Replace(Path.DirectorySeparatorChar.ToString(), "")
+                where _f.Substring(0, _f.Length - 4) == name
+                select Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + _f).FirstOrDefault();
 
             return res;
         }
@@ -175,7 +175,7 @@ namespace ECX.Core.Loader
         /// <exception cref="ModuleImageException">Thrown if the module image is not a valid assembly.</exception>
         /// <exception cref="InvalidModuleException">Thrown if the assembly is not a valid ECX module.</exception>
         public AppDomain LoadModule(List<string> parents, string name, out ModuleInfo info, bool checking,
-            bool                                 depcheck)
+        bool                                     depcheck)
         {
             // Okay, this is tricky.  First, we have to load the module into a temp domain
             // to retrieve its module info.  Then, we have to attempt to resolve the dependencies.

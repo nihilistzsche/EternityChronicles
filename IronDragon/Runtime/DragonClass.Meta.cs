@@ -19,58 +19,68 @@
 using System.Dynamic;
 using System.Linq.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonClass : IDragonDynamicMetaObjectProvider {
-        private DragonScope _scope;
-
-        #region IScopeExpression implementation
-
-        public void SetScope(DragonScope scope) {
-            _scope = scope;
-        }
-
-        public DragonScope Scope => _scope;
-
-        #endregion
-
-        public DynamicMetaObject GetMetaObject(Expression /*!*/ parameter) {
+    public partial class DragonClass : IDragonDynamicMetaObjectProvider
+    {
+        public DynamicMetaObject GetMetaObject(Expression /*!*/parameter)
+        {
             var m = new Meta(parameter, BindingRestrictions.Empty, this);
             m.SetScope(Scope);
             return m;
         }
 
-        internal sealed class Meta : DragonMetaObject<DragonClass> {
+        internal sealed class Meta : DragonMetaObject<DragonClass>
+        {
             public Meta(Expression expression, BindingRestrictions restrictions, DragonClass value)
-                : base(expression, restrictions, value) {}
-
-            public override DynamicMetaObject BindCreateInstance(CreateInstanceBinder binder, DynamicMetaObject[] args) {
-                return
-                    InteropBinder.InvokeMember.Bind(
-                        new InteropBinder.InvokeMember("new", binder.CallInfo, Scope), this, args);
+                : base(expression, restrictions, value)
+            {
             }
 
-            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args) {
+            public override DynamicMetaObject BindCreateInstance(CreateInstanceBinder binder, DynamicMetaObject[] args)
+            {
+                return
+                    InteropBinder.InvokeMember.Bind(
+                    new InteropBinder.InvokeMember("new", binder.CallInfo, Scope), this, args);
+            }
+
+            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
+            {
                 return InteropBinder.InvokeMember.Bind(new InteropBinder.InvokeMember("new", binder.CallInfo, Scope),
-                    this, args);
+                this, args);
             }
 
             public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder,
-                params DynamicMetaObject[] args) {
+            params DynamicMetaObject[]                                            args)
+            {
                 return
                     InteropBinder.InvokeMember.Bind(
-                        new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope), this, args);
+                    new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope), this, args);
             }
 
-            public override DynamicMetaObject BindGetMember(GetMemberBinder binder) {
+            public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
+            {
                 return InteropBinder.GetMember.Bind(new InteropBinder.GetMember(binder.Name, Scope), this);
             }
 
-            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value) {
+            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
+            {
                 return InteropBinder.SetMember.Bind(new InteropBinder.SetMember(binder.Name, Scope), this, value);
             }
         }
+
+        #region IScopeExpression implementation
+
+        public void SetScope(DragonScope scope)
+        {
+            Scope = scope;
+        }
+
+        public DragonScope Scope { get; private set; }
+
+        #endregion
     }
 }

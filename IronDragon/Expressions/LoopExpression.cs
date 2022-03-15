@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Parser;
@@ -19,18 +19,15 @@ namespace IronDragon.Expressions
 
         public override Expression Reduce()
         {
-            var loopLabel = Label("<dragon_loop>");
+            var                 loopLabel  = Label("<dragon_loop>");
             ParameterExpression loopReturn = null;
-            var useReturn = true;
+            var                 useReturn  = true;
             if (Body.Type == typeof(void))
-            {
                 useReturn = false;
-            }
             else
-            {
                 loopReturn = Variable(Body.Type, "<dragon_loop_return>");
-            }
-            var realBody = new List<Expression> {
+            var realBody = new List<Expression>
+            {
                 Label(loopLabel),
                 Label(DragonParser.ContinueTarget),
                 Label(DragonParser.RetryTarget),

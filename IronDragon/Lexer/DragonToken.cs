@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="DragonToken.cs" Company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -19,12 +19,16 @@
 using Antlr4.Runtime;
 using Microsoft.Scripting;
 
-namespace IronDragon.Lexer {
+namespace IronDragon.Lexer
+{
     /// <summary>
     ///     Token used by Dragon, deriving from CommonToken.
     /// </summary>
-    public abstract class DragonToken : CommonToken {
-        protected DragonToken(int type, string text) : base(type, text) {}
+    public abstract class DragonToken : CommonToken
+    {
+        protected DragonToken(int type, string text) : base(type, text)
+        {
+        }
 
         public SourceSpan Span { get; internal set; }
 
@@ -41,10 +45,15 @@ namespace IronDragon.Lexer {
         Normal
     }
 
-    public class DragonToken<T> : DragonToken {
-        public DragonToken(int type, string text) : this(type, text, default) {}
+    public class DragonToken<T> : DragonToken
+    {
+        public DragonToken(int type, string text) : this(type, text, default)
+        {
+        }
 
-        public DragonToken(int type, string text, T value, DragonTokenCategory category = DragonTokenCategory.Normal) : base(type, text) {
+        public DragonToken(int type, string text, T value, DragonTokenCategory category = DragonTokenCategory.Normal) :
+            base(type, text)
+        {
             Value = value;
 
             Category = category;

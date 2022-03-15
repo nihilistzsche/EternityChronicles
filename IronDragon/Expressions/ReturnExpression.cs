@@ -23,35 +23,38 @@ using System.Text;
 using IronDragon.Parser;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ReturnExpression : DragonExpression {
-        internal ReturnExpression(List<FunctionArgument> arguments) {
+    public class ReturnExpression : DragonExpression
+    {
+        internal ReturnExpression(List<FunctionArgument> arguments)
+        {
             Arguments = arguments;
         }
 
         public List<FunctionArgument> Arguments { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var realArgs = new List<Expression>();
             Arguments.ForEach(arg => realArgs.Add(arg.Value));
 
             Expression returnVal;
-            if (realArgs.Count > 1) {
+            if (realArgs.Count > 1)
                 returnVal = CreateArray(realArgs);
-            }
-            else {
+            else
                 returnVal = realArgs.Count == 0 ? Constant(null) : realArgs[0];
-            }
 
-            return Return(DragonParser.ReturnTarget, Convert(returnVal, typeof (object)), typeof (object));
+            return Return(DragonParser.ReturnTarget, Convert(returnVal, typeof(object)), typeof(object));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var str = new StringBuilder("return ");
             Arguments.ForEach(arg => str.AppendFormat("{0},", arg));
 
@@ -59,10 +62,9 @@ namespace IronDragon.Expressions {
             return str.ToString();
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
-            foreach (var arg in Arguments) {
-                arg.Value.SetScope(scope);
-            }
+        public override void SetChildrenScopes(DragonScope scope)
+        {
+            foreach (var arg in Arguments) arg.Value.SetScope(scope);
         }
     }
 }

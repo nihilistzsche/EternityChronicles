@@ -20,18 +20,25 @@ using IronDragon.Runtime;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Builtins {
+namespace IronDragon.Builtins
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
     [DragonExport("Array")]
-    public class DragonArray : List<dynamic> {
-        public DragonArray() {}
+    public class DragonArray : List<dynamic>
+    {
+        public DragonArray()
+        {
+        }
 
-        public DragonArray(IEnumerable<dynamic> array) : base(array) {}
+        public DragonArray(IEnumerable<dynamic> array) : base(array)
+        {
+        }
 
         [DragonExport("<<")]
-        public void ArrayAdd(dynamic val) {
+        public void ArrayAdd(dynamic val)
+        {
             Add(val);
         }
 

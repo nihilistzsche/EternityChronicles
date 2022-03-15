@@ -26,7 +26,7 @@ namespace EternityChronicles.Tests.IronDragon
         public static ScriptRuntime GetRuntime()
         {
             LanguageSetup jintSetup = new("IronJint.Runtime.JavaScriptContext, IronJint", "IronJint",
-                                          new[] { "IronJint" }, new[] { ".js" });
+            new[] { "IronJint" }, new[] { ".js" });
             return DragonC.CreateRuntime(DragonC.CreateDragonSetup(), Ruby.CreateRubySetup(), jintSetup);
         }
 

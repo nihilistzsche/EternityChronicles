@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
@@ -22,10 +22,7 @@ namespace XDL
         {
             var attributeRefs = new Dictionary<string, string>();
 
-            foreach (var (key, value) in attributeToKeyPairs)
-            {
-                attributeRefs[key] = value;
-            }
+            foreach (var (key, value) in attributeToKeyPairs) attributeRefs[key] = value;
 
             _tagToAttributeReference[tag] = attributeRefs;
         }
@@ -52,7 +49,7 @@ namespace XDL
 
                 var ty = typeof(T);
                 var fi = ty.GetField(_tagToKeyReference[tag],
-                                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                 fi?.SetValue(obj, elem.Value);
             }
@@ -76,7 +73,7 @@ namespace XDL
 
                     var ty = typeof(T);
                     var fi = ty.GetField(_tagToAttributeReference[tag][attribute],
-                                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                     fi?.SetValue(obj, attr.Value);
                 }

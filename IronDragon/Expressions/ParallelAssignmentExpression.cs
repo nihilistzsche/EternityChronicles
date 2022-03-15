@@ -21,50 +21,56 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     using CS = CompilerServices;
 
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ParallelAssignmentExpression : DragonExpression {
-        internal ParallelAssignmentExpression(List<ParallelAssignmentInfo> lvalues, List<ParallelAssignmentInfo> rvalues) {
-            LeftHandValues = lvalues;
+    public class ParallelAssignmentExpression : DragonExpression
+    {
+        internal ParallelAssignmentExpression(List<ParallelAssignmentInfo> lvalues,
+        List<ParallelAssignmentInfo>                                       rvalues)
+        {
+            LeftHandValues  = lvalues;
             RightHandValues = rvalues;
         }
 
-        public List<ParallelAssignmentInfo> LeftHandValues { get; }
+        public List<ParallelAssignmentInfo> LeftHandValues  { get; }
         public List<ParallelAssignmentInfo> RightHandValues { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
-            return Operation.ParallelAssign(typeof (object), Constant(LeftHandValues), Constant(RightHandValues),
-                Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.ParallelAssign(typeof(object), Constant(LeftHandValues), Constant(RightHandValues),
+            Constant(Scope));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
-            LeftHandValues.ForEach(value => {
-                if (value.Value is DragonExpression) {
-                    value.Value.SetScope(scope);
-                }
+        public override void SetChildrenScopes(DragonScope scope)
+        {
+            LeftHandValues.ForEach(value =>
+            {
+                if (value.Value is DragonExpression) value.Value.SetScope(scope);
             });
-            RightHandValues.ForEach(value => {
-                if (value.Value is DragonExpression) {
-                    value.Value.SetScope(scope);
-                }
+            RightHandValues.ForEach(value =>
+            {
+                if (value.Value is DragonExpression) value.Value.SetScope(scope);
             });
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "";
         }
 
         /// <summary>
         ///     Used to represent lvalues and rvalues in a parallel assignment statement.
         /// </summary>
-        public struct ParallelAssignmentInfo {
-            public bool IsWildcard;
+        public struct ParallelAssignmentInfo
+        {
+            public bool    IsWildcard;
             public dynamic Value;
         }
     }

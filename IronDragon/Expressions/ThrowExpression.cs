@@ -20,11 +20,13 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ThrowExpression : DragonExpression {
+    public class ThrowExpression : DragonExpression
+    {
         internal ThrowExpression(Expression exceptionObject)
         {
             ExceptionObject = exceptionObject;
@@ -32,7 +34,7 @@ namespace IronDragon.Expressions {
 
         public Expression ExceptionObject { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
         public override void SetChildrenScopes(DragonScope scope)
         {

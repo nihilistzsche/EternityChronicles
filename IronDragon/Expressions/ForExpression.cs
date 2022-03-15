@@ -23,12 +23,15 @@ using System.Text;
 using IronDragon.Parser;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     Represents a standard for loop in Dragon.
     /// </summary>
-    public class ForExpression : DragonExpression {
-        internal ForExpression(Expression init, Expression test, Expression step, Expression body) {
+    public class ForExpression : DragonExpression
+    {
+        internal ForExpression(Expression init, Expression test, Expression step, Expression body)
+        {
             Init = init;
             Test = test;
             Step = step;
@@ -45,67 +48,75 @@ namespace IronDragon.Expressions {
 
         public override Type Type => Body.Type;
 
-        public override Expression Reduce() {
-            var forLabel = Label("<dragon_for>");
-            VariableExpression forReturn = null;
+        public override Expression Reduce()
+        {
+            var                     forLabel    = Label("<dragon_for>");
+            VariableExpression      forReturn   = null;
             LeftHandValueExpression forReturnLh = null;
-            var useReturn = true;
-            if (Body.Type == typeof (void)) {
+            var                     useReturn   = true;
+            if (Body.Type == typeof(void))
+            {
                 useReturn = false;
             }
-            else {
-                forReturn = Variable(Constant("<dragon_for_return>"));
-                forReturnLh = LeftHandValue(forReturn);
-                forReturn.Scope = ((DragonExpression) Body).Scope;
-                forReturnLh.Scope = ((DragonExpression) Body).Scope;
+            else
+            {
+                forReturn         = Variable(Constant("<dragon_for_return>"));
+                forReturnLh       = LeftHandValue(forReturn);
+                forReturn.Scope   = ((DragonExpression)Body).Scope;
+                forReturnLh.Scope = ((DragonExpression)Body).Scope;
             }
-            var forTest = Variable(Constant("<dragon_for_test>"));
+
+            var forTest   = Variable(Constant("<dragon_for_test>"));
             var forTestLh = LeftHandValue(forTest);
-            forTest.Scope = ((DragonExpression) Body).Scope;
-            forTestLh.Scope = ((DragonExpression) Body).Scope;
-            var realBody = new List<Expression> {
+            forTest.Scope   = ((DragonExpression)Body).Scope;
+            forTestLh.Scope = ((DragonExpression)Body).Scope;
+            var realBody = new List<Expression>
+            {
                 Init,
-                Label(forLabel),
+                Label(forLabel)
             };
             var testAssign = Assign(forTestLh, Test);
             realBody.Add(Label(DragonParser.RetryTarget));
             testAssign.Scope = (Body as DragonExpression).Scope;
             realBody.Add(testAssign);
             IfExpression testIf;
-            if (useReturn) {
+            if (useReturn)
+            {
                 var returnAssign = Assign(forReturnLh, Body);
                 returnAssign.Scope = (Body as DragonExpression).Scope;
-                testIf = IfThen(forTest, returnAssign);
+                testIf             = IfThen(forTest, returnAssign);
             }
-            else {
+            else
+            {
                 testIf = IfThen(forTest, Body);
             }
-            testIf.Scope = ((DragonExpression) Body).Scope;
+
+            testIf.Scope = ((DragonExpression)Body).Scope;
             realBody.Add(testIf);
             realBody.Add(Label(DragonParser.ContinueTarget));
             realBody.Add(Step);
             realBody.Add(IfThen(forTest, Goto(forLabel)));
             realBody.Add(Label(DragonParser.BreakTarget));
-            if (useReturn) {
-                realBody.Add(forReturn);
-            }
+            if (useReturn) realBody.Add(forReturn);
 
-            var block = new BlockExpression(realBody) {Scope = (Body as DragonExpression).Scope};
+            var block = new BlockExpression(realBody) { Scope = (Body as DragonExpression).Scope };
             return Convert(block, Type);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Body.SetScope(scope);
-            Init.SetScope(((DragonExpression) Body).Scope);
-            Test.SetScope(((DragonExpression) Body).Scope);
-            Step.SetScope(((DragonExpression) Body).Scope);
+            Init.SetScope(((DragonExpression)Body).Scope);
+            Test.SetScope(((DragonExpression)Body).Scope);
+            Step.SetScope(((DragonExpression)Body).Scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var str = new StringBuilder("for (");
             str.AppendFormat("{0}; ", Init);
             str.AppendFormat("{0}; ", Test);
-            str.AppendFormat("{0})", Step);
+            str.AppendFormat("{0})",  Step);
             str.Append(Body);
             return str.ToString();
         }

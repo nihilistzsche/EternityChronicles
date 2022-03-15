@@ -18,20 +18,26 @@
 
 using System.Linq.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     The class to represent function arguments to the Dragon runtime.  The same class is used by both calls and
     ///     definitions.
     /// </summary>
-    public class FunctionArgument {
-        public FunctionArgument(string name) : this(name, null) {}
+    public class FunctionArgument
+    {
+        public FunctionArgument(string name) : this(name, null)
+        {
+        }
 
-        public FunctionArgument(string name, int index) : this(name, null) {
+        public FunctionArgument(string name, int index) : this(name, null)
+        {
             Index = index;
         }
 
-        public FunctionArgument(string name, Expression value) {
-            Name = name;
+        public FunctionArgument(string name, Expression value)
+        {
+            Name  = name;
             Value = value;
         }
 
@@ -51,47 +57,38 @@ namespace IronDragon.Runtime {
 
         public Expression Value { get; set; }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return
                 string.Format(
-                    "[FunctionArgument: Index={0}, Name={1}, HasDefault={2}, DefaultValue={3}, IsVarArg={4}, IsFunction={5}, IsLiteral={6}, Value={7}]",
-                    Index, Name, HasDefault, DefaultValue, IsVarArg, IsFunction, IsLiteral, Value);
+                "[FunctionArgument: Index={0}, Name={1}, HasDefault={2}, DefaultValue={3}, IsVarArg={4}, IsFunction={5}, IsLiteral={6}, Value={7}]",
+                Index, Name, HasDefault, DefaultValue, IsVarArg, IsFunction, IsLiteral, Value);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return Name.GetHashCode() + base.GetHashCode();
         }
 
-        public override bool Equals(object obj) {
-            if (obj == null) {
-                return false;
-            }
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
 
-            if (!(obj is FunctionArgument)) {
-                return false;
-            }
+            if (!(obj is FunctionArgument)) return false;
 
-            if (this == obj) {
-                return true;
-            }
+            if (this == obj) return true;
 
-            var other = (FunctionArgument) obj;
+            var other = (FunctionArgument)obj;
 
-            if (!Name.Equals(other.Name)) {
-                return false;
-            }
+            if (!Name.Equals(other.Name)) return false;
 
-            if (Value != null) {
-                if (!Value.Equals(other.Value)) {
+            if (Value != null)
+                if (!Value.Equals(other.Value))
                     return false;
-                }
-            }
 
-            if (HasDefault) {
-                if (!DefaultValue.Equals(other.DefaultValue)) {
+            if (HasDefault)
+                if (!DefaultValue.Equals(other.DefaultValue))
                     return false;
-                }
-            }
 
             return true;
         }

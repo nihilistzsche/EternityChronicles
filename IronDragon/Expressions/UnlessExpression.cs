@@ -18,12 +18,16 @@
 
 using System.Linq.Expressions;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class UnlessExpression : IfExpression {
+    public class UnlessExpression : IfExpression
+    {
         internal UnlessExpression(Expression test, Expression ifTrue, Expression ifFalse)
-            : base(new UnaryExpression(test, ExpressionType.Not), ifTrue, ifFalse) {}
+            : base(new UnaryExpression(test, ExpressionType.Not), ifTrue, ifFalse)
+        {
+        }
     }
 }

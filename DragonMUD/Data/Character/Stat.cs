@@ -75,11 +75,11 @@ namespace DragonMUD.Data.Character
                     return this;
 
                 var child = (from c in Children
-                             where string.Equals(c.Name, parts[0], StringComparison.CurrentCultureIgnoreCase) ||
-                                   string.Equals(c.Abbreviation, parts[0],
-                                                 StringComparison.CurrentCultureIgnoreCase)
-                             select c)
-                   .FirstOrDefault();
+                    where string.Equals(c.Name, parts[0], StringComparison.CurrentCultureIgnoreCase) ||
+                        string.Equals(c.Abbreviation, parts[0],
+                        StringComparison.CurrentCultureIgnoreCase)
+                    select c)
+                    .FirstOrDefault();
 
                 return child?[string.Join(".", parts.Skip(1))];
             }
@@ -90,11 +90,11 @@ namespace DragonMUD.Data.Character
                     CopyStat(value);
 
                 var child = (from c in Children
-                             where string.Equals(c.Name, parts[0], StringComparison.CurrentCultureIgnoreCase) ||
-                                   string.Equals(c.Abbreviation, parts[0],
-                                                 StringComparison.CurrentCultureIgnoreCase)
-                             select c)
-                   .FirstOrDefault();
+                    where string.Equals(c.Name, parts[0], StringComparison.CurrentCultureIgnoreCase) ||
+                        string.Equals(c.Abbreviation, parts[0],
+                        StringComparison.CurrentCultureIgnoreCase)
+                    select c)
+                    .FirstOrDefault();
                 if (child == null)
                 {
                     child = new Stat(parts[0], 0);
@@ -164,14 +164,14 @@ namespace DragonMUD.Data.Character
             }
 
             var attributeToLookFor = loadType switch
-                                     {
-                                         StatLoadType.Default => "value",
-                                         StatLoadType.Race => "bonus",
-                                         StatLoadType.Job => "klassreq",
-                                         StatLoadType.Allocation => "alloc",
-                                         StatLoadType.Save => "value",
-                                         _ => throw new ArgumentOutOfRangeException(nameof(loadType), loadType, null)
-                                     };
+            {
+                StatLoadType.Default    => "value",
+                StatLoadType.Race       => "bonus",
+                StatLoadType.Job        => "klassreq",
+                StatLoadType.Allocation => "alloc",
+                StatLoadType.Save       => "value",
+                _                       => throw new ArgumentOutOfRangeException(nameof(loadType), loadType, null)
+            };
 
             Stat GetStat(XElement elem)
             {
@@ -215,10 +215,7 @@ namespace DragonMUD.Data.Character
                     var stat                  = GetStat(statCollectionElement);
                     var directDescendants     = statCollectionElement.Descendants("stat");
                     var collectionDescendants = statCollectionElement.Descendants("statcollection");
-                    foreach (var descendant in directDescendants)
-                    {
-                        stat.AddChild(GetStat(descendant));
-                    }
+                    foreach (var descendant in directDescendants) stat.AddChild(GetStat(descendant));
 
                     var descendants = collectionDescendants as XElement[] ?? collectionDescendants.ToArray();
                     if (descendants.Any())
@@ -232,10 +229,7 @@ namespace DragonMUD.Data.Character
 
             LoopStat(main, collectionchildren);
 
-            foreach (var mainStatChild in statchildren)
-            {
-                main.AddChild(GetStat(mainStatChild));
-            }
+            foreach (var mainStatChild in statchildren) main.AddChild(GetStat(mainStatChild));
 
             return main;
         }
@@ -262,10 +256,7 @@ namespace DragonMUD.Data.Character
             var valueAttribute        = new XAttribute("value",    Value);
             mainElement.Add(nameAttribute, abbreviationAttribute, valueAttribute);
             if (!HasChildren) return mainElement;
-            foreach (var child in Children)
-            {
-                mainElement.Add(child.SaveToXML());
-            }
+            foreach (var child in Children) mainElement.Add(child.SaveToXML());
 
             return mainElement;
         }

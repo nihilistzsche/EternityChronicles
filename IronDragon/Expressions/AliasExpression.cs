@@ -18,15 +18,17 @@
 
 using System;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class AliasExpression : DragonExpression {
-        internal AliasExpression(Expression from, Expression to) {
+    public class AliasExpression : DragonExpression
+    {
+        internal AliasExpression(Expression from, Expression to)
+        {
             From = from;
 
             To = to;
@@ -36,13 +38,15 @@ namespace IronDragon.Expressions {
 
         public Expression To { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
-            return Operation.Alias(typeof (object), From, To, Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.Alias(typeof(object), From, To, Constant(Scope));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("alias {0} {1};", From, To);
         }
     }

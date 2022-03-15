@@ -18,11 +18,28 @@
 
 using System.Collections.Generic;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonInstance {
+    public partial class DragonInstance
+    {
+        public DragonInstance(DragonClass @class)
+        {
+            _class            = @class;
+            SingletonMethods  = new Dictionary<string, DragonFunction>();
+            UndefinedMethods  = new List<string>();
+            RemovedMethods    = new List<string>();
+            InstanceVariables = new DragonScope();
+        }
+
+        public override string ToString()
+        {
+            return
+                $"[DragonInstance: SingletonMethods={SingletonMethods}, InstanceVariables={InstanceVariables}, UndefinedMethods={UndefinedMethods}, RemovedMethods={RemovedMethods}, Class={Class}, Scope={Scope}]";
+        }
+
         #region Properties
 
         internal DragonClass _class;
@@ -40,18 +57,5 @@ namespace IronDragon.Runtime {
         internal object BackingObject { get; set; }
 
         #endregion
-
-        public DragonInstance(DragonClass @class) {
-            _class = @class;
-            SingletonMethods = new Dictionary<string, DragonFunction>();
-            UndefinedMethods = new List<string>();
-            RemovedMethods = new List<string>();
-            InstanceVariables = new DragonScope();
-        }
-
-        public override string ToString() {
-            return
-                $"[DragonInstance: SingletonMethods={SingletonMethods}, InstanceVariables={InstanceVariables}, UndefinedMethods={UndefinedMethods}, RemovedMethods={RemovedMethods}, Class={Class}, Scope={Scope}]";
-        }
     }
 }

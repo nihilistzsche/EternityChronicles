@@ -18,12 +18,16 @@
 
 using System.Linq.Expressions;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class DoUntilExpression : DoWhileExpression {
+    public class DoUntilExpression : DoWhileExpression
+    {
         internal DoUntilExpression(Expression test, Expression body)
-            : base(new UnaryExpression(test, ExpressionType.Not), body) {}
+            : base(new UnaryExpression(test, ExpressionType.Not), body)
+        {
+        }
     }
 }

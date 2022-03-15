@@ -31,24 +31,24 @@ namespace IronDragon.Expressions
         internal RescueExpression(List<string> exceptionTypes, Expression body, string varName = "$#")
         {
             ExceptionTypes = exceptionTypes;
-            Body = body;
-            VarName = varName;
-        } 
+            Body           = body;
+            VarName        = varName;
+        }
 
         public List<string> ExceptionTypes { get; }
- 
+
         public Expression Body { get; }
 
         public string VarName { get; }
 
         public bool IsWildcard { get; set; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
         // Should not actually reduce, used by the runtime directly
         public override Expression Reduce()
         {
-            return Constant(null, typeof (object));
+            return Constant(null, typeof(object));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

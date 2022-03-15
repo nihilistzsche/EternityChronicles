@@ -20,24 +20,29 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class StringExpression : DragonExpression {
-        internal StringExpression(string value) {
+    public class StringExpression : DragonExpression
+    {
+        internal StringExpression(string value)
+        {
             Value = value;
         }
 
         public string Value { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
-            return Operation.String(typeof (object), Constant(Value), Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.String(typeof(object), Constant(Value), Constant(Scope));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("\"{0}\"", Value);
         }
     }

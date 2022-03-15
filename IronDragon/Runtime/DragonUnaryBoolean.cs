@@ -13,8 +13,12 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-namespace IronDragon.Runtime {
-    internal class DragonUnaryBoolean : DragonDoNotWrapBoolean {
-        public DragonUnaryBoolean(bool value) : base(value) {}
+namespace IronDragon.Runtime
+{
+    internal class DragonUnaryBoolean : DragonDoNotWrapBoolean
+    {
+        public DragonUnaryBoolean(bool value) : base(value)
+        {
+        }
     }
 }

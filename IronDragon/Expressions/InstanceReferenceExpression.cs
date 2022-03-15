@@ -20,31 +20,37 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class InstanceReferenceExpression : VariableExpression {
-        public InstanceReferenceExpression(Expression lvalue, Expression key) : base(Constant("")) {
+    public class InstanceReferenceExpression : VariableExpression
+    {
+        public InstanceReferenceExpression(Expression lvalue, Expression key) : base(Constant(""))
+        {
             LValue = lvalue;
-            Key = key;
+            Key    = key;
         }
 
         public Expression LValue { get; }
 
         public Expression Key { get; }
 
-        public override Type Type => typeof (InstanceReference);
+        public override Type Type => typeof(InstanceReference);
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("{0}.{1}", LValue, Key);
         }
 
-        public override Expression Reduce() {
-            return Operation.InstanceRef(typeof (InstanceReference), Constant(LValue), Key);
+        public override Expression Reduce()
+        {
+            return Operation.InstanceRef(typeof(InstanceReference), Constant(LValue), Key);
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             LValue.SetScope(scope);
             Key.SetScope(scope);
         }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -50,10 +50,7 @@ namespace XDL
                 using (var writer = doc.CreateWriter())
                 {
                     var xslt = new XslCompiledTransform();
-                    using (var sr = new StringReader(xsltMarkup))
-                    {
-                        xslt.Load(XmlReader.Create(sr));
-                    }
+                    using (var sr = new StringReader(xsltMarkup)) xslt.Load(XmlReader.Create(sr));
 
                     xslt.Transform(xdoc.CreateReader(), writer);
                 }
@@ -104,7 +101,7 @@ namespace XDL
                                 Dynamic.InvokeSet(obj, key, attr.Value);
                             else
                                 Log.LogMessage("xdl", LogLevel.Warning,
-                                               "Tried to assign self key without load handler to non-string type.");
+                                "Tried to assign self key without load handler to non-string type.");
                         }
                     }
 
@@ -134,7 +131,7 @@ namespace XDL
                                 Dynamic.InvokeSet(obj, key, child.Value);
                             else
                                 Log.LogMessage("xdl", LogLevel.Warning,
-                                               "Tried to assign self key without load handler to non-string type.");
+                                "Tried to assign self key without load handler to non-string type.");
                         }
 
                         foreach (var attr in child.Attributes())
@@ -163,7 +160,7 @@ namespace XDL
                                     Dynamic.InvokeSet(obj, akey, attr.Value);
                                 else
                                     Log.LogMessage("xdl", LogLevel.Warning,
-                                                   "Tried to assign self key without load handler to non-string type.");
+                                    "Tried to assign self key without load handler to non-string type.");
                             }
                         }
                     }

@@ -20,32 +20,37 @@ using System.Linq.Expressions;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonFunction : IDragonDynamicMetaObjectProvider {
-        private DragonScope _scope;
-
-        #region IScopeExpression implementation
-
-        public void SetScope(DragonScope scope) {
-            _scope = scope;
-        }
-
-        public DragonScope Scope => _scope;
-
-        #endregion
-
-        public DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/ parameter) {
+    public partial class DragonFunction : IDragonDynamicMetaObjectProvider
+    {
+        public DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/parameter)
+        {
             var m = new Meta(parameter, BindingRestrictions.Empty, this);
             m.SetScope(Scope);
             return m;
         }
 
-        internal sealed class Meta : DragonMetaObject<DragonFunction> {
+        internal sealed class Meta : DragonMetaObject<DragonFunction>
+        {
             public Meta(Expression expression, BindingRestrictions restrictions, DragonFunction value)
-                : base(expression, restrictions, value) {}
+                : base(expression, restrictions, value)
+            {
+            }
         }
+
+        #region IScopeExpression implementation
+
+        public void SetScope(DragonScope scope)
+        {
+            Scope = scope;
+        }
+
+        public DragonScope Scope { get; private set; }
+
+        #endregion
     }
 }

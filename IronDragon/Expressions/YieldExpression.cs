@@ -22,26 +22,31 @@ using System.Linq.Expressions;
 using System.Text;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class YieldExpression : DragonExpression {
-        internal YieldExpression(List<FunctionArgument> arguments) {
+    public class YieldExpression : DragonExpression
+    {
+        internal YieldExpression(List<FunctionArgument> arguments)
+        {
             Arguments = arguments;
         }
 
         public List<FunctionArgument> Arguments { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var yVar = Variable(Constant("__yieldBlock"));
             yVar.SetScope(Scope);
-            return Operation.Yield(typeof (object), yVar, Constant(Arguments), Constant(Scope));
+            return Operation.Yield(typeof(object), yVar, Constant(Arguments), Constant(Scope));
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var str = new StringBuilder("yield ");
             Arguments.ForEach(arg => str.AppendFormat("{0},", arg));
 
@@ -49,10 +54,9 @@ namespace IronDragon.Expressions {
             return str.ToString();
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
-            foreach (var arg in Arguments) {
-                arg.Value.SetScope(scope);
-            }
+        public override void SetChildrenScopes(DragonScope scope)
+        {
+            foreach (var arg in Arguments) arg.Value.SetScope(scope);
         }
     }
 }

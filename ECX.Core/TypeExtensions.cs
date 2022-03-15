@@ -44,7 +44,7 @@ namespace ECX.Core
             var constructorTypes = new List<Type>();
             args.ToList().ForEach(arg => constructorTypes.Add(arg.GetType()));
             return genericTypeDefinition.MakeGenericType(typeArgs).GetConstructor(constructorTypes.ToArray())
-                                       ?.Invoke(args);
+                ?.Invoke(args);
         }
     }
 }

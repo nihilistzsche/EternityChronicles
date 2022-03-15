@@ -18,26 +18,24 @@
 
 using System;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
 using IronDragon.Runtime;
-using Microsoft.Scripting.Generation;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     Base class for Dragon abstract syntax tree expressions.
     /// </summary>
-    public abstract partial class DragonExpression : Expression, IScopeExpression {
-        private DragonScope _scope;
-
+    public abstract partial class DragonExpression : Expression, IScopeExpression
+    {
         /// <summary>
         ///     All Dragon expressions are extension expressions, so they always return true.
         /// </summary>
-        public override sealed bool CanReduce => true;
+        public sealed override bool CanReduce => true;
 
         /// <summary>
         ///     Returns ExpressionType.Extension for all Dragon expressions.
         /// </summary>
-        public override sealed ExpressionType NodeType => ExpressionType.Extension;
+        public sealed override ExpressionType NodeType => ExpressionType.Extension;
 
         /// <summary>
         ///     Should return the type returned by this expression.
@@ -48,18 +46,16 @@ namespace IronDragon.Expressions {
         ///     Sets the scope used by this expression.
         /// </summary>
         /// <param name="scope">Scope for this expression</param>
-        public void SetScope(DragonScope scope) {
-            _scope = scope;
+        public void SetScope(DragonScope scope)
+        {
+            Scope = scope;
             SetChildrenScopes(scope);
         }
 
         /// <summary>
         ///     Returns the scope used by this expression.
         /// </summary>
-        public DragonScope Scope {
-            get => _scope;
-            internal set => _scope = value;
-        }
+        public DragonScope Scope { get; internal set; }
 
         /// <summary>
         ///     This method should reduce the Dragon expression into either more Dragon expressions or base DLR
@@ -73,7 +69,9 @@ namespace IronDragon.Expressions {
         ///     children should have scopes set.
         /// </summary>
         /// <param name="scope"></param>
-        public virtual void SetChildrenScopes(DragonScope scope) {}
+        public virtual void SetChildrenScopes(DragonScope scope)
+        {
+        }
 
         public abstract override string ToString();
     }

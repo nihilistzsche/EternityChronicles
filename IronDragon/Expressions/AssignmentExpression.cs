@@ -19,19 +19,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     using CS = CompilerServices;
 
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class AssignmentExpression : DragonExpression {
-        internal AssignmentExpression(LeftHandValueExpression left, Expression right, ExpressionType assignType) {
-            Left = left;
-            Right = right ?? Constant(null);
+    public class AssignmentExpression : DragonExpression
+    {
+        internal AssignmentExpression(LeftHandValueExpression left, Expression right, ExpressionType assignType)
+        {
+            Left          = left;
+            Right         = right ?? Constant(null);
             ExtraNodeType = assignType;
         }
 
@@ -45,41 +47,42 @@ namespace IronDragon.Expressions {
 
         public override Type Type => Right.Type;
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Left.SetScope(scope);
             Right.SetScope(scope);
         }
 
-        public override Expression Reduce() {
+        public override Expression Reduce()
+        {
             var rl = Left.Reduce();
 
-            if (rl is VariableExpression) {
-                return Operation.Assign(Right.Type, Constant(rl), Convert(Right, typeof (object)),
-                    Constant(ExtraNodeType), Constant(IsConst), Constant(Scope));
-            }
-            if (rl is AccessExpression) {
+            if (rl is VariableExpression)
+                return Operation.Assign(Right.Type, Constant(rl), Convert(Right, typeof(object)),
+                Constant(ExtraNodeType), Constant(IsConst), Constant(Scope));
+            if (rl is AccessExpression)
                 return
                     Convert(
-                        AccessSet((rl as AccessExpression).Container, (rl as AccessExpression).Arguments,
-                            Right, ExtraNodeType), Type);
-            }
+                    AccessSet((rl as AccessExpression).Container, (rl as AccessExpression).Arguments,
+                    Right,                                        ExtraNodeType), Type);
             return Right;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var assign = new Dictionary<ExpressionType, string>();
-            assign[ExpressionType.Assign] = "=";
-            assign[ExpressionType.AddAssign] = "+=";
-            assign[ExpressionType.SubtractAssign] = "-=";
-            assign[ExpressionType.MultiplyAssign] = "*=";
-            assign[ExpressionType.DivideAssign] = "/=";
-            assign[ExpressionType.ModuloAssign] = "%=";
-            assign[ExpressionType.LeftShiftAssign] = "<<=";
-            assign[ExpressionType.RightShiftAssign] = ">>=";
-            assign[ExpressionType.AndAssign] = "&=";
-            assign[ExpressionType.OrAssign] = "|=";
+            assign[ExpressionType.Assign]            = "=";
+            assign[ExpressionType.AddAssign]         = "+=";
+            assign[ExpressionType.SubtractAssign]    = "-=";
+            assign[ExpressionType.MultiplyAssign]    = "*=";
+            assign[ExpressionType.DivideAssign]      = "/=";
+            assign[ExpressionType.ModuloAssign]      = "%=";
+            assign[ExpressionType.LeftShiftAssign]   = "<<=";
+            assign[ExpressionType.RightShiftAssign]  = ">>=";
+            assign[ExpressionType.AndAssign]         = "&=";
+            assign[ExpressionType.OrAssign]          = "|=";
             assign[ExpressionType.ExclusiveOrAssign] = "^=";
-            assign[ExpressionType.PowerAssign] = "**=";
+            assign[ExpressionType.PowerAssign]       = "**=";
             return string.Format("{0} {1} {2}", Left, assign[ExtraNodeType], Right);
         }
     }

@@ -19,36 +19,45 @@
 using System;
 using System.Linq.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public static class Operation {
-        public static Expression Resolve(Type expectedType, params Expression[] args) {
+    public static class Operation
+    {
+        public static Expression Resolve(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Resolve", expectedType, args);
         }
 
-        public static Expression ResolveSymbol(Type expectedType, params Expression[] args) {
+        public static Expression ResolveSymbol(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("ResolveSymbol", expectedType, args);
         }
 
-        public static Expression Assign(Type expectedType, params Expression[] args) {
+        public static Expression Assign(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Assign", expectedType, args);
         }
 
-        public static Expression ConditionalAssign(Type expectedType, params Expression[] args) {
+        public static Expression ConditionalAssign(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("ConditionalAssign", expectedType, args);
         }
 
-        public static Expression ParallelAssign(Type expectedType, params Expression[] args) {
+        public static Expression ParallelAssign(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("ParallelAssign", expectedType, args);
         }
 
-        public static Expression Binary(Type expectedType, params Expression[] args) {
+        public static Expression Binary(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Binary", expectedType, args);
         }
 
-        public static Expression Compare(Type expectedType, params Expression[] args) {
+        public static Expression Compare(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Compare", expectedType, args);
         }
 
@@ -57,59 +66,73 @@ namespace IronDragon.Runtime {
             return RuntimeOperations.Op("Match", expectedType, args);
         }
 
-        public static Expression Unary(Type expectedType, params Expression[] args) {
+        public static Expression Unary(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Unary", expectedType, args);
         }
 
-        public static Expression Boolean(Type expectedType, params Expression[] args) {
+        public static Expression Boolean(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Boolean", expectedType, args);
         }
 
-        public static Expression Convert(Type expectedType, params Expression[] args) {
+        public static Expression Convert(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Convert", expectedType, args);
         }
 
-        public static Expression Access(Type expectedType, params Expression[] args) {
+        public static Expression Access(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Access", expectedType, args);
         }
 
-        public static Expression AccessSet(Type expectedType, params Expression[] args) {
+        public static Expression AccessSet(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("AccessSet", expectedType, args);
         }
 
-        public static Expression ConditionalAccessSet(Type expectedType, params Expression[] args) {
+        public static Expression ConditionalAccessSet(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("ConditionalAccessSet", expectedType, args);
         }
 
-        public static Expression CreateArray(Type expectedType, params Expression[] args) {
+        public static Expression CreateArray(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("CreateArray", expectedType, args);
         }
 
-        public static Expression CreateDictionary(Type expectedType, params Expression[] args) {
+        public static Expression CreateDictionary(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("CreateDictionary", expectedType, args);
         }
 
-        public static Expression KeyValuePair(Type expectedType, params Expression[] args) {
+        public static Expression KeyValuePair(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("KeyValuePair", expectedType, args);
         }
 
-        public static Expression Define(Type expectedType, params Expression[] args) {
+        public static Expression Define(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Define", expectedType, args);
         }
 
-        public static Expression SingletonDefine(Type expectedType, params Expression[] args) {
+        public static Expression SingletonDefine(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("SingletonDefine", expectedType, args);
         }
 
-        public static Expression Call(Type expectedType, params Expression[] args) {
+        public static Expression Call(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Call", expectedType, args);
         }
 
-        public static Expression Yield(Type expectedType, params Expression[] args) {
+        public static Expression Yield(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Yield", expectedType, args);
         }
 
-        public static Expression String(Type expectedType, params Expression[] args) {
+        public static Expression String(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("String", expectedType, args);
         }
 
@@ -123,31 +146,38 @@ namespace IronDragon.Runtime {
             return RuntimeOperations.Op("Number", expectedType, args);
         }
 
-        public static Expression Invoke(Type expectedType, params Expression[] args) {
+        public static Expression Invoke(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Invoke", expectedType, args);
         }
 
-        public static Expression Eval(Type expectedType, params Expression[] args) {
+        public static Expression Eval(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Eval", expectedType, args);
         }
 
-        public static Expression Alias(Type expectedType, params Expression[] args) {
+        public static Expression Alias(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Alias", expectedType, args);
         }
 
-        public static Expression InstanceRef(Type expectedType, params Expression[] args) {
+        public static Expression InstanceRef(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("InstanceRef", expectedType, args);
         }
 
-        public static Expression Typeof(Type expectedType, params Expression[] args) {
+        public static Expression Typeof(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Typeof", expectedType, args);
         }
 
-        public static Expression Include(Type expectedType, params Expression[] args) {
+        public static Expression Include(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Include", expectedType, args);
         }
 
-        public static Expression DefineClass(Type expectedType, params Expression[] args) {
+        public static Expression DefineClass(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("DefineClass", expectedType, args);
         }
 
@@ -156,11 +186,13 @@ namespace IronDragon.Runtime {
             return RuntimeOperations.Op("DefineClassOpen", expectedType, args);
         }
 
-        public static Expression DefineModule(Type expectedType, params Expression[] args) {
+        public static Expression DefineModule(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("DefineModule", expectedType, args);
         }
 
-        public static Expression Throw(Type expectedType, params Expression[] args) {
+        public static Expression Throw(Type expectedType, params Expression[] args)
+        {
             return RuntimeOperations.Op("Throw", expectedType, args);
         }
 
@@ -193,7 +225,7 @@ namespace IronDragon.Runtime {
         {
             return RuntimeOperations.Op("Switch", expectedType, args);
         }
-        
+
         public static Expression Range(Type expectedType, params Expression[] args)
         {
             return RuntimeOperations.Op("Range", expectedType, args);

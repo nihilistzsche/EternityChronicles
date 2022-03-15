@@ -19,13 +19,19 @@ using System.Collections.Generic;
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace IronDragon.Builtins {
+namespace IronDragon.Builtins
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class DragonDictionary : Dictionary<object, object> {
-        public DragonDictionary(Dictionary<object, object> dict) : base(dict) {}
+    public class DragonDictionary : Dictionary<object, object>
+    {
+        public DragonDictionary(Dictionary<object, object> dict) : base(dict)
+        {
+        }
 
-        public DragonDictionary() {}
+        public DragonDictionary()
+        {
+        }
     }
 }

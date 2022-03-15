@@ -19,16 +19,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
 using System.Text;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     Represents an index style access, until [] and []= method calls are implemented.
     /// </summary>
-    public class AccessExpression : DragonExpression {
-        internal AccessExpression(Expression container, List<FunctionArgument> arguments) {
+    public class AccessExpression : DragonExpression
+    {
+        internal AccessExpression(Expression container, List<FunctionArgument> arguments)
+        {
             Container = container;
             Arguments = arguments;
         }
@@ -49,21 +51,27 @@ namespace IronDragon.Expressions {
         ///     The type returned by this expression.
         /// </summary>
         /// <value>The type.</value>
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
         /// <summary>
         ///     Reduces this expression into a dynamic expression using <c><see cref="Dragon.Runtime.Operation" />.Access</c>
         /// </summary>
         /// <returns>The reduced expression</returns>
-        public override Expression Reduce() {
-            return Operation.Access(typeof (object), Container, Constant(Arguments), Constant(Scope));
+        public override Expression Reduce()
+        {
+            return Operation.Access(typeof(object), Container, Constant(Arguments), Constant(Scope));
         }
 
         /// <summary>
-        ///     Returns a <see cref="System.String" /> that represents the current <see cref="IronDragon.Expressions.AccessExpression" />.
+        ///     Returns a <see cref="System.String" /> that represents the current
+        ///     <see cref="IronDragon.Expressions.AccessExpression" />.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents the current <see cref="IronDragon.Expressions.AccessExpression" />.</returns>
-        public override string ToString() {
+        /// <returns>
+        ///     A <see cref="System.String" /> that represents the current
+        ///     <see cref="IronDragon.Expressions.AccessExpression" />.
+        /// </returns>
+        public override string ToString()
+        {
             var str = new StringBuilder();
             str.AppendFormat("{0}[", Container);
             Arguments.ForEach(arg => str.AppendFormat("{0},", arg));
@@ -78,11 +86,10 @@ namespace IronDragon.Expressions {
         ///     children should have scopes set.
         /// </summary>
         /// <param name="scope"></param>
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Container.SetScope(scope);
-            foreach (var arg in Arguments) {
-                arg.Value.SetScope(scope);
-            }
+            foreach (var arg in Arguments) arg.Value.SetScope(scope);
         }
     }
 }

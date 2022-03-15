@@ -20,86 +20,92 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public partial class DragonInstance : IDragonDynamicMetaObjectProvider {
-        private DragonScope _scope;
-
-        #region IScopeExpression implementation
-
-        public DragonScope Scope => _scope;
-
-        public void SetScope(DragonScope scope) {
-            _scope = scope;
-        }
-
-        #endregion
-
-        public DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/ parameter) {
+    public partial class DragonInstance : IDragonDynamicMetaObjectProvider
+    {
+        public DynamicMetaObject /*!*/ GetMetaObject(Expression /*!*/parameter)
+        {
             var m = new Meta(parameter, BindingRestrictions.Empty, this);
             m.SetScope(Scope);
             return m;
         }
 
-        internal sealed class Meta : DragonMetaObject<DragonInstance> {
+        internal sealed class Meta : DragonMetaObject<DragonInstance>
+        {
             public Meta(Expression expression, BindingRestrictions restrictions, DragonInstance value)
-                : base(expression, restrictions, value) {}
+                : base(expression, restrictions, value)
+            {
+            }
 
-            private static FunctionArgument Arg(object val) {
+            private static FunctionArgument Arg(object val)
+            {
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            private static DynamicMetaObject DMO(dynamic val) {
+            private static DynamicMetaObject DMO(dynamic val)
+            {
                 return Create(val, Expression.Constant(val));
             }
 
-            private static List<FunctionArgument> L(params FunctionArgument[] args) {
-                return new(args);
+            private static List<FunctionArgument> L(params FunctionArgument[] args)
+            {
+                return new List<FunctionArgument>(args);
             }
 
-            private static DynamicMetaObject[] _DMO(params DynamicMetaObject[] args) {
+            private static DynamicMetaObject[] _DMO(params DynamicMetaObject[] args)
+            {
                 return args;
             }
 
             public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder,
-                params DynamicMetaObject[] args) {
-                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null) {
+            params DynamicMetaObject[]                                            args)
+            {
+                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesFrom(Value, Value.BackingObject);
-                }
                 var dmo =
                     InteropBinder.InvokeMember.Bind(
-                        new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope), this, args);
-                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null) {
+                    new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope), this, args);
+                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesTo(Value, Value.BackingObject);
-                }
                 return dmo;
             }
 
-            public override DynamicMetaObject BindGetMember(GetMemberBinder binder) {
-                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null) {
+            public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
+            {
+                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesFrom(Value, Value.BackingObject);
-                }
                 var dmo = InteropBinder.GetMember.Bind(new InteropBinder.GetMember(binder.Name, Scope),
-                    this);
-                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null) {
+                this);
+                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesTo(Value, Value.BackingObject);
-                }
                 return dmo;
             }
 
-            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value) {
-                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null) {
+            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
+            {
+                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesFrom(Value, Value.BackingObject);
-                }
                 var dmo = InteropBinder.SetMember.Bind(new InteropBinder.SetMember(binder.Name, Scope),
-                    this, value);
-                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null) {
+                this, value);
+                if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesTo(Value, Value.BackingObject);
-                }
                 return dmo;
             }
         }
+
+        #region IScopeExpression implementation
+
+        public DragonScope Scope { get; private set; }
+
+        public void SetScope(DragonScope scope)
+        {
+            Scope = scope;
+        }
+
+        #endregion
     }
 }

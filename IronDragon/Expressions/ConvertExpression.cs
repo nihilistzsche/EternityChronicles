@@ -20,13 +20,16 @@ using System;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class ConvertExpression : DragonExpression {
-        internal ConvertExpression(Expression expr, Type type) {
-            Expression = expr;
+    public class ConvertExpression : DragonExpression
+    {
+        internal ConvertExpression(Expression expr, Type type)
+        {
+            Expression  = expr;
             ConvertType = type;
         }
 
@@ -41,18 +44,19 @@ namespace IronDragon.Expressions {
             if (Expression == null)
                 return Constant(null);
 
-            if (Expression.Type == ConvertType) {
-                return Expression;
-            }
+            if (Expression.Type == ConvertType) return Expression;
 
-            return Operation.Convert(ConvertType, Expression.Convert(Expression, typeof (object)), Constant(ConvertType));
+            return Operation.Convert(ConvertType, Expression.Convert(Expression, typeof(object)),
+            Constant(ConvertType));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Expression.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("({0} :> {1})", Expression, ConvertType);
         }
     }

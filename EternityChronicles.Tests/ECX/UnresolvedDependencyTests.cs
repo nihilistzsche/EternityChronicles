@@ -37,7 +37,7 @@ namespace EternityChronicles.Tests.ECX
         public void SetUp()
         {
             Directory.SetCurrentDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName ??
-                                          string.Empty);
+            string.Empty);
         }
 
         // ==
@@ -49,37 +49,37 @@ namespace EternityChronicles.Tests.ECX
             _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             Assert.Throws<UnresolvedDependencyException>(() =>
-                                                         {
-                                                             UnresolvedDependencyException e = null;
-                                                             // This will look for a specific version of ecx-ur-01b
-                                                             try
-                                                             {
-                                                                 _mc.LoadModule("ecx-ur-01a");
-                                                             }
-                                                             catch (UnresolvedDependencyException exc)
-                                                             {
-                                                                 e = exc;
-                                                             }
+            {
+                UnresolvedDependencyException e = null;
+                // This will look for a specific version of ecx-ur-01b
+                try
+                {
+                    _mc.LoadModule("ecx-ur-01a");
+                }
+                catch (UnresolvedDependencyException exc)
+                {
+                    e = exc;
+                }
 
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01a"),
-                                                                            "ecx-ur-01a is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01b"),
-                                                                            "ecx-ur-01b is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01c"),
-                                                                            "ecx-ur-01c is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01d"),
-                                                                            "ecx-ur-01d is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01e"),
-                                                                            "ecx-ur-01e is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01f"),
-                                                                            "ecx-ur-01f is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01g"),
-                                                                            "ecx-ur-01g is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01a"),
+                "ecx-ur-01a is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01b"),
+                "ecx-ur-01b is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01c"),
+                "ecx-ur-01c is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01d"),
+                "ecx-ur-01d is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01e"),
+                "ecx-ur-01e is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01f"),
+                "ecx-ur-01f is loaded, it should not be.");
+                Assert.IsFalse(_mc.IsLoaded("ecx-ur-01g"),
+                "ecx-ur-01g is loaded, it should not be.");
 
 
-                                                             if (e != null)
-                                                                 throw e;
-                                                         });
+                if (e != null)
+                    throw e;
+            });
         }
 
         // !=

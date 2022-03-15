@@ -21,24 +21,30 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using IronDragon.Runtime;
 
-namespace IronDragon.Expressions {
+namespace IronDragon.Expressions
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class FunctionCallExpression : DragonExpression {
-        internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments, DragonExpressionType pipeType) {
-            Function = func;
+    public class FunctionCallExpression : DragonExpression
+    {
+        internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments,
+        DragonExpressionType                       pipeType)
+        {
+            Function  = func;
             Arguments = arguments;
-            PipeType = pipeType;
+            PipeType  = pipeType;
         }
 
         internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments)
-            : this(func, arguments, DragonExpressionType.Empty) {
+            : this(func, arguments, DragonExpressionType.Empty)
+        {
         }
 
         internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments, bool isUnaryOp,
-            bool isPostfix) : this(func, arguments) {
-            IsOp = isUnaryOp;
+        bool                                       isPostfix) : this(func, arguments)
+        {
+            IsOp      = isUnaryOp;
             IsPostfix = isPostfix;
         }
 
@@ -52,21 +58,24 @@ namespace IronDragon.Expressions {
 
         public List<FunctionArgument> Arguments { get; }
 
-        public override Type Type => typeof (object);
+        public override Type Type => typeof(object);
 
-        public override Expression Reduce() {
-            if (Function is VariableExpression && ((VariableExpression) Function).Name is InstanceReferenceExpression) {
-                return Operation.Call(typeof (object), ((VariableExpression) Function).Name, Constant(Arguments),
-                    Constant(Scope), Constant(PipeType), Constant(IsOp), Constant(IsPostfix));
-            }
-            return Operation.Call(typeof (object), Function, Constant(Arguments), Constant(Scope), Constant(PipeType), Constant(IsOp), Constant(IsPostfix));
+        public override Expression Reduce()
+        {
+            if (Function is VariableExpression && ((VariableExpression)Function).Name is InstanceReferenceExpression)
+                return Operation.Call(typeof(object), ((VariableExpression)Function).Name, Constant(Arguments),
+                Constant(Scope), Constant(PipeType), Constant(IsOp), Constant(IsPostfix));
+            return Operation.Call(typeof(object), Function, Constant(Arguments), Constant(Scope), Constant(PipeType),
+            Constant(IsOp), Constant(IsPostfix));
         }
 
-        public override void SetChildrenScopes(DragonScope scope) {
+        public override void SetChildrenScopes(DragonScope scope)
+        {
             Function.SetScope(scope);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("[FunctionCallExpression Function: {0} Arguments: {1}", Function, Arguments);
         }
     }

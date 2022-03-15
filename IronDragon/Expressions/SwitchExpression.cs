@@ -32,9 +32,9 @@ namespace IronDragon.Expressions
     {
         internal SwitchExpression(Expression test, Expression @default, List<SwitchCase> cases)
         {
-            Test = test;
+            Test        = test;
             DefaultBody = @default;
-            Cases = cases;
+            Cases       = cases;
         }
 
         public Expression Test { get; }
@@ -54,16 +54,10 @@ namespace IronDragon.Expressions
         public override void SetChildrenScopes(DragonScope scope)
         {
             Test.SetScope(scope);
-            if (DefaultBody != null)
-            {
-                DefaultBody.SetScope(scope);
-            }
+            if (DefaultBody != null) DefaultBody.SetScope(scope);
             foreach (var @case in Cases)
             {
-                foreach (var test in @case.TestValues)
-                {
-                    test.SetScope(scope);
-                }
+                foreach (var test in @case.TestValues) test.SetScope(scope);
                 @case.Body.SetScope(scope);
             }
         }
@@ -82,12 +76,14 @@ namespace IronDragon.Expressions
                 sb.AppendLine();
                 sb.AppendLine("    break;");
             }
+
             if (DefaultBody != null)
             {
                 sb.AppendLine("  default:");
                 sb.AppendFormat("{0}", DefaultBody);
                 sb.AppendLine("    break;");
             }
+
             sb.AppendLine("};");
             return sb.ToString();
         }

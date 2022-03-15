@@ -22,28 +22,29 @@ using System.Linq;
 using System.Linq.Expressions;
 using IronDragon.Expressions;
 
-namespace IronDragon.Runtime {
+namespace IronDragon.Runtime
+{
     /// <summary>
     ///     TODO: Update summary.
     /// </summary>
-    public class CompilerServices {
+    public class CompilerServices
+    {
         /// <summary>
         ///     Creates a callable dynamic block object from a given expression.
         /// </summary>
         /// <param name="body">The body of the block to turn into a callable block.</param>
         /// <returns>A callable block with return type and parameters collected by analyzing the given body.</returns>
-        internal static dynamic CreateLambdaForExpression(Expression body) {
-            var func = typeof (Func<object>).GetGenericTypeDefinition();
-            if (body.Type == typeof (void)) {
-                func = func.MakeGenericType(typeof (object));
-            }
-            else {
+        internal static dynamic CreateLambdaForExpression(Expression body)
+        {
+            var func = typeof(Func<object>).GetGenericTypeDefinition();
+            if (body.Type == typeof(void))
+                func = func.MakeGenericType(typeof(object));
+            else
                 func = func.MakeGenericType(body.Type);
-            }
-            var lambda = (from m in typeof (Expression).GetMethods()
-                where m.Name == "Lambda"
-                where m.GetParameters()[0].ParameterType == typeof (Expression)
-                where m.GetParameters()[1].ParameterType == typeof (ParameterExpression[])
+            var lambda = (from m in typeof(Expression).GetMethods()
+                where m.Name                             == "Lambda"
+                where m.GetParameters()[0].ParameterType == typeof(Expression)
+                where m.GetParameters()[1].ParameterType == typeof(ParameterExpression[])
                 select m).First();
 
             // Collect parameters here by analyzing the tree using a custom visitor pattern to see which
@@ -51,24 +52,27 @@ namespace IronDragon.Runtime {
             lambda = lambda.MakeGenericMethod(func);
 
             Expression realBody;
-            if (body.Type == typeof (void)) {
+            if (body.Type == typeof(void))
+            {
                 var xbody = new List<Expression>();
                 xbody.Add(body);
-                xbody.Add(Expression.Constant(null, typeof (object)));
+                xbody.Add(Expression.Constant(null, typeof(object)));
                 realBody = Expression.Block(xbody);
             }
-            else {
+            else
+            {
                 realBody = body;
             }
 
             dynamic block =
                 ((LambdaExpression)
-                    lambda.Invoke(typeof (Expression), new object[] {realBody, new ParameterExpression[] {}})).Compile();
+                lambda.Invoke(typeof(Expression), new object[] { realBody, new ParameterExpression[] { } })).Compile();
             return block;
         }
 
-        internal static dynamic CompileExpression(Expression e, DragonScope scope) {
-            Expression newExpression = DragonExpression.Convert(e, typeof (object));
+        internal static dynamic CompileExpression(Expression e, DragonScope scope)
+        {
+            Expression newExpression = DragonExpression.Convert(e, typeof(object));
             newExpression.SetScope(scope);
             var l = CreateLambdaForExpression(newExpression);
             return l();
