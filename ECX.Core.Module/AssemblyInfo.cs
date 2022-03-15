@@ -15,6 +15,7 @@
 // limitations under the License.
 // </copyright>
 // -----------------------------------------------------------------------
+
 using System.Reflection;
 
 // Information about this assembly is defined by the following attributes. 
@@ -40,4 +41,3 @@ using System.Reflection;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
-

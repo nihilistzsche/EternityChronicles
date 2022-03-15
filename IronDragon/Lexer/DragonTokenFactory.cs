@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using IronDragon.Parser;
 using Antlr4.Runtime;
 

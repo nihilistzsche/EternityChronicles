@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace IronDragon.Runtime {
     // Used to throw a Dragon-based exception class

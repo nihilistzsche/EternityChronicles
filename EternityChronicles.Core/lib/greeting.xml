@@ -1,6 +1,6 @@
 <data type="greeting">
-	<greeting>
-	<text><![CDATA[
+    <greeting>
+        <text><![CDATA[
 `R                                                                             
                                                            ,M                   
                   ..,                                     IMM.                  
@@ -72,5 +72,5 @@
 	`r( )_ ( _ )( _)( o )( __ )( )/ /( )( o_)(_'  `wD&D Material `c(`CC`c) 
 	`r/___\/_\||/_\  \_/ /_\/_\/_\\_\/_\ \(  /__) `wWizards of the Coasts`x.
 ]]></text>
-</greeting>
+    </greeting>
 </data>

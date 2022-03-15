@@ -1,4 +1,4 @@
-﻿This document highlights the differences between Dragon 1.0 and Dragon WIP.
+This document highlights the differences between Dragon 1.0 and Dragon WIP.
 
 If constructs without an else have an implicit else block that returns the default value for the type of the then block.
 Everything in Dragon returns a value, and this requires the else block to have a return value.

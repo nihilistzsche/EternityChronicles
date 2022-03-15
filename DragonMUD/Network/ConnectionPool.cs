@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using DragonMUD.StateMachine;
@@ -9,7 +9,7 @@ namespace DragonMUD.Network
     public class ConnectionPool : BaseObject
     {
         public List<ConnectionCoordinator> Connections { get; } = new();
-        
+
         public List<IWriteHook> WriteHooks { get; } = new();
 
         public string Greeting { get; set; } = null;
@@ -22,20 +22,19 @@ namespace DragonMUD.Network
 
             var coordinator = new ConnectionCoordinator(socket, this);
             if (name != null && !softReboot)
-            {
                 coordinator["name"] = name;
-                // load xml from tmp with state
-            }
+            // load xml from tmp with state
             Connections.Add(coordinator);
 
             if (!softReboot)
             {
                 coordinator.SendMessage(greeting.ReplaceAllVariables());
             }
-            else {
-				//state stuff woo 
-				var state = coordinator["current-state"] as IState;
-				state?.SendSoftRebootMessage(coordinator);
+            else
+            {
+                //state stuff woo 
+                var state = coordinator["current-state"] as IState;
+                state?.SendSoftRebootMessage(coordinator);
             }
 
             return coordinator;
@@ -51,7 +50,7 @@ namespace DragonMUD.Network
 
         public static void WriteToConnections(List<ConnectionCoordinator> connections, string message)
         {
-            foreach(var coordinator in connections)
+            foreach (var coordinator in connections)
             {
                 coordinator.SendMessage(message);
             }

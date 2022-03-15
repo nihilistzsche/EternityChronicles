@@ -1,8 +1,8 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using DragonMUD.Utility;
-using System.Collections.Generic;
 
 namespace DragonMUD.Network
 {
@@ -11,21 +11,31 @@ namespace DragonMUD.Network
         // ReSharper disable once InconsistentNaming
         private static readonly Server _defaultServer;
 
-        public bool SoftReboot { get; private set; }
-
         static Server()
         {
             _defaultServer = new Server();
         }
 
-        public static Server DefaultServer()
-        {
-            return _defaultServer;
-        }
-
         public Server()
         {
             ConnectionPool = new ConnectionPool();
+        }
+
+        public bool SoftReboot { get; private set; }
+
+        public Socket Socket { get; private set; }
+
+        public ConnectionPool ConnectionPool { get; }
+
+        public bool IsRunning { get; private set; }
+
+        public void OnGameLoop()
+        {
+        }
+
+        public static Server DefaultServer()
+        {
+            return _defaultServer;
         }
 
         public bool StartServer(int port, Tuple<SocketInformation, List<SocketInformation>> softRebootSockets = null)
@@ -44,15 +54,15 @@ namespace DragonMUD.Network
                     Socket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
                     Socket.Bind(endPoint);
                 }
+
                 IsRunning = true;
                 if (softRebootSockets != null)
-                {
-                    foreach(var clientSocket in softRebootSockets.Item2)
+                    foreach (var clientSocket in softRebootSockets.Item2)
                     {
                         var socket = new Socket(clientSocket);
                         ConnectionPool.NewConnection(socket, true);
                     }
-                }
+
                 Socket.Listen(100);
                 Socket.BeginAccept(BeginAccept, Socket);
             }
@@ -60,6 +70,7 @@ namespace DragonMUD.Network
             {
                 return false;
             }
+
             return true;
         }
 
@@ -71,11 +82,6 @@ namespace DragonMUD.Network
             Socket.BeginAccept(BeginAccept, Socket);
         }
 
-        public void OnGameLoop()
-        {
-            
-        }
-        
         public void Shutdown()
         {
             Socket.Close();
@@ -84,14 +90,8 @@ namespace DragonMUD.Network
 
         public void StartSoftReboot()
         {
-            IsRunning = false;
+            IsRunning  = false;
             SoftReboot = true;
         }
-
-        public Socket Socket { get; private set;  }
-
-        public ConnectionPool ConnectionPool { get; }
-
-        public bool IsRunning { get; private set;  }
     }
 }

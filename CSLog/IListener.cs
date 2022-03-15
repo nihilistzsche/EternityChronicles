@@ -1,4 +1,4 @@
-﻿namespace CSLog
+namespace CSLog
 {
     public interface IListener
     {

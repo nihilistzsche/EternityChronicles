@@ -35,13 +35,11 @@ namespace IronDragon {
                 "IronDragon 0.5", new[] {"IronDragon"}, new[] {".dragon", ".drg"});
 
         static Dragon() {
-            Globals = CreateRuntime().GetEngine("IronDragon").CreateScope();
+            Globals = new DragonGlobalScope();
             new Kernel();
         }
 
-        public static DragonScope CurrentContext { get; internal set; }
-
-        public static ScriptScope Globals { get; }
+        public static DragonGlobalScope Globals { get; }
 
         /// <summary>
         ///     Generate a FunctionArgument object to be used for named arguments when calling Dragon functions from a .NET
@@ -87,11 +85,17 @@ namespace IronDragon {
             return _DragonSetup;
         }
 
-        public static dynamic Execute(string source, ScriptScope scope) {
-            return CreateRuntime().GetEngine("IronDragon").CreateScriptSourceFromString(source).Execute(scope);
+        public static dynamic Execute(string source, DragonScope scope)
+        {
+            var xscope = CreateRuntime().GetEngine("IronDragon").CreateScope();
+            scope.MergeIntoScope(xscope);
+            var val = CreateRuntime().GetEngine("IronDragon").CreateScriptSourceFromString(source).Execute(xscope);
+            scope.MergeWithScope(xscope);
+            return val;
         }
 
-        public static dynamic Execute(string source) {
+        public static dynamic Execute(string source)
+        {
             return Execute(source, Globals);
         }
 

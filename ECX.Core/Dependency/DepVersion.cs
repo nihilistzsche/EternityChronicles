@@ -20,133 +20,122 @@
 // limitations under the License.
 //
 
-namespace ECX.Core.Dependency {
-	using System;
+namespace ECX.Core.Dependency
+{
+    /// <summary>
+    ///     Represents a dependency's version in an opaque structure.
+    /// </summary>
+    /// <remarks>None.</remarks>
+    public class DepVersion
+    {
+        /// <summary>
+        ///     Creates a new version with the given information.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="major">The major version number.</param>
+        /// <param name="minor">The minor version number.</param>
+        /// <param name="build">The build version number.</param>
+        /// <param name="revision">The revision version number.</param>
+        public DepVersion(int major, int minor, int build, int revision)
+        {
+            Major    = major;
+            Minor    = minor;
+            Build    = build;
+            Revision = revision;
+        }
 
-	/// <summary>
-	/// Represents a dependency's version in an opaque structure.
-	/// </summary>
-	/// <remarks>None.</remarks>
-	public class DepVersion {
-		int _major;
-		int _minor;
-		int _build;
-		int _revision;
-		
-		/// <summary>
-		/// Creates a new version with the given information.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="major">The major version number.</param>
-		/// <param name="minor">The minor version number.</param>
-		/// <param name="build">The build version number.</param>
-		/// <param name="revision">The revision version number.</param>
-		public DepVersion (int major, int minor, int build, int revision) {
-			_major = major;
-			_minor = minor;
-			_build = build;
-			_revision = revision;
-		}
-		
-		/// <summary>
-		/// Creates a new version with the given information.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="major">The major version number.</param>
-		/// <param name="minor">The minor version number.</param>
-		/// <param name="build">The build version number.</param>
-		public DepVersion (int major, int minor, int build) {
-			_major = major;
-			_minor = minor;
-			_build = build;
-			_revision = -1;
-		}
-		
-		/// <summary>
-		/// Creates a new version with the given information.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="major">The major version number.</param>
-		/// <param name="minor">The minor version number.</param>
-		public DepVersion (int major, int minor) {
-			_major = major;
-			_minor = minor;
-			_build = -1;
-			_revision = -1;
-		}
-		 
-		/// <summary>
-		/// Creates a new empty version.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public DepVersion () {
-			_major = -1;
-			_minor = -1;
-			_build = -1;
-			_revision = -1;
-		}
-	
-		/// <summary>
-		/// Gets or sets the major version number.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public int Major {
-			get => _major;
-			set => _major = value;
-		}
-		
-		/// <summary>
-		/// Gets or sets the minor version number.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public int Minor {
-			get => _minor;
-			set => _minor = value;
-		}
-		
-		/// <summary>
-		/// Gets or sets the build version number.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public int Build {
-			get => _build;
-			set => _build = value;
-		}
-		
-		/// <summary>
-		/// Gets or sets the revision version number.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public int Revision {
-			get => _revision;
-			set => _revision = value;
-		}
-		
-		/// <summary>
-		/// Parses a string to generate a new DepVersion object.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="v">The string representation of the version.</param>
-		public static DepVersion VersionParse (string v) {
-			// Here we go :)
-			DepVersion ver = new DepVersion ();
-			string[] vparts = v.Split ('.');
-			ver.Major = Int32.Parse (vparts[0]);
-			ver.Minor = Int32.Parse (vparts[1]);
-			if (vparts.Length > 2)
-				ver.Build = Int32.Parse(vparts[2]);
-			if (vparts.Length > 3)
-				ver.Revision = Int32.Parse(vparts[3]);
-			return ver;
-		}
-		
-		/// <summary>
-		/// Converts the version into a string.
-		/// </summary>
-		/// <remarks>The output is the same format as CIL version strings, i.e. 1:0:0:0.</remarks>
-		/// <returns>Returns a string representation of the version.</returns>
-		public override string ToString ( ) {
-			return $"{Major}:{Minor}:{Build}:{Revision}";
-		}
-	}
+        /// <summary>
+        ///     Creates a new version with the given information.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="major">The major version number.</param>
+        /// <param name="minor">The minor version number.</param>
+        /// <param name="build">The build version number.</param>
+        public DepVersion(int major, int minor, int build)
+        {
+            Major    = major;
+            Minor    = minor;
+            Build    = build;
+            Revision = -1;
+        }
+
+        /// <summary>
+        ///     Creates a new version with the given information.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="major">The major version number.</param>
+        /// <param name="minor">The minor version number.</param>
+        public DepVersion(int major, int minor)
+        {
+            Major    = major;
+            Minor    = minor;
+            Build    = -1;
+            Revision = -1;
+        }
+
+        /// <summary>
+        ///     Creates a new empty version.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public DepVersion()
+        {
+            Major    = -1;
+            Minor    = -1;
+            Build    = -1;
+            Revision = -1;
+        }
+
+        /// <summary>
+        ///     Gets or sets the major version number.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public int Major { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the minor version number.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public int Minor { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the build version number.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public int Build { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the revision version number.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public int Revision { get; set; }
+
+        /// <summary>
+        ///     Parses a string to generate a new DepVersion object.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="v">The string representation of the version.</param>
+        public static DepVersion VersionParse(string v)
+        {
+            // Here we go :)
+            var ver    = new DepVersion();
+            var vparts = v.Split('.');
+            ver.Major = int.Parse(vparts[0]);
+            ver.Minor = int.Parse(vparts[1]);
+            if (vparts.Length > 2)
+                ver.Build = int.Parse(vparts[2]);
+            if (vparts.Length > 3)
+                ver.Revision = int.Parse(vparts[3]);
+            return ver;
+        }
+
+        /// <summary>
+        ///     Converts the version into a string.
+        /// </summary>
+        /// <remarks>The output is the same format as CIL version strings, i.e. 1:0:0:0.</remarks>
+        /// <returns>Returns a string representation of the version.</returns>
+        public override string ToString()
+        {
+            return $"{Major}:{Minor}:{Build}:{Revision}";
+        }
+    }
 }

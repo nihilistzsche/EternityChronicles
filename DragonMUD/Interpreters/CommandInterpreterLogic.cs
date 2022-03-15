@@ -5,10 +5,6 @@ namespace DragonMUD.Interpreters
     public abstract class CommandInterpreterLogic
     {
         public CommandInterpreter Interpreter { get; internal set; }
-        
-        protected CommandInterpreterLogic()
-        {
-        }
 
         public abstract void DisplayHelp(ConnectionCoordinator coordinator);
 

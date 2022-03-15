@@ -1,4 +1,4 @@
-﻿namespace XDL
+namespace XDL
 {
     public delegate object DataLoadHandler(object node);
 

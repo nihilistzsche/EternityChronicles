@@ -18,42 +18,52 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Scripting;
+using IronDragon;
 using IronDragon.Builtins;
 using IronDragon.Expressions;
 using IronDragon.Runtime;
+using Microsoft.Scripting;
 using NUnit.Framework;
 
-namespace EternityChronicles.Tests.IronDragon {
+namespace EternityChronicles.Tests.IronDragon
+{
     [TestFixture]
-    public class FunctionTests : DragonAbstractTestFixture {
-        private class NativeHelper {
-            public int AddXToY(int x, int y) {
+    public class FunctionTests : DragonAbstractTestFixture
+    {
+        private class NativeHelper
+        {
+            public int AddXToY(int x, int y)
+            {
                 return x + y;
             }
 
-            public int MethodTableTest(string x) {
+            public int MethodTableTest(string x)
+            {
                 return 17;
             }
 
-            public int MethodTableTest(int y) {
+            public int MethodTableTest(int y)
+            {
                 return y + 10;
             }
         }
 
-        public List<FunctionArgument> A(params FunctionArgument[] args) {
-            return new(args);
+        public List<FunctionArgument> A(params FunctionArgument[] args)
+        {
+            return new List<FunctionArgument>(args);
         }
 
-        public DragonFunction F(string name, List<FunctionArgument> args, string body) {
-            return new(name, args, (BlockExpression)Compile(body), null);
+        public DragonFunction F(string name, List<FunctionArgument> args, string body)
+        {
+            return new DragonFunction(name, args, (BlockExpression)Compile(body), null);
         }
 
         [Test]
-        public void CallIronRubyFunction() {
+        public void CallIronRubyFunction()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource =
-               dragonengine.CreateScriptSourceFromString("def testmethod(func) { func(10); }; testmethod(rubyfunc);");
+                dragonengine.CreateScriptSourceFromString("def testmethod(func) { func(10); }; testmethod(rubyfunc);");
 
             var rubyengine = GetRuntime().GetEngine("IronRuby");
             var rubysource = rubyengine.CreateScriptSourceFromString("def func(num); return (num/2) * 5; end;");
@@ -65,16 +75,18 @@ namespace EternityChronicles.Tests.IronDragon {
 
             var dragonscope = dragonengine.CreateScope();
             dragonscope.SetVariable("rubyfunc", x);
-            Assert.That(dragonsource.Execute(dragonscope), NUnit.Framework.Is.EqualTo(25));
+            Assert.That(dragonsource.Execute(dragonscope), Is.EqualTo(25));
         }
 
         [Test]
-        public void TestAnonFuncCall() {
-            Assert.That(CompileAndExecute("^(num) { num * 17; }(3);"), NUnit.Framework.Is.EqualTo(51));
+        public void TestAnonFuncCall()
+        {
+            Assert.That(CompileAndExecute("^(num) { num * 17; }(3);"), Is.EqualTo(51));
         }
 
         [Test]
-        public void TestBlockCSharp() {
+        public void TestBlockCSharp()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource =
                 dragonengine.CreateScriptSourceFromString("x = 20; def testmethod(*p) { for(a in p) { yield a; }; };");
@@ -84,13 +96,14 @@ namespace EternityChronicles.Tests.IronDragon {
             dragonsource.Execute(dragonscope);
 
             var test = dragonscope.GetVariable("testmethod");
-            var res = 0;
-            test(10, 20, 30, 40, (Action<int>) (x => res += x));
-            Assert.That(res, NUnit.Framework.Is.EqualTo(100));
+            var res  = 0;
+            test(10, 20, 30, 40, (Action<int>)(x => res += x));
+            Assert.That(res, Is.EqualTo(100));
         }
 
         [Test]
-        public void TestBlockIronRuby() {
+        public void TestBlockIronRuby()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource =
                 dragonengine.CreateScriptSourceFromString("x = 20; def testmethod(*p) { for(a in p) { yield a; }; };");
@@ -107,11 +120,12 @@ namespace EternityChronicles.Tests.IronDragon {
             var rubyscope = rubyengine.CreateScope();
             rubyscope.SetVariable("testmethod", dragonscope.GetVariable("testmethod"));
 
-            Assert.That(rubysource.Execute(rubyscope), NUnit.Framework.Is.EqualTo(110));
+            Assert.That(rubysource.Execute(rubyscope), Is.EqualTo(110));
         }
 
         [Test]
-        public void TestBlockIronRubyTwo() {
+        public void TestBlockIronRubyTwo()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource =
                 dragonengine.CreateScriptSourceFromString(
@@ -128,32 +142,35 @@ namespace EternityChronicles.Tests.IronDragon {
             var rubyscope = rubyengine.CreateScope();
             rubyscope.SetVariable("testmethod", dragonscope.GetVariable("testmethod"));
 
-            Assert.That(rubysource.Execute(rubyscope), NUnit.Framework.Is.EqualTo(10));
+            Assert.That(rubysource.Execute(rubyscope), Is.EqualTo(10));
         }
 
         [Test]
-        public void TestCallFunctionFunction() {
+        public void TestCallFunctionFunction()
+        {
             Assert.That(
                 CompileAndExecute("def testmethod(num) { return ^(n) { return num * n; }; }; testmethod(10)(10);"),
-                NUnit.Framework.Is.EqualTo(100));
+                Is.EqualTo(100));
         }
 
         [Test]
-        public void TestCallDragonFunctionCSharp() {
+        public void TestCallDragonFunctionCSharp()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource = dragonengine.CreateScriptSourceFromString("def testmethod(num) { num + 17; };");
-                
+
             var dragonscope = dragonengine.CreateScope();
 
             dragonsource.Execute(dragonscope);
 
             var testmethod = dragonscope.GetVariable("testmethod");
-            Assert.That((int)testmethod(10), NUnit.Framework.Is.EqualTo(27));
+            Assert.That((int)testmethod(10), Is.EqualTo(27));
         }
 
 
         [Test]
-        public void TestCallDragonFunctionIronRuby() {
+        public void TestCallDragonFunctionIronRuby()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource =
                 dragonengine.CreateScriptSourceFromString("x = 20; def testmethod(num) { num + x + 17; };");
@@ -164,38 +181,43 @@ namespace EternityChronicles.Tests.IronDragon {
             var scope = dragonengine.CreateScope();
 
             dragonsource.Execute(scope);
-            Assert.That((int)rubysource.Execute(scope), NUnit.Framework.Is.EqualTo(47));
+            Assert.That((int)rubysource.Execute(scope), Is.EqualTo(47));
         }
 
         [Test]
-        public void TestCannotHaveLiteralDefault() {
+        public void TestCannotHaveLiteralDefault()
+        {
             Assert.Throws<SyntaxErrorException>(() => Compile("def shouldNotBeAllowed(:i=10) { i - 10; };"));
         }
 
         [Test]
-        public void TestCommandSingleHash() {
-            var expect = new DragonDictionary(new Dictionary<object, object> {{"hello", "world"}});
-            var real = CompileAndExecute("def func(h) { return h; }; func('hello' => 'world');");
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+        public void TestCommandSingleHash()
+        {
+            var expect = new DragonDictionary(new Dictionary<object, object> { { "hello", "world" } });
+            var real   = CompileAndExecute("def func(h) { return h; }; func('hello' => 'world');");
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestEval() {
-            Assert.That(CompileAndExecute("x = 3; n = 'x + 4;'; eval(n);"), NUnit.Framework.Is.EqualTo(7));
+        public void TestEval()
+        {
+            Assert.That(CompileAndExecute("x = 3; n = 'x + 4;'; eval(n);"), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestEval2() {
-            Assert.That(CompileAndExecute("n = 'x = 3;'; eval(n); x + 4;"), NUnit.Framework.Is.EqualTo(7));
+        public void TestEval2()
+        {
+            Assert.That(CompileAndExecute("n = 'x = 3;'; eval(n); x + 4;"), Is.EqualTo(7));
         }
 
 
         [Test]
-        public void TestEval3() {
+        public void TestEval3()
+        {
             Assert.That(
                 CompileAndExecute(
                     "n = '@x = 4;'; class EvalTest { def test { eval(n); }; }; y = EvalTest(); y.test(); y.x;"),
-                NUnit.Framework.Is.EqualTo(4));
+                Is.EqualTo(4));
         }
 
         [Test]
@@ -203,26 +225,30 @@ namespace EternityChronicles.Tests.IronDragon {
         {
             Assert.That(
                 CompileAndExecute(
-                    "m = 'xx'; n = '#{m} = 7;';  eval(n);  xx + 3;"), NUnit.Framework.Is.EqualTo(10));
+                    "m = 'xx'; n = '#{m} = 7;';  eval(n);  xx + 3;"), Is.EqualTo(10));
         }
+
         [Test]
-        public void TestExplicitFunction() {
+        public void TestExplicitFunction()
+        {
             Assert.That(
                 CompileAndExecute(
                     "def each(a,&f) { for(o in a) { f(o); }; }; z = 10; each([5,10,25]) { |x| z += x; }; z;"),
-                NUnit.Framework.Is.EqualTo(50));
+                Is.EqualTo(50));
         }
 
         [Test]
-        public void TestExplicitFunction2() {
+        public void TestExplicitFunction2()
+        {
             Assert.That(
                 CompileAndExecute(
                     "def each(a,&f) { for(o in a) { f(o); }; }; z = 5; def f(x) { z += x; }; each([5,10,20],f); z;"),
-                NUnit.Framework.Is.EqualTo(40));
+                Is.EqualTo(40));
         }
 
         [Test]
-        public void TestFunctionContext() {
+        public void TestFunctionContext()
+        {
             var engine = GetRuntime().GetEngine("IronDragon");
             var source = engine.CreateScriptSourceFromString("x = 15; def testfunc(num) { return num*x; };");
 
@@ -231,45 +257,51 @@ namespace EternityChronicles.Tests.IronDragon {
             source.Execute(scope);
 
             var source1 = engine.CreateScriptSourceFromString("testfunc(7);");
-            var scope1 = engine.CreateScope();
+            var scope1  = engine.CreateScope();
             scope1.SetVariable("testfunc", scope.GetVariable("testfunc"));
             var source2 = engine.CreateScriptSourceFromString("testfunc(5);");
-            var scope2 = engine.CreateScope();
+            var scope2  = engine.CreateScope();
             scope2.SetVariable("testfunc", scope.GetVariable("testfunc"));
 
-            Assert.That(source1.Execute(scope1), NUnit.Framework.Is.EqualTo(105));
-            Assert.That(source2.Execute(scope2), NUnit.Framework.Is.EqualTo(75));
+            Assert.That(source1.Execute(scope1), Is.EqualTo(105));
+            Assert.That(source2.Execute(scope2), Is.EqualTo(75));
         }
 
         [Test]
-        public void TestFunctionDefaultKeywordVararg() {
+        public void TestFunctionDefaultKeywordVararg()
+        {
             Assert.That(
-                CompileAndExecute("def testfunc(a=10,*c) { for(b in c) { a += b; }; return a; }; testfunc(c:10,15,20);"),
-                NUnit.Framework.Is.EqualTo(55));
+                CompileAndExecute(
+                    "def testfunc(a=10,*c) { for(b in c) { a += b; }; return a; }; testfunc(c:10,15,20);"),
+                Is.EqualTo(55));
         }
 
         [Test]
-        public void TestFunctionDefaultValue() {
+        public void TestFunctionDefaultValue()
+        {
             Assert.That(CompileAndExecute("def testfunc(num=15) { x = 10; return x + num; }; testfunc();"),
-                NUnit.Framework.Is.EqualTo(25));
+                        Is.EqualTo(25));
         }
 
         [Test]
-        public void TestFunctionDefinitionDefaultNormalVararg() {
+        public void TestFunctionDefinitionDefaultNormalVararg()
+        {
             Assert.That(
                 CompileAndExecute(
                     "def testfunc(x=27,y,*z) { n = x + y; for(a in z) { n -= a; }; return n; }; testfunc(y:10,1,2,3);"),
-                NUnit.Framework.Is.EqualTo(31));
+                Is.EqualTo(31));
         }
 
         [Test]
-        public void TestFunctionEmptyArgumentList() {
+        public void TestFunctionEmptyArgumentList()
+        {
             Assert.That(CompileAndExecute("def testfunc() { return 10 + 5; }; testfunc();"),
-                NUnit.Framework.Is.EqualTo(15));
+                        Is.EqualTo(15));
         }
 
         [Test]
-        public void TestFunctionEncapsulation() {
+        public void TestFunctionEncapsulation()
+        {
             var engine = GetRuntime().GetEngine("IronDragon");
             var source = engine.CreateScriptSourceFromString("def testfunc(num) { return num**2; };");
 
@@ -282,12 +314,13 @@ namespace EternityChronicles.Tests.IronDragon {
 
             var val1 = source1.Execute(scope);
             var val2 = source2.Execute(scope);
-            Assert.That(val1, NUnit.Framework.Is.EqualTo(49));
-            Assert.That(val2, NUnit.Framework.Is.EqualTo(25));
+            Assert.That(val1, Is.EqualTo(49));
+            Assert.That(val2, Is.EqualTo(25));
         }
 
         [Test]
-        public void TestFunctionKeywordCSharp() {
+        public void TestFunctionKeywordCSharp()
+        {
             var engine = GetRuntime().GetEngine("IronDragon");
             var source = engine.CreateScriptSourceFromString("def testfunc(a=10,b,c) { return (a + b) * c; };");
 
@@ -295,69 +328,79 @@ namespace EternityChronicles.Tests.IronDragon {
 
             source.Execute(scope);
             var testfunc = scope.GetVariable("testfunc");
-            Assert.That(testfunc(global::IronDragon.Dragon.Arg("b", 5), 2), NUnit.Framework.Is.EqualTo(30));
+            Assert.That(testfunc(Dragon.Arg("b", 5), 2), Is.EqualTo(30));
         }
 
         [Test]
-        public void TestFunctionKeywordOffset() {
+        public void TestFunctionKeywordOffset()
+        {
             Assert.That(CompileAndExecute("def testfunc(a=10,b,c) { x = (a*b)+c; return x; }; testfunc(b:10,25);"),
-                NUnit.Framework.Is.EqualTo(125));
+                        Is.EqualTo(125));
         }
 
         [Test]
-        public void TestFunctionKeywordOverflow() {
+        public void TestFunctionKeywordOverflow()
+        {
             Assert.That(CompileAndExecute("def testfunc(a=17,b) { return a + b; }; testfunc(b:30,20);"),
-                NUnit.Framework.Is.EqualTo(47));
+                        Is.EqualTo(47));
         }
 
         [Test]
-        public void TestFunctionKeywordOverwrite() {
+        public void TestFunctionKeywordOverwrite()
+        {
             Assert.That(CompileAndExecute("def testfunc(a=10,b) { return a + b; }; testfunc(12,10,b:20);"),
-                NUnit.Framework.Is.EqualTo(32));
+                        Is.EqualTo(32));
         }
 
         [Test]
-        public void TestFunctionKeywordSimple() {
+        public void TestFunctionKeywordSimple()
+        {
             Assert.That(CompileAndExecute("def testfunc(a,b) { return a - b; }; testfunc(b:5,a:10);"),
-                NUnit.Framework.Is.EqualTo(5));
+                        Is.EqualTo(5));
         }
 
         [Test]
-        public void TestFunctionReturnInMiddle() {
+        public void TestFunctionReturnInMiddle()
+        {
             Assert.That(CompileAndExecute("def testfunc(a,b) { return a * b; a/b; }; testfunc(10,5);"),
-                NUnit.Framework.Is.EqualTo(50));
+                        Is.EqualTo(50));
         }
 
         [Test]
-        public void TestFunctionReturnValue() {
+        public void TestFunctionReturnValue()
+        {
             Assert.That(CompileAndExecute("def testfunc(x,y) { return x/y; }; z=18; n=3; testfunc(z,n);"),
-                NUnit.Framework.Is.EqualTo(6));
+                        Is.EqualTo(6));
         }
 
         [Test]
-        public void TestFunctionSimple() {
+        public void TestFunctionSimple()
+        {
             Assert.That(CompileAndExecute("def testfunc(num) { x = 10; return x + num; }; testfunc(7);"),
-                NUnit.Framework.Is.EqualTo(17));
+                        Is.EqualTo(17));
         }
 
         [Test]
-        public void TestFunctionSimpleMultipleArgumentVarArg() {
+        public void TestFunctionSimpleMultipleArgumentVarArg()
+        {
             Assert.That(
                 CompileAndExecute(
                     "def testfunc(num,*y) { for(x in y) { num += x; }; return num; }; testfunc(10,5,10,15,20,25);"),
-                NUnit.Framework.Is.EqualTo(85));
+                Is.EqualTo(85));
         }
 
         [Test]
-        public void TestFunctionSimpleMultipleArguments() {
+        public void TestFunctionSimpleMultipleArguments()
+        {
             Assert.That(CompileAndExecute("def testfunc(num,y) { x = 10; (x + num) * y; }; testfunc(17,2);"),
-                NUnit.Framework.Is.EqualTo(54));
+                        Is.EqualTo(54));
         }
 
         [Test]
-        public void TestMethodTable() {
-            var expect = new DragonArray {200, 5, 23};
-            var engine = GetRuntime().GetEngine("IronDragon");
+        public void TestMethodTable()
+        {
+            var expect       = new DragonArray { 200, 5, 23 };
+            var engine       = GetRuntime().GetEngine("IronDragon");
             var dragonscope1 = engine.CreateScope();
 
             var source1 =
@@ -376,15 +419,16 @@ namespace EternityChronicles.Tests.IronDragon {
             var dragonscope2 = engine.CreateScope();
             dragonscope2.SetVariable("test", table);
             var source2 = engine.CreateScriptSourceFromString("[test(10),test(10,2),test(10,20,7)];");
-            var real = source2.Execute(dragonscope2);
+            var real    = source2.Execute(dragonscope2);
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestMethodTableCSharp() {
-            var expect = new List<object> {200, 5, 23};
-            var engine = GetRuntime().GetEngine("IronDragon");
+        public void TestMethodTableCSharp()
+        {
+            var expect       = new List<object> { 200, 5, 23 };
+            var engine       = GetRuntime().GetEngine("IronDragon");
             var dragonscope1 = engine.CreateScope();
 
             var source1 =
@@ -402,15 +446,16 @@ namespace EternityChronicles.Tests.IronDragon {
             table.AddFunction(test3);
 
             dynamic test = table;
-            var real = new List<object> {test(10), test(10, 2), test(10, 20, 7)};
+            var     real = new List<object> { test(10), test(10, 2), test(10, 20, 7) };
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestMethodTableNameMatch() {
-            var expect = new DragonArray {6, 18};
-            var engine = GetRuntime().GetEngine("IronDragon");
+        public void TestMethodTableNameMatch()
+        {
+            var expect       = new DragonArray { 6, 18 };
+            var engine       = GetRuntime().GetEngine("IronDragon");
             var dragonscope1 = engine.CreateScope();
 
             var source1 =
@@ -427,32 +472,36 @@ namespace EternityChronicles.Tests.IronDragon {
             var dragonscope2 = engine.CreateScope();
             dragonscope2.SetVariable("test", table);
             var source2 = engine.CreateScriptSourceFromString("[test(4,y:3,5),test(a:7,6,5)];");
-            var real = source2.Execute(dragonscope2);
+            var real    = source2.Execute(dragonscope2);
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestMethodTableNativeFunction() {
-            var expect = new DragonArray {17, 37};
+        public void TestMethodTableNativeFunction()
+        {
+            var expect = new DragonArray { 17, 37 };
             var engine = GetRuntime().GetEngine("IronDragon");
-            var scope = engine.CreateScope();
+            var scope  = engine.CreateScope();
 
             var table = new DragonMethodTable("test");
-            table.AddFunction(new DragonNativeFunction(typeof (NativeHelper),
-                typeof (NativeHelper).GetMethod("MethodTableTest", new[] {typeof (int)})));
-            table.AddFunction(new DragonNativeFunction(typeof (NativeHelper),
-                typeof (NativeHelper).GetMethod("MethodTableTest", new[] {typeof (string)})));
+            table.AddFunction(new DragonNativeFunction(typeof(NativeHelper),
+                                                       typeof(NativeHelper).GetMethod(
+                                                           "MethodTableTest", new[] { typeof(int) })));
+            table.AddFunction(new DragonNativeFunction(typeof(NativeHelper),
+                                                       typeof(NativeHelper).GetMethod(
+                                                           "MethodTableTest", new[] { typeof(string) })));
 
             scope.SetVariable("test", table);
             var source = engine.CreateScriptSourceFromString("[test('hello'),test(27)];");
-            var real = source.Execute(scope);
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            var real   = source.Execute(scope);
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestMethodTableResolveFail() {
-            var engine = GetRuntime().GetEngine("IronDragon");
+        public void TestMethodTableResolveFail()
+        {
+            var engine       = GetRuntime().GetEngine("IronDragon");
             var dragonscope1 = engine.CreateScope();
 
             var source1 =
@@ -471,13 +520,14 @@ namespace EternityChronicles.Tests.IronDragon {
             var source2 = engine.CreateScriptSourceFromString("test(2,3);");
 
             object val = source2.Execute(dragonscope2);
-            Assert.That(val, NUnit.Framework.Is.Null);
+            Assert.That(val, Is.Null);
         }
 
         [Test]
-        public void TestMethodTableTwo() {
-            var expect = new DragonArray {200, 400, 60};
-            var engine = GetRuntime().GetEngine("IronDragon");
+        public void TestMethodTableTwo()
+        {
+            var expect       = new DragonArray { 200, 400, 60 };
+            var engine       = GetRuntime().GetEngine("IronDragon");
             var dragonscope1 = engine.CreateScope();
 
             var source1 =
@@ -496,25 +546,28 @@ namespace EternityChronicles.Tests.IronDragon {
             var dragonscope2 = engine.CreateScope();
             dragonscope2.SetVariable("test", table);
             var source2 = engine.CreateScriptSourceFromString("[test(),test(400,20),test(10,5,10,15,20,25)];");
-            var real = source2.Execute(dragonscope2);
+            var real    = source2.Execute(dragonscope2);
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestNativeFunction() {
+        public void TestNativeFunction()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource = dragonengine.CreateScriptSourceFromString("nadd(3,7);");
 
             var scope = dragonengine.CreateScope();
 
             scope.SetVariable("nadd",
-                new DragonNativeFunction(typeof (NativeHelper), typeof (NativeHelper).GetMethod("AddXToY")));
-            Assert.That(dragonsource.Execute(scope), NUnit.Framework.Is.EqualTo(10));
+                              new DragonNativeFunction(typeof(NativeHelper),
+                                                       typeof(NativeHelper).GetMethod("AddXToY")));
+            Assert.That(dragonsource.Execute(scope), Is.EqualTo(10));
         }
 
         [Test]
-        public void TestNestedFunction() {
+        public void TestNestedFunction()
+        {
             var engine = GetRuntime().GetEngine("IronDragon");
             var source =
                 engine.CreateScriptSourceFromString(
@@ -528,14 +581,15 @@ namespace EternityChronicles.Tests.IronDragon {
             var source2 = engine.CreateScriptSourceFromString("begin { nesthelper(10); } rescue * { nil; };");
 
             var val1 = source1.Execute(scope);
-            Assert.That(val1, NUnit.Framework.Is.EqualTo(100));
+            Assert.That(val1, Is.EqualTo(100));
             object val2 = source2.Execute(scope);
-            Assert.That(val2, NUnit.Framework.Is.Null);
+            Assert.That(val2, Is.Null);
         }
 
         [Test]
-        public void TestPartialFunctionCSharp() {
-            var expect = new List<object> {10, 15, 25};
+        public void TestPartialFunctionCSharp()
+        {
+            var expect = new List<object> { 10, 15, 25 };
 
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource = dragonengine.CreateScriptSourceFromString("def mul(x,y) { return x * y; };");
@@ -544,48 +598,53 @@ namespace EternityChronicles.Tests.IronDragon {
 
             dragonsource.Execute(dragonscope);
 
-            var mul = dragonscope.GetVariable("mul");
+            var mul  = dragonscope.GetVariable("mul");
             var mul5 = mul(5);
 
-            var real = new List<object> {mul5(2), mul5(3), mul5(5)};
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            var real = new List<object> { mul5(2), mul5(3), mul5(5) };
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestPartialFunctionCall() {
-            var expect = new DragonArray {2, 3, 4};
+        public void TestPartialFunctionCall()
+        {
+            var expect = new DragonArray { 2, 3, 4 };
 
             var real = CompileAndExecute("def add(x,y) { return x + y; }; add1 = add(1); [add1(1),add1(2),add1(3)];");
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestPartialFunctionCallBackward() {
-            var expect = new DragonArray {10, 4, 2};
+        public void TestPartialFunctionCallBackward()
+        {
+            var expect = new DragonArray { 10, 4, 2 };
 
             var real =
                 CompileAndExecute(
                     "def div(x,y) { return y / x; }; div20 = div(20); [div20 <| 2,div20 <| 5,div20 <| 10];");
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestPartialFunctionCallForward() {
-            var expect = new DragonArray {2, 3, 4};
+        public void TestPartialFunctionCallForward()
+        {
+            var expect = new DragonArray { 2, 3, 4 };
 
             var real =
                 CompileAndExecute("def add(x,y) { return x + y; }; add1 = add(1); [1 |> add1,2 |> add1,3 |> add1];");
 
-            Assert.That(real, NUnit.Framework.Is.EqualTo(expect));
+            Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
-        public void TestPartialFunctionIronRuby() {
+        public void TestPartialFunctionIronRuby()
+        {
             var dragonengine = GetRuntime().GetEngine("IronDragon");
             var dragonsource =
-                dragonengine.CreateScriptSourceFromString("x = 17; def addX(y,z) { return x + y + z; }; add10=addX(10);");
+                dragonengine.CreateScriptSourceFromString(
+                    "x = 17; def addX(y,z) { return x + y + z; }; add10=addX(10);");
 
             var rubyengine = GetRuntime().GetEngine("IronRuby");
             var rubysource = rubyengine.CreateScriptSourceFromString("add10.call(30);");
@@ -594,55 +653,60 @@ namespace EternityChronicles.Tests.IronDragon {
 
             dragonsource.Execute(scope);
 
-            Assert.That(rubysource.Execute(scope), NUnit.Framework.Is.EqualTo(57));
+            Assert.That(rubysource.Execute(scope), Is.EqualTo(57));
         }
 
         [Test]
-        public void TestSimpleFunctionDefinition() {
+        public void TestSimpleFunctionDefinition()
+        {
             var expect = F("simple", A(new FunctionArgument("i")), "i+88;");
-            var real = CompileAndExecute("def simple(i) { i + 88; };");
-            Assert.That(real, Is.Function(expect));
+            var real   = CompileAndExecute("def simple(i) { i + 88; };");
+            Assert.That(real, DragonIs.Function(expect));
         }
 
         [Test]
-        public void TestSubDictionaryFunctionCall() {
+        public void TestSubDictionaryFunctionCall()
+        {
             Assert.That(
                 CompileAndExecute(
                     "dictClass = { 'dict0' => ^(num) { return num*10; }, 'dict1' => ^(num0,num1) { [num0,num1,num0 + num1];}, 'subdictfunc' => ^{ return({'test' => {'testfunc' => ^{ return 'wtf was that?!'; }}}); }, 'subdict' => {'test' => ^{ return 'subdict function'; }}}; dictClass['subdictfunc']()['test']['testfunc']();"),
-                NUnit.Framework.Is.EqualTo("wtf was that?!"));
+                Is.EqualTo("wtf was that?!"));
         }
 
         [Test]
-        public void TestVarArgAnonFunc() {
-            var varArg = new FunctionArgument("p") {IsVarArg = true};
+        public void TestVarArgAnonFunc()
+        {
+            var varArg = new FunctionArgument("p") { IsVarArg = true };
             var expect = F("dragon$anonFunc0", A(new FunctionArgument("x"), varArg), "for(pp in p) { i * pp; };");
-            var real = CompileAndExecute("^(x,*p) { for(pp in p) { i * pp; }; };");
-            Assert.That(real, Is.Function(expect));
+            var real   = CompileAndExecute("^(x,*p) { for(pp in p) { i * pp; }; };");
+            Assert.That(real, DragonIs.Function(expect));
         }
 
         [Test]
-        public void TestYieldNoArgs() {
+        public void TestYieldNoArgs()
+        {
             Assert.That(
                 CompileAndExecute(
                     "def times(a) { b = 0; while(b < a) { yield; b+=1; }; }; z = 5; times(3) { z += 5; }; z;"),
-                NUnit.Framework.Is.EqualTo(20));
+                Is.EqualTo(20));
         }
 
         [Test]
-        public void TestYieldOneArg() {
+        public void TestYieldOneArg()
+        {
             Assert.That(
                 CompileAndExecute(
                     "def each(a) { for(o in a) { yield o; }; }; z = 5; each([5,10,10]) { |x| z += x; }; z;"),
-                NUnit.Framework.Is.EqualTo(30));
+                Is.EqualTo(30));
         }
 
         [Test]
         public void TestYieldCSharp()
         {
             var yieldFunc = CompileAndExecute("def each (a) { for(o in a) { yield o; }; };");
-            var z = 5;
+            var z         = 5;
             yieldFunc(new List<int> { 5, 10, 10 }, (Action<int>)(x => { z += x; }));
-            Assert.That(z, NUnit.Framework.Is.EqualTo(30));
+            Assert.That(z, Is.EqualTo(30));
         }
 
         [Test]
@@ -653,13 +717,15 @@ namespace EternityChronicles.Tests.IronDragon {
                 dragonengine.CreateScriptSourceFromString("def dragoneach (a) { for(o in a) { yield o; }; };");
 
             var rubyengine = GetRuntime().GetEngine("IronRuby");
-            var rubysource = rubyengine.CreateScriptSourceFromString("z = 5; dragoneach.call([5,10,10], lambda { |x| z = z + x; }); z;");
+            var rubysource =
+                rubyengine.CreateScriptSourceFromString(
+                    "z = 5; dragoneach.call([5,10,10], lambda { |x| z = z + x; }); z;");
 
             var scope = dragonengine.CreateScope();
 
             dragonsource.Execute(scope);
 
-            Assert.That(rubysource.Execute(scope), NUnit.Framework.Is.EqualTo(30));
+            Assert.That(rubysource.Execute(scope), Is.EqualTo(30));
         }
     }
 }

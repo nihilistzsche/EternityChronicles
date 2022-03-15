@@ -28,92 +28,92 @@ using NUnit.Framework;
 namespace EternityChronicles.Tests.ECX
 {
     [TestFixture]
-	public class ModuleLoaderTests
-	{
+    public class ModuleLoaderTests
+    {
         [OneTimeSetUp]
         public void SetUp()
         {
             Directory.SetCurrentDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName);
-		}
+        }
 
         // ecx-ld-01 - Loading with no dependencies, single dir search path.
         [Test]
-		public void TestLoadingSingleDir ()
-		{
-			ModuleController _mc = new ModuleController ();
+        public void TestLoadingSingleDir()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
-			_mc.LoadModule ("ecx-ld-01");
+            _mc.LoadModule("ecx-ld-01");
 
-			Assert.IsTrue (_mc.IsLoaded("ecx-ld-01"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-ld-01"));
+        }
 
-		// ecx-ld-02 - Loading with no dependencies, single dir search path, not found.
-		[Test]
-		public void TestLoadingSingleDirNotFound ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // ecx-ld-02 - Loading with no dependencies, single dir search path, not found.
+        [Test]
+        public void TestLoadingSingleDirNotFound()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
             Assert.Throws<ModuleNotFoundException>(() => { _mc.LoadModule("ecx-ld-02"); });
-		}
+        }
 
-		// ecx-ld-03 - Loading with no dependencies, multiple dir search path, first dir.
-		[Test]
-		public void TestLoadingMultipleDirFirstDir ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // ecx-ld-03 - Loading with no dependencies, multiple dir search path, first dir.
+        [Test]
+        public void TestLoadingMultipleDirFirstDir()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-2");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-3");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
-			_mc.LoadModule ("ecx-ld-03");
+            _mc.LoadModule("ecx-ld-03");
 
-			Assert.IsTrue(_mc.IsLoaded("ecx-ld-03"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-ld-03"));
+        }
 
-		// ecx-ld-04 - Loading with no dependencies, multiple dir search path, middle dir.
-		[Test]
-		public void TestLoadingMultipleDirMiddleDir ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // ecx-ld-04 - Loading with no dependencies, multiple dir search path, middle dir.
+        [Test]
+        public void TestLoadingMultipleDirMiddleDir()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-2");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-3");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
-			_mc.LoadModule ("ecx-ld-04");
-			Assert.IsTrue(_mc.IsLoaded("ecx-ld-04"));
-		}
+            _mc.LoadModule("ecx-ld-04");
+            Assert.IsTrue(_mc.IsLoaded("ecx-ld-04"));
+        }
 
-		// ecx-ld-05 - Loading with no dependencies, multiple dir search path, last dir.
-		[Test]
-		public void TestLoadingMultipleDirLastDir ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // ecx-ld-05 - Loading with no dependencies, multiple dir search path, last dir.
+        [Test]
+        public void TestLoadingMultipleDirLastDir()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-2");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-3");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
-			_mc.LoadModule ("ecx-ld-05");
-			Assert.IsTrue(_mc.IsLoaded("ecx-ld-05"));
-		}
+            _mc.LoadModule("ecx-ld-05");
+            Assert.IsTrue(_mc.IsLoaded("ecx-ld-05"));
+        }
 
-		// ecx-ld-06 - Loading with no dependencies, multiple dir search path, not found.
-		[Test]
-		public void TestLoadingMultipleDirNotFound ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // ecx-ld-06 - Loading with no dependencies, multiple dir search path, not found.
+        [Test]
+        public void TestLoadingMultipleDirNotFound()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-2");
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-ld-3");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
-			Assert.Throws<ModuleNotFoundException>(() => _mc.LoadModule ("ecx-ld-06"));
-		}
-	}
+            Assert.Throws<ModuleNotFoundException>(() => _mc.LoadModule("ecx-ld-06"));
+        }
+    }
 }

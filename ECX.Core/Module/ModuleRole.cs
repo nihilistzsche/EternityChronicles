@@ -26,64 +26,62 @@ using System.Reflection;
 namespace ECX.Core.Module
 {
     /// <summary>
-    /// Handler used to register a new producer of the role.
+    ///     Handler used to register a new producer of the role.
     /// </summary>
     /// <remarks>See <see href="roles.html">Roles</see> for more information on roles.</remarks>
-    public delegate void RoleRegisterHandler (Assembly asm, Type basetype);
-	
-	/// <summary>
-	/// Handler used to unregister a producer of the role.
-	/// </summary>
-	/// <remarks>See <see href="roles.html">Roles</see> for more information on roles.</remarks>
-	public delegate void RoleUnregisterHandler (Assembly asm);
-	
-	/// <summary>
-	/// This represents a role that modules can fulfill.
-	/// </summary>
-	/// <remarks>See <see href="roles.html">Roles</see> for more information on roles.</remarks>
-	public class ModuleRole {
-		private Type _baseType;
-		private string _roleName;
-		private RoleRegisterHandler _regHandler;
-		private RoleUnregisterHandler _unregHandler;
-		
-		/// <summary>
-		/// Creates a new ModuleRole argument.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="name">The name of the role.</param>
-		/// <param name="basetype">The basetype of the role.</param>
-		/// <param name="regHandler">The registration handler for the role.</param>
-		/// <param name="unregHandler">The unregistration handler for the role.</param>
-		public ModuleRole (string name, Type basetype, RoleRegisterHandler regHandler, RoleUnregisterHandler unregHandler) {
-			_baseType = basetype;
-			_roleName = name;
-			_regHandler = regHandler;
-			_unregHandler = unregHandler;
-		}
-		
-		/// <summary>
-		/// Gets the base type of the role.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public Type BaseType => _baseType;
+    public delegate void RoleRegisterHandler(Assembly asm, Type basetype);
 
-		/// <summary>
-		/// Gets the name of the role.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public string RoleName => _roleName;
+    /// <summary>
+    ///     Handler used to unregister a producer of the role.
+    /// </summary>
+    /// <remarks>See <see href="roles.html">Roles</see> for more information on roles.</remarks>
+    public delegate void RoleUnregisterHandler(Assembly asm);
 
-		/// <summary>
-		/// Gets the registration handler for the role.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public RoleRegisterHandler RegistrationHandler => _regHandler;
+    /// <summary>
+    ///     This represents a role that modules can fulfill.
+    /// </summary>
+    /// <remarks>See <see href="roles.html">Roles</see> for more information on roles.</remarks>
+    public class ModuleRole
+    {
+        /// <summary>
+        ///     Creates a new ModuleRole argument.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="name">The name of the role.</param>
+        /// <param name="basetype">The basetype of the role.</param>
+        /// <param name="regHandler">The registration handler for the role.</param>
+        /// <param name="unregHandler">The unregistration handler for the role.</param>
+        public ModuleRole(string  name, Type basetype, RoleRegisterHandler regHandler,
+            RoleUnregisterHandler unregHandler)
+        {
+            BaseType              = basetype;
+            RoleName              = name;
+            RegistrationHandler   = regHandler;
+            UnregistrationHandler = unregHandler;
+        }
 
-		/// <summary>
-		/// Gets the registration handler for the role.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public RoleUnregisterHandler UnregistrationHandler => _unregHandler;
-	}
+        /// <summary>
+        ///     Gets the base type of the role.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public Type BaseType { get; }
+
+        /// <summary>
+        ///     Gets the name of the role.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public string RoleName { get; }
+
+        /// <summary>
+        ///     Gets the registration handler for the role.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public RoleRegisterHandler RegistrationHandler { get; }
+
+        /// <summary>
+        ///     Gets the registration handler for the role.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public RoleUnregisterHandler UnregistrationHandler { get; }
+    }
 }

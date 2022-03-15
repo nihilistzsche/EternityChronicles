@@ -5,10 +5,9 @@ namespace DragonMUD.StateMachine
 {
     public interface IState
     {
-        void Process(ConnectionCoordinator coordinator, string input);
+        BaseInterpreter Interpreter { get; }
+        void            Process(ConnectionCoordinator coordinator, string input);
 
         void SendSoftRebootMessage(ConnectionCoordinator coordinator);
-        
-		BaseInterpreter Interpreter { get; }
     }
 }

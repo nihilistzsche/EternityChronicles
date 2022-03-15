@@ -28,229 +28,229 @@ using NUnit.Framework;
 namespace EternityChronicles.Tests.ECX
 {
     [TestFixture]
-	public class DependencyResolverTests
-	{
+    public class DependencyResolverTests
+    {
         [OneTimeSetUp]
         public void SetUp()
         {
             Directory.SetCurrentDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName);
-		}
+        }
 
         // ==
         [Test]
-		public void TestDependencyResolveEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        public void TestDependencyResolveEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-01a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-01a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-01a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-01b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-01a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-01b"));
+        }
 
-		// !=
-		[Test]
-		public void TestDependencyResolveNotEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // !=
+        [Test]
+        public void TestDependencyResolveNotEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-02a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-02a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-02a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-02b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-02a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-02b"));
+        }
 
-		// <<
-		[Test]
-		public void TestDependencyResolveLessThan ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // <<
+        [Test]
+        public void TestDependencyResolveLessThan()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-03a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-03a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-03a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-03b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-03a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-03b"));
+        }
 
-		// >>
-		[Test]
-		public void TestDependencyResolveGreaterThan ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // >>
+        [Test]
+        public void TestDependencyResolveGreaterThan()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-04a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-04a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-04a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-04b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-04a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-04b"));
+        }
 
-		// <=
-		[Test]
-		public void TestDependencyResolveLessThanEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // <=
+        [Test]
+        public void TestDependencyResolveLessThanEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-05a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-05a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-05a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-05b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-05a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-05b"));
+        }
 
-		// >=
-		[Test]
-		public void TestDependencyResolveGreaterThanEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // >=
+        [Test]
+        public void TestDependencyResolveGreaterThanEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-06a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-06a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-06a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-06b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-06a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-06b"));
+        }
 
-		// ##
-		[Test]
-		public void TestDependencyResolveLoaded ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // ##
+        [Test]
+        public void TestDependencyResolveLoaded()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			// This will look for a specific version of ecx-dr-01b
-			_mc.LoadModule ("ecx-dr-07a");
+            // This will look for a specific version of ecx-dr-01b
+            _mc.LoadModule("ecx-dr-07a");
 
-			// If it worked, we should have a domain for ecx-dr-01b
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-07a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-07b"));
-		}
+            // If it worked, we should have a domain for ecx-dr-01b
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-07a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-07b"));
+        }
 
-		// (&& (==) (>=))
-		[Test]
-		public void TestDependencyResolveAndEqualGreaterThanEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (&& (==) (>=))
+        [Test]
+        public void TestDependencyResolveAndEqualGreaterThanEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-08a");
+            _mc.LoadModule("ecx-dr-08a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-08a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-08b"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-08c"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-08a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-08b"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-08c"));
+        }
 
-		// (|| (>>) (<<))
-		[Test]
-		public void TestDependencyResolveOrGreaterThanLessThan ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (|| (>>) (<<))
+        [Test]
+        public void TestDependencyResolveOrGreaterThanLessThan()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-09a");
+            _mc.LoadModule("ecx-dr-09a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-09a"));
-			Assert.IsFalse (_mc.IsLoaded ("ecx-dr-09b"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-09c"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-09a"));
+            Assert.IsFalse(_mc.IsLoaded("ecx-dr-09b"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-09c"));
+        }
 
-		// (^^ (>>) (!=))
-		[Test]
-		public void TestDependencyResolveXorGreaterThanNotEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (^^ (>>) (!=))
+        [Test]
+        public void TestDependencyResolveXorGreaterThanNotEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-10a");
+            _mc.LoadModule("ecx-dr-10a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-10a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-10b"));
-			Assert.IsFalse (_mc.IsLoaded ("ecx-dr-10c"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-10a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-10b"));
+            Assert.IsFalse(_mc.IsLoaded("ecx-dr-10c"));
+        }
 
-		// (!#))
-		[Test]
-		public void TestDependencyResolveNotLoaded ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (!#))
+        [Test]
+        public void TestDependencyResolveNotLoaded()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-11a");
+            _mc.LoadModule("ecx-dr-11a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-11a"));
-			Assert.IsFalse (_mc.IsLoaded ("ecx-dr-11b"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-11a"));
+            Assert.IsFalse(_mc.IsLoaded("ecx-dr-11b"));
+        }
 
-		// (?? (>=))
-		[Test]
-		public void TestDependencyResolveOptionalGreaterThanEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (?? (>=))
+        [Test]
+        public void TestDependencyResolveOptionalGreaterThanEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-12a");
+            _mc.LoadModule("ecx-dr-12a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-12a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-12b"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-12a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-12b"));
+        }
 
-		// (&& (|| (==) (!=)) (?? (##)))
-		[Test]
-		public void TestDependencyResolveAndOrEqualNotEqualOptionalLoaded ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (&& (|| (==) (!=)) (?? (##)))
+        [Test]
+        public void TestDependencyResolveAndOrEqualNotEqualOptionalLoaded()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-13a");
+            _mc.LoadModule("ecx-dr-13a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-13a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-13b"));
-			Assert.IsFalse (_mc.IsLoaded ("ecx-dr-13c"));
-			Assert.IsFalse (_mc.IsLoaded ("ecx-dr-13d"));
-		}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-13a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-13b"));
+            Assert.IsFalse(_mc.IsLoaded("ecx-dr-13c"));
+            Assert.IsFalse(_mc.IsLoaded("ecx-dr-13d"));
+        }
 
-		// (|| (&& (##) (##)) (==)))
-		[Test]
-		public void TestDependencyResolveOrAndLoadedLoadedEqual ()
-		{
-			ModuleController _mc = new ModuleController ();
+        // (|| (&& (##) (##)) (==)))
+        [Test]
+        public void TestDependencyResolveOrAndLoadedLoadedEqual()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-dr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-dr");
 
-			_mc.LoadModule ("ecx-dr-14a");
+            _mc.LoadModule("ecx-dr-14a");
 
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-14a"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-14b"));
-			Assert.IsTrue (_mc.IsLoaded ("ecx-dr-14c"));
-			Assert.IsFalse (_mc.IsLoaded ("ecx-dr-14d"));
-		}
-	}
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-14a"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-14b"));
+            Assert.IsTrue(_mc.IsLoaded("ecx-dr-14c"));
+            Assert.IsFalse(_mc.IsLoaded("ecx-dr-14d"));
+        }
+    }
 }

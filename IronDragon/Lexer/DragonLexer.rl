@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DragonLexer.rl" Company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -209,6 +209,9 @@
 		# identifiers for things like variables and such
 		alpha_u alnum_u* { Token("IDENTIFIER"); };
 
+        # global identifier
+        '$$' alnum_u* { Token("IDENTIFIER"); };
+        
 		# single quoted string
 		sliteralChar = [^'\\] | newline | ( '\\' . any_count_line );
 		'\'' . sliteralChar* . '\'' { String(); };

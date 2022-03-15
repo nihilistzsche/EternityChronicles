@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
@@ -25,11 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EternityChronicles.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronDragon", "IronDragon\IronDragon.csproj", "{D61300E0-D2F5-453C-BB99-91C441E8397B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECMSBuildTasks", "ECMSBuildTasks\ECMSBuildTasks.csproj", "{C7C9B0A7-123E-49AB-BCCC-5CCD9AE34B5A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{C47DBBF5-9029-4A94-A6ED-902F3A815FC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDragon", "IDragon\IDragon.csproj", "{B70799E1-F245-4336-BE71-12F8D7CBB5C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECMSBuildTasks", "ECMSBuildTasks\ECMSBuildTasks.csproj", "{E5AFB4CF-8CB1-4E9A-9861-5B8CDAFA448B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,14 +81,14 @@ Global
 		{D61300E0-D2F5-453C-BB99-91C441E8397B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D61300E0-D2F5-453C-BB99-91C441E8397B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D61300E0-D2F5-453C-BB99-91C441E8397B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7C9B0A7-123E-49AB-BCCC-5CCD9AE34B5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7C9B0A7-123E-49AB-BCCC-5CCD9AE34B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7C9B0A7-123E-49AB-BCCC-5CCD9AE34B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7C9B0A7-123E-49AB-BCCC-5CCD9AE34B5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B70799E1-F245-4336-BE71-12F8D7CBB5C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B70799E1-F245-4336-BE71-12F8D7CBB5C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B70799E1-F245-4336-BE71-12F8D7CBB5C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B70799E1-F245-4336-BE71-12F8D7CBB5C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5AFB4CF-8CB1-4E9A-9861-5B8CDAFA448B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5AFB4CF-8CB1-4E9A-9861-5B8CDAFA448B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5AFB4CF-8CB1-4E9A-9861-5B8CDAFA448B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5AFB4CF-8CB1-4E9A-9861-5B8CDAFA448B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace CSLog
@@ -6,6 +6,7 @@ namespace CSLog
     public class ConsoleListener : IListener
     {
         public Formatter Formatter { get; private set; }
+
         public void SetFormatter(Formatter formatter)
         {
             Formatter = formatter;
@@ -13,9 +14,9 @@ namespace CSLog
 
         public void LogMessage(string message, LogLevel level, string channelName)
         {
-            var stream = (level == LogLevel.Fatal || level == LogLevel.Critical)
-                ? Console.OpenStandardError()
-                : Console.OpenStandardOutput();
+            var stream = level == LogLevel.Fatal || level == LogLevel.Critical
+                             ? Console.OpenStandardError()
+                             : Console.OpenStandardOutput();
 
             var formatter = Formatter ?? new DefaultFormatter();
 
@@ -44,7 +45,7 @@ namespace CSLog
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
 
-            var temp = $"{colorForMessage}{message}";
+            var temp     = $"{colorForMessage}{message}";
             var imessage = formatter.FormatString($"`w[`c{channelName}`w] {temp}`x\n");
 
             var bytes = Encoding.UTF8.GetBytes(imessage);

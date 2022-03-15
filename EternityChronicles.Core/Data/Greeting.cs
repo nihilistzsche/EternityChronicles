@@ -1,11 +1,9 @@
-﻿using XDL;
+using XDL;
 
 namespace EternityChronicles.Core.Data
 {
     public class Greeting : IDataSchema<Greeting>
     {
-        public string DataType => "greeting";
-
         private string _text;
 
         // ReSharper disable once ConvertToAutoProperty
@@ -15,6 +13,8 @@ namespace EternityChronicles.Core.Data
 
             set => _text = value;
         }
+
+        public string DataType => "greeting";
 
         public string GetKeyForTag(string tag)
         {

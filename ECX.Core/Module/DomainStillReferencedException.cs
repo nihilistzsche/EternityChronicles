@@ -19,36 +19,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
- 
-namespace ECX.Core.Module {
-	using System;
-	
-	/// <summary>
-	/// Exception thrown when an attempt is made to unload
-	/// a domain that is still referenced.
-	/// </summary>
-	/// <remarks>None.</remarks>
-	/// <preliminary />
-	public class DomainStillReferencedException : Exception {
-		/// <summary>
-		/// Creates a new DomainStillReferencedException object.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public DomainStillReferencedException ( ) : base ( ) { }
-		
-		/// <summary>
-		/// Creates a new DomainStillReferencedException object with the given message.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="message">The message to be given when the execption is thrown.</param>
-		public DomainStillReferencedException (string message) : base (message) { }
-		
-		/// <summary>
-		/// Creates a new DomainStillReferencedException object with the given message and inner exception.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="message">The message to be given when the exception is thrown.</param>
-		/// <param name="innerException">The inner exception of this exception.</param>
-		public DomainStillReferencedException (string message, Exception innerException) : base (message, innerException) { }
-	}
+
+using System;
+
+namespace ECX.Core.Module
+{
+    /// <summary>
+    ///     Exception thrown when an attempt is made to unload
+    ///     a domain that is still referenced.
+    /// </summary>
+    /// <remarks>None.</remarks>
+    /// <preliminary />
+    public class DomainStillReferencedException : Exception
+    {
+        /// <summary>
+        ///     Creates a new DomainStillReferencedException object.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public DomainStillReferencedException()
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new DomainStillReferencedException object with the given message.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="message">The message to be given when the execption is thrown.</param>
+        public DomainStillReferencedException(string message) : base(message)
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new DomainStillReferencedException object with the given message and inner exception.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="message">The message to be given when the exception is thrown.</param>
+        /// <param name="innerException">The inner exception of this exception.</param>
+        public DomainStillReferencedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
 }

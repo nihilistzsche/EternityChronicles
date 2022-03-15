@@ -15,32 +15,17 @@ namespace DragonMUD.Interpreters
 {
     public class CommandInterpreter : BaseInterpreter
     {
-        public class CommandInfo
+        public CommandInterpreter()
         {
-            public string name;
-            
-            public MethodInfo method;
-
-            public List<string> flags;
-
-            public Dictionary<string, string> help;
-
-            public dynamic owner;
-            
-            public int minLevel;
+            AdditionalLogics = new List<CommandInterpreterLogic>();
+            RegisterLogicInternal(this);
         }
 
         public CommandInterpreterLogic Logic { get; private set; }
-        
-        public List<CommandInterpreterLogic> AdditionalLogics { get; }
-        
-        public Dictionary<string, CommandInfo> RegisteredCommands { get; private set; }
 
-        public CommandInterpreter() : base()
-        {
-            AdditionalLogics = new List<CommandInterpreterLogic>();
-            RegisterLogicInternal(this, false);
-        }
+        public List<CommandInterpreterLogic> AdditionalLogics { get; }
+
+        public Dictionary<string, CommandInfo> RegisteredCommands { get; private set; }
 
         private static bool VerifyMethodSignature(MethodInfo method)
         {
@@ -50,75 +35,61 @@ namespace DragonMUD.Interpreters
             return args[0].ParameterType == typeof(ConnectionCoordinator);
         }
 
-		public void Test(out int x)
-		{
-			x = 17;
-		}
+        public void Test(out int x)
+        {
+            x = 17;
+        }
 
         private void RegisterCommand(dynamic logic, MethodInfo method)
         {
             if (!VerifyMethodSignature(method))
             {
-                Log.LogMessage("dragonmud", LogLevel.Debug, $"Method #{method.Name} from logic {logic.GetType().Name} does not have a valid signature, and will not be registered.  DragonMUD.Network.ConnectionCoordinator must always be the first argument type.");
+                Log.LogMessage("dragonmud", LogLevel.Debug,
+                               $"Method #{method.Name} from logic {logic.GetType().Name} does not have a valid signature, and will not be registered.  DragonMUD.Network.ConnectionCoordinator must always be the first argument type.");
                 return;
             }
-            
+
             var commandAttribute = method.GetCustomAttribute<CommandAttribute>();
 
             var info = new CommandInfo
-            {
-                name = commandAttribute.Name,
-                method = method,
-                flags = commandAttribute.Flags,
-                help =
-                {
-                    ["short"] = commandAttribute.ShortHelp,
-                    ["long"] = commandAttribute.LongHelp
-                },
-                owner = logic,
-            };
+                       {
+                           name   = commandAttribute.Name,
+                           method = method,
+                           flags  = commandAttribute.Flags,
+                           help =
+                           {
+                               ["short"] = commandAttribute.ShortHelp,
+                               ["long"]  = commandAttribute.LongHelp
+                           },
+                           owner = logic
+                       };
 
             RegisteredCommands.Add(commandAttribute.Name, info);
-            commandAttribute.Aliases.ForEach((alias) =>
-            {
-                RegisteredCommands.Add(alias, info);
-            });
+            commandAttribute.Aliases.ForEach(alias => { RegisteredCommands.Add(alias, info); });
         }
 
-		protected void RegisterLogicInternal(object logic, bool replaceDefault = false)
-		{
-			if (logic is CommandInterpreterLogic)
-			{
-				if (replaceDefault)
-				{
-					if (Logic != null && !AdditionalLogics.Contains(Logic))
-					{
-						AdditionalLogics.Add(Logic);
-					}
+        protected void RegisterLogicInternal(object logic, bool replaceDefault = false)
+        {
+            if (logic is CommandInterpreterLogic logic1)
+            {
+                if (replaceDefault)
+                {
+                    if (Logic != null && !AdditionalLogics.Contains(Logic)) AdditionalLogics.Add(Logic);
 
-					if (AdditionalLogics.Contains(logic))
-					{
-						AdditionalLogics.Remove((CommandInterpreterLogic)logic);
-					}
+                    if (AdditionalLogics.Contains(logic1)) AdditionalLogics.Remove(logic1);
 
-					Logic = logic as CommandInterpreterLogic;
-					if (Logic != null)
-					{
-						Logic.Interpreter = this;
-					}
-				}
-				else
-				{
-					if (!AdditionalLogics.Contains(logic))
-					{
-						AdditionalLogics.Add((CommandInterpreterLogic)logic);
-					}
-				}
-			}
+                    Logic = logic1;
+                    if (Logic != null) Logic.Interpreter = this;
+                }
+                else
+                {
+                    if (!AdditionalLogics.Contains(logic1)) AdditionalLogics.Add(logic1);
+                }
+            }
 
             var commandMethods =
                 from method in logic.GetType()
-                    .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                    .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 where method.GetCustomAttribute<CommandAttribute>() != null
                 select method;
 
@@ -128,13 +99,14 @@ namespace DragonMUD.Interpreters
             }
         }
 
-        private bool ValidateInput(CommandInfo command, ConnectionCoordinator coordinator, bool onlyFlagsAndLevel, string[] parts)
+        private bool ValidateInput(CommandInfo command, ConnectionCoordinator coordinator, bool onlyFlagsAndLevel,
+            string[]                           parts)
         {
             var numArgs = command.method.GetParameters().Length;
             if (!onlyFlagsAndLevel)
             {
                 var numOpt = (from p in command.method.GetParameters() where p.HasDefaultValue select p).Count();
-                if (parts.Length < (numArgs - numOpt))
+                if (parts.Length < numArgs - numOpt)
                 {
                     coordinator.SendMessage($"#{numArgs} arguments expected, #{parts.Length} gotten.");
                     return false;
@@ -142,9 +114,9 @@ namespace DragonMUD.Interpreters
             }
 
             var failedFlags = (from flag in command.flags
-                where !coordinator.IsFlagSet(flag) || !coordinator["current-character"]
-                          ?.IsFlagSet(flag)
-                select flag).Any();
+                               where !coordinator.IsFlagSet(flag) || !coordinator["current-character"]
+                                       ?.IsFlagSet(flag)
+                               select flag).Any();
 
             if (failedFlags)
                 return false;
@@ -155,14 +127,16 @@ namespace DragonMUD.Interpreters
 
         private CommandInfo FindCommand(string name)
         {
-            return (from kvp in RegisteredCommands where kvp.Key.StartsWith(name, StringComparison.InvariantCulture) select kvp.Value).First();
+            return (from kvp in RegisteredCommands
+                    where kvp.Key.StartsWith(name, StringComparison.InvariantCulture)
+                    select kvp.Value).First();
         }
-        
+
         public override void Interpret(ConnectionCoordinator coordinator, InputEventArgs input)
         {
             var regex = new Regex(@"\s");
             var parts = regex.Split(input.Input.ToLower());
-            var info = FindCommand(parts[0].ToLower());
+            var info  = FindCommand(parts[0].ToLower());
 
             if (info == null)
             {
@@ -179,28 +153,30 @@ namespace DragonMUD.Interpreters
                         Logic.RepeatCommands(coordinator);
                     return;
                 }
+
                 coordinator.SendMessage(info.help["short"]);
                 return;
             }
+
             if (!ValidateInput(info, coordinator, false, parts))
             {
                 coordinator.SendMessage("Unknown command entered.");
                 return;
             }
 
-            var xargs = new List<object>(parts) {[0] = coordinator};
-            if (xargs.Count() > (info.method.GetParameters().Length))
+            var xargs = new List<object>(parts) { [0] = coordinator };
+            if (xargs.Count() > info.method.GetParameters().Length)
             {
                 var zargs = xargs.Skip(info.method.GetParameters().Length)
-                    .Take(xargs.Count() - info.method.GetParameters().Length);
+                                 .Take(xargs.Count() - info.method.GetParameters().Length);
                 xargs = xargs.Take(info.method.GetParameters().Length).ToList();
                 xargs.Add(string.Join(" ", zargs));
             }
-            
+
             Dynamic.InvokeMember(info.owner, info.method.Name, xargs);
         }
 
-        [Command("help", "", 1, "", "Displays long help for the given command.", "")]
+        [Command("help", "", 1, "", "Displays long help for the given command.")]
         public void HelpCommand(ConnectionCoordinator coordinator, string command = null)
         {
             if (command == null)
@@ -210,7 +186,7 @@ namespace DragonMUD.Interpreters
             }
 
             var info = FindCommand(command);
-            if (info == null || !ValidateInput(info, coordinator, true, new string[] {}))
+            if (info == null || !ValidateInput(info, coordinator, true, new string[] { }))
             {
                 coordinator.SendMessage("Unknown command.");
                 return;
@@ -225,14 +201,12 @@ namespace DragonMUD.Interpreters
             }
             else
             {
-                using (var fs =
+                using var fs =
                     new FileStream($"$(BundleDir)/lib/help/#{info.help["long"]}".ReplaceAllVariables(), FileMode.Open,
-                        FileAccess.Read))
-                {
-                    var bytes = new byte[fs.Length];
-                    fs.Read(bytes, 0, (int)fs.Length);
-                    coordinator.SendMessage(Encoding.UTF8.GetString(bytes));
-                }
+                                   FileAccess.Read);
+                var bytes = new byte[fs.Length];
+                fs.Read(bytes, 0, (int)fs.Length);
+                coordinator.SendMessage(Encoding.UTF8.GetString(bytes));
             }
         }
 
@@ -241,8 +215,22 @@ namespace DragonMUD.Interpreters
         {
             var info = FindCommand(command);
             coordinator.SendMessage(info == null
-                ? "No command found."
-                : $"Command #{info.name}, Optional Arguments: #{(from p in info.method.GetParameters() where p.HasDefaultValue select p).Count()}, Flags Required: #{string.Join("", "", info.flags)}");
+                                        ? "No command found."
+                                        : $"Command #{info.name}, Optional Arguments: #{(from p in info.method.GetParameters() where p.HasDefaultValue select p).Count()}, Flags Required: #{string.Join("", "", info.flags)}");
+        }
+
+        public class CommandInfo
+        {
+            public List<string> flags;
+
+            public Dictionary<string, string> help;
+
+            public MethodInfo method;
+
+            public int    minLevel;
+            public string name;
+
+            public dynamic owner;
         }
     }
 }

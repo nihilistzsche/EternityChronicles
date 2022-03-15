@@ -1,133 +1,143 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C28EB6DD-4726-4707-A2AC-DC91CD6FBDBF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DragonMUD</RootNamespace>
-    <AssemblyName>DragonMUD</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <LangVersion>9</LangVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>true</ConsolePause>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BaseObject.cs" />
-    <Compile Include="Data\Character\Account.cs" />
-    <Compile Include="Data\Character\Character.cs" />
-    <Compile Include="Data\Character\Stat.cs" />
-    <Compile Include="Data\Race.cs" />
-    <Compile Include="Interpreters\BasicInterpreter.cs" />
-    <Compile Include="Interpreters\CommandInterpreter.cs" />
-    <Compile Include="Interpreters\CommandInterpreterLogic.cs" />
-    <Compile Include="Interpreters\BaseInterpreter.cs" />
-    <Compile Include="Interpreters\Logic\CommandAttribute.cs" />
-    <Compile Include="StateMachine\Helpers\IAccountMenu.cs" />
-    <Compile Include="StateMachine\Helpers\IMenu.cs" />
-    <Compile Include="StateMachine\Helpers\MenuHandler.cs" />
-    <Compile Include="StateMachine\IState.cs" />
-    <Compile Include="StateMachine\Workflows\Workflow.cs" />
-    <Compile Include="StateMachine\Workflows\WorkflowStep.cs" />
-    <Compile Include="Utility\ColorProcessWriteHook.cs" />
-    <Compile Include="Utility\IGameLoopObject.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Network\ConnectionCoordinator.cs" />
-    <Compile Include="Network\ConnectionPool.cs" />
-    <Compile Include="Network\Server.cs" />
-    <Compile Include="Utility\VariableHook.cs" />
-    <Compile Include="Utility\InfoDisplay.cs" />
-    <Compile Include="Utility\DragonMUDStringExtensions.cs" />
-    <Compile Include="Utility\DragonMUDProperties.cs" />
-    <Compile Include="StateMachine\AccountNameState.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CSLog\CSLog.csproj">
-      <Project>{af149858-2fa1-478f-9134-cc5b9fd8e538}</Project>
-      <Name>CSLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IronDragon\IronDragon.csproj">
-      <Project>{d61300e0-d2f5-453c-bb99-91c441e8397b}</Project>
-      <Name>IronDragon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XDL\XDL.csproj">
-      <Project>{c931eb52-2c60-496a-a691-8311c218ddf5}</Project>
-      <Name>XDL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MDK.Master\MDK.Master.csproj">
-      <Project>{8D95F3A1-4891-4366-8B2D-A27851971062}</Project>
-      <Name>MDK.Master</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="DynamicLanguageRuntime">
-      <Version>1.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="Dynamitey">
-      <Version>2.0.10.189</Version>
-    </PackageReference>
-    <PackageReference Include="ImpromptuInterface">
-      <Version>7.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Rxx_Experimental">
-      <Version>1.3.4451.34132</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>5.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.InteropServices.WindowsRuntime">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.4</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="Theraot.Core">
-      <Version>3.2.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{C28EB6DD-4726-4707-A2AC-DC91CD6FBDBF}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>DragonMUD</RootNamespace>
+        <AssemblyName>DragonMUD</AssemblyName>
+        <FileAlignment>512</FileAlignment>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <LangVersion>9</LangVersion>
+        <TargetFrameworkProfile/>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <ConsolePause>true</ConsolePause>
+        <SignAssembly>false</SignAssembly>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Net.Http"/>
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="BaseObject.cs"/>
+        <Compile Include="Data\Character\Account.cs"/>
+        <Compile Include="Data\Character\Character.cs"/>
+        <Compile Include="Data\Character\Stat.cs"/>
+        <Compile Include="Data\Race.cs"/>
+        <Compile Include="Interpreters\BasicInterpreter.cs"/>
+        <Compile Include="Interpreters\CommandInterpreter.cs"/>
+        <Compile Include="Interpreters\CommandInterpreterLogic.cs"/>
+        <Compile Include="Interpreters\BaseInterpreter.cs"/>
+        <Compile Include="Interpreters\Logic\CommandAttribute.cs"/>
+        <Compile Include="Interpreters\Logic\StatAllocationLogic.cs"/>
+        <Compile Include="StateMachine\Helpers\IAccountMenu.cs"/>
+        <Compile Include="StateMachine\Helpers\IMenu.cs"/>
+        <Compile Include="StateMachine\Helpers\MenuHandler.cs"/>
+        <Compile Include="StateMachine\IState.cs"/>
+        <Compile Include="StateMachine\Workflows\Workflow.cs"/>
+        <Compile Include="StateMachine\Workflows\WorkflowStep.cs"/>
+        <Compile Include="Utility\ColorProcessWriteHook.cs"/>
+        <Compile Include="Utility\IGameLoopObject.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Network\ConnectionCoordinator.cs"/>
+        <Compile Include="Network\ConnectionPool.cs"/>
+        <Compile Include="Network\Server.cs"/>
+        <Compile Include="Utility\VariableHook.cs"/>
+        <Compile Include="Utility\InfoDisplay.cs"/>
+        <Compile Include="Utility\DragonMUDStringExtensions.cs"/>
+        <Compile Include="Utility\DragonMUDProperties.cs"/>
+        <Compile Include="StateMachine\AccountNameState.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CSLog\CSLog.csproj">
+            <Project>{af149858-2fa1-478f-9134-cc5b9fd8e538}</Project>
+            <Name>CSLog</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\IronDragon\IronDragon.csproj">
+            <Project>{d61300e0-d2f5-453c-bb99-91c441e8397b}</Project>
+            <Name>IronDragon</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\XDL\XDL.csproj">
+            <Project>{c931eb52-2c60-496a-a691-8311c218ddf5}</Project>
+            <Name>XDL</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\MDK.Master\MDK.Master.csproj">
+            <Project>{8D95F3A1-4891-4366-8B2D-A27851971062}</Project>
+            <Name>MDK.Master</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="app.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AspectInjector">
+            <Version>2.6.0-pre1</Version>
+        </PackageReference>
+        <PackageReference Include="DynamicLanguageRuntime">
+            <Version>1.3.0</Version>
+        </PackageReference>
+        <PackageReference Include="Dynamitey">
+            <Version>2.0.10.189</Version>
+        </PackageReference>
+        <PackageReference Include="ImpromptuInterface">
+            <Version>7.0.1</Version>
+        </PackageReference>
+        <PackageReference Include="IronJint">
+            <Version>1.0.0.1</Version>
+        </PackageReference>
+        <PackageReference Include="Jint">
+            <Version>3.0.0-beta-2037</Version>
+        </PackageReference>
+        <PackageReference Include="Rxx_Experimental">
+            <Version>1.3.4451.34132</Version>
+        </PackageReference>
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+            <Version>6.0.0-preview.5.21301.5</Version>
+        </PackageReference>
+        <PackageReference Include="System.Runtime.InteropServices.WindowsRuntime">
+            <Version>4.3.0</Version>
+        </PackageReference>
+        <PackageReference Include="System.Threading.Tasks.Extensions">
+            <Version>4.5.4</Version>
+        </PackageReference>
+        <PackageReference Include="System.ValueTuple">
+            <Version>4.5.0</Version>
+        </PackageReference>
+        <PackageReference Include="Theraot.Core">
+            <Version>3.2.6</Version>
+        </PackageReference>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
 </Project>

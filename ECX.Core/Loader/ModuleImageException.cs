@@ -19,35 +19,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
- 
-namespace ECX.Core.Loader {
-	using System;
-	
-	/// <summary>
-	/// Thrown if a loaded module is a bad image.
-	/// </summary>
-	/// <remarks>None.</remarks>
-	/// <preliminary />
-	public class ModuleImageException : Exception {
-		/// <summary>
-		/// Creates a new ModuleImageException object.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public ModuleImageException ( ) : base ( ) { }
-		
-		/// <summary>
-		/// Creates a new ModuleImageException object with the given message.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="message">The message to be given when the execption is thrown.</param>
-		public ModuleImageException (string message) : base (message) { }
-		
-		/// <summary>
-		/// Creates a new ModuleImageException object with the given message and inner exception.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="message">The message to be given when the exception is thrown.</param>
-		/// <param name="innerException">The inner exception of this exception.</param>
-		public ModuleImageException (string message, Exception innerException) : base (message, innerException) { }
-	}
+
+using System;
+
+namespace ECX.Core.Loader
+{
+    /// <summary>
+    ///     Thrown if a loaded module is a bad image.
+    /// </summary>
+    /// <remarks>None.</remarks>
+    /// <preliminary />
+    public class ModuleImageException : Exception
+    {
+        /// <summary>
+        ///     Creates a new ModuleImageException object.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public ModuleImageException()
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new ModuleImageException object with the given message.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="message">The message to be given when the execption is thrown.</param>
+        public ModuleImageException(string message) : base(message)
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new ModuleImageException object with the given message and inner exception.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="message">The message to be given when the exception is thrown.</param>
+        /// <param name="innerException">The inner exception of this exception.</param>
+        public ModuleImageException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
 }

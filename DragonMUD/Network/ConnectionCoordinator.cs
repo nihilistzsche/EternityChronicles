@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reactive.Subjects;
-
 using System.Text;
 using CSLog;
 
@@ -21,38 +20,26 @@ namespace DragonMUD.Network
 
     public class InputEventArgs : EventArgs
     {
-        public string Input { get; }
-
         public InputEventArgs(string input)
         {
             Input = input;
         }
+
+        public string Input { get; }
     }
 
     public delegate void InputReceivedHandler(ConnectionCoordinator sender, InputEventArgs e);
 
     public class ConnectionCoordinator : BaseObject
     {
-        public Socket Socket { get; }
-
-        private ISubject<string> Incoming { get; }
-
-        private readonly StringBuilder _inputBuffer = new();
-
-        private ISubject<string> Outgoing { get; }
-
-        private Dictionary<string, IOutputHook> OutputHooks { get; } = new();
-
-        private ConnectionPool Owner { get; }
-
-        public event InputReceivedHandler InputReceived;
-
         private const int InputBufferSize = 1024;
-        private readonly byte[] _inputBufferRaw = new byte[InputBufferSize];
+
+        private readonly StringBuilder _inputBuffer    = new();
+        private readonly byte[]        _inputBufferRaw = new byte[InputBufferSize];
 
         public ConnectionCoordinator(Socket socket, ConnectionPool owner)
         {
-            Owner = owner;
+            Owner  = owner;
             Socket = socket;
 
             if (socket.Connected)
@@ -60,8 +47,8 @@ namespace DragonMUD.Network
                 Incoming = new Subject<string>();
                 Outgoing = new Subject<string>();
 
-                Incoming.Subscribe((s) => ReadData(this, s));
-                Outgoing.Subscribe((s) => Send(this, s));
+                Incoming.Subscribe(s => ReadData(this, s));
+                Outgoing.Subscribe(s => Send(this, s));
 
                 socket.BeginReceive(_inputBufferRaw, 0, InputBufferSize, 0, BeginRead, this);
             }
@@ -70,6 +57,18 @@ namespace DragonMUD.Network
                 owner.RemoveConnection(this);
             }
         }
+
+        public Socket Socket { get; }
+
+        private ISubject<string> Incoming { get; }
+
+        private ISubject<string> Outgoing { get; }
+
+        private Dictionary<string, IOutputHook> OutputHooks { get; } = new();
+
+        private ConnectionPool Owner { get; }
+
+        public event InputReceivedHandler InputReceived;
 
         public void SendMessage(string message, params object[] pObjects)
         {
@@ -91,26 +90,25 @@ namespace DragonMUD.Network
         {
             try
             {
-                var coordinator = (ConnectionCoordinator) ar.AsyncState;
+                var coordinator = (ConnectionCoordinator)ar.AsyncState;
 
                 coordinator.Socket.EndSend(ar);
                 if (!IsFlagSet("no-message"))
                 {
                     // Get current state, SendStateMessage(coordinator);
                 }
+
                 ClearFlag("no-message");
 
                 foreach (var hook in OutputHooks.Select(outputHook => outputHook.Value))
                 {
                     hook.Process(coordinator);
                 }
-
             }
             catch (Exception)
             {
                 Owner.RemoveConnection(this);
             }
-
         }
 
         public void Disconnect()
@@ -122,7 +120,7 @@ namespace DragonMUD.Network
         {
             try
             {
-                var owner = (ConnectionCoordinator) ar.AsyncState;
+                var owner = (ConnectionCoordinator)ar.AsyncState;
                 var bytes = owner.Socket.EndReceive(ar);
 
                 var str = Encoding.UTF8.GetString(owner._inputBufferRaw, 0, bytes);
@@ -141,7 +139,7 @@ namespace DragonMUD.Network
             if (inputString.Length == 0 || inputString[0] == '\x04')
             {
                 Log.LogMessage("dragonmud", LogLevel.Info,
-                    $"Encountered end-of-file from socket {socket.Handle.ToInt32()}, closing connection...");
+                               $"Encountered end-of-file from socket {socket.Handle.ToInt32()}, closing connection...");
                 owner.Owner.RemoveConnection(this);
                 return;
             }

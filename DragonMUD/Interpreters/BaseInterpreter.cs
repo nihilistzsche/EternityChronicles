@@ -19,12 +19,12 @@ namespace DragonMUD.Interpreters
 
     public static class InterpreterHelper
     {
-        static BaseInterpreter GetInterpreterForCoordinator(ConnectionCoordinator coordinator)
+        private static BaseInterpreter GetInterpreterForCoordinator(ConnectionCoordinator coordinator)
         {
             return coordinator["current-interpreter"] as BaseInterpreter;
         }
 
-        static void SetInterpreterForCoordinator(ConnectionCoordinator coordinator, BaseInterpreter interpreter)
+        private static void SetInterpreterForCoordinator(ConnectionCoordinator coordinator, BaseInterpreter interpreter)
         {
             GetInterpreterForCoordinator(coordinator)?.DetatchFromCoordinator(coordinator);
 
@@ -32,7 +32,5 @@ namespace DragonMUD.Interpreters
 
             interpreter.AttachToCoordinator(coordinator);
         }
-     
     }
-
 }

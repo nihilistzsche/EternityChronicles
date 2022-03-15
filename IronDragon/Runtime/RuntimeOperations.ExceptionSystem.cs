@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="RuntimeOperations.ExceptionSystem.cs" Company="Michael Tindal">
 // Copyright 2011-2014 Michael Tindal
 //
@@ -35,7 +35,7 @@ namespace IronDragon.Runtime
             var obj = rawObj as DragonInstance;
             if (obj == null) throw new Exception();
             var instance = obj as DragonBoxedInstance;
-            if (instance == null) throw new DragonException(obj);
+            if (instance == null) throw new DragonSystemException(obj);
             var exc = instance.BoxedObject as Exception;
             if (exc != null)
             {
@@ -68,7 +68,7 @@ namespace IronDragon.Runtime
             }
             catch (Exception e)
             {
-                var DragonException = e as DragonException;
+                var DragonException = e as DragonSystemException;
                 var exType = DragonException != null ? DragonException.ExceptionClass.Name : e.GetType().Name;
                 var found = false;
                 exceptionRaised = true;
@@ -125,7 +125,7 @@ namespace IronDragon.Runtime
                             continue;
                         }
                     }
-                    var exception = e as DragonException;
+                    var exception = e as DragonSystemException;
                     if (exception != null)
                     {
                         scope[rescueBlock.VarName] = exception.InnerObject;

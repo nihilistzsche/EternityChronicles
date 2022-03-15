@@ -35,7 +35,7 @@ namespace IronDragon.Builtins {
             GetType().GetMethods(BindingFlags.Static | BindingFlags.NonPublic).ToList()
                 .ForEach(method => {
                     nfunc = new DragonNativeFunction(GetType(), method);
-                    Dragon.Globals.SetVariable(nfunc.Name, nfunc);
+                    Dragon.Globals[nfunc.Name] = nfunc;
                 });
             var assembly = typeof(Kernel).Assembly;
             var resourceName = assembly.GetManifestResourceNames().Single(n => n.EndsWith("core.dragon"));

@@ -23,8 +23,8 @@
 
 namespace EternityChronicles.Tests.ECX
 {
-
-    public interface IECXTestRole1 {
-		string WriteMyself ();
-	}
+    public interface IECXTestRole1
+    {
+        string WriteMyself();
+    }
 }

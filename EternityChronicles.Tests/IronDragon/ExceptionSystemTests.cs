@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ExceptionSystemTests.cs" Company="Michael Tindal">
 // Copyright 2011-2014 Michael Tindal
 //
@@ -17,6 +17,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using IronDragon;
 using NUnit.Framework;
 
 namespace EternityChronicles.Tests.IronDragon
@@ -27,15 +28,7 @@ namespace EternityChronicles.Tests.IronDragon
         [SetUp]
         public void Init()
         {
-            var engine = GetRuntime().GetEngine("IronDragon");
-            var source = engine.CreateScriptSourceFromString("class DragonException < Exception { def new(msg = '') { @Dragonmessage = msg; }; };");
-            source.Execute(global::IronDragon.Dragon.Globals);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            global::IronDragon.Dragon.Globals.RemoveVariable("self");
+            CompileAndExecute("class DragonException < Exception { def new(msg = '') { @Dragonmessage = msg; }; };");
         }
 
         [Test]
@@ -47,61 +40,84 @@ namespace EternityChronicles.Tests.IronDragon
         [Test]
         public void TestRescue1()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue Exception => e { x = 10; }; x;"), NUnit.Framework.Is.EqualTo(10));
+            Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue Exception => e { x = 10; }; x;"),
+                        Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescue2()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw DragonException(); } rescue DragonException1, DragonException => e { x = 10; }; x;"), NUnit.Framework.Is.EqualTo(10));
+            Assert.That(
+                CompileAndExecute(
+                    "x = 0; begin { throw DragonException(); } rescue DragonException1, DragonException => e { x = 10; }; x;"),
+                Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescue3()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue * => e { x = 10; }; x;"), NUnit.Framework.Is.EqualTo(10));
+            Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue * => e { x = 10; }; x;"),
+                        Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescue4()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw Exception('test'); } rescue Exception => z { x = z.Message; }; x;"), NUnit.Framework.Is.EqualTo("test"));
+            Assert.That(
+                CompileAndExecute(
+                    "x = 0; begin { throw Exception('test'); } rescue Exception => z { x = z.Message; }; x;"),
+                Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescue5()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw DragonException('test'); } rescue DragonException1, DragonException => z { x = z.Dragonmessage; }; x;"), NUnit.Framework.Is.EqualTo("test"));
+            Assert.That(
+                CompileAndExecute(
+                    "x = 0; begin { throw DragonException('test'); } rescue DragonException1, DragonException => z { x = z.Dragonmessage; }; x;"),
+                Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescue6()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw Exception('test'); } rescue * => z { x = z.Message; }; x;"), NUnit.Framework.Is.EqualTo("test"));
+            Assert.That(
+                CompileAndExecute("x = 0; begin { throw Exception('test'); } rescue * => z { x = z.Message; }; x;"),
+                Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescue7()
         {
-            Assert.That(CompileAndExecute("x = 0; exc = 'Exception'; begin { throw Exception('test'); } rescue exc => z { x = z.Message; }; x;"), NUnit.Framework.Is.EqualTo("test"));
+            Assert.That(
+                CompileAndExecute(
+                    "x = 0; exc = 'Exception'; begin { throw Exception('test'); } rescue exc => z { x = z.Message; }; x;"),
+                Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescueEnsure()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue * => z { x = z; } ensure { x = 10; }; x;"), NUnit.Framework.Is.EqualTo(10));
+            Assert.That(
+                CompileAndExecute(
+                    "x = 0; begin { throw Exception(); } rescue * => z { x = z; } ensure { x = 10; }; x;"),
+                Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescueElse()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; }; x;"), NUnit.Framework.Is.EqualTo(25));
+            Assert.That(CompileAndExecute("x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; }; x;"),
+                        Is.EqualTo(25));
         }
 
         [Test]
         public void TestRescueElseEnsure()
         {
-            Assert.That(CompileAndExecute("x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; } ensure { x *= 2; }; x;"), NUnit.Framework.Is.EqualTo(50));
+            Assert.That(
+                CompileAndExecute(
+                    "x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; } ensure { x *= 2; }; x;"),
+                Is.EqualTo(50));
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
 namespace XDL
 {
-    public interface ICustomLoader {
+    public interface ICustomLoader
+    {
         object CustomLoadObject(XElement element, object context);
     }
 }

@@ -28,63 +28,63 @@ using NUnit.Framework;
 namespace EternityChronicles.Tests.ECX
 {
     [TestFixture]
-	public class RefCountTests
-	{
+    public class RefCountTests
+    {
         [OneTimeSetUp]
         public void SetUp()
         {
             Directory.SetCurrentDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName);
-		}
+        }
 
         [Test]
-		public void TestRefCountSingleLoad ()
-		{
-			ModuleController _mc = new ModuleController ();
+        public void TestRefCountSingleLoad()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-rc");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rc");
 
-			_mc.LoadModule ("ecx-rc-01");
+            _mc.LoadModule("ecx-rc-01");
 
-			Assert.IsTrue (_mc.RefCount ("ecx-rc-01") == 1);
-		}
+            Assert.IsTrue(_mc.RefCount("ecx-rc-01") == 1);
+        }
 
-		[Test]
-		public void TestRefCountMultipleLoad ()
-		{
-			ModuleController _mc = new ModuleController ();
+        [Test]
+        public void TestRefCountMultipleLoad()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-rc");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rc");
 
-			_mc.LoadModule ("ecx-rc-02");
-			_mc.LoadModule ("ecx-rc-02");
+            _mc.LoadModule("ecx-rc-02");
+            _mc.LoadModule("ecx-rc-02");
 
-			Assert.IsTrue (_mc.RefCount ("ecx-rc-02") == 2);
-		}
+            Assert.IsTrue(_mc.RefCount("ecx-rc-02") == 2);
+        }
 
-		[Test]
-		public void TestRefCountDependencies ()
-		{
-			ModuleController _mc = new ModuleController ();
+        [Test]
+        public void TestRefCountDependencies()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-rc");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rc");
 
-			_mc.LoadModule ("ecx-rc-03a");
+            _mc.LoadModule("ecx-rc-03a");
 
-			Assert.IsTrue (_mc.RefCount ("ecx-rc-03c") == 3);
-		}
+            Assert.IsTrue(_mc.RefCount("ecx-rc-03c") == 3);
+        }
 
-		[Test]
-		public void TestRefCountAfterLoadDependency ()
-		{
-			ModuleController _mc = new ModuleController ();
+        [Test]
+        public void TestRefCountAfterLoadDependency()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-rc");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rc");
 
-			_mc.LoadModule ("ecx-rc-04a");
-			_mc.LoadModule ("ecx-rc-04b");
+            _mc.LoadModule("ecx-rc-04a");
+            _mc.LoadModule("ecx-rc-04b");
 
-			Assert.IsTrue (_mc.RefCount ("ecx-rc-04a") == 2);
-			Assert.IsTrue (_mc.RefCount ("ecx-rc-04b") == 1);
-		}
-	}
+            Assert.IsTrue(_mc.RefCount("ecx-rc-04a") == 2);
+            Assert.IsTrue(_mc.RefCount("ecx-rc-04b") == 1);
+        }
+    }
 }

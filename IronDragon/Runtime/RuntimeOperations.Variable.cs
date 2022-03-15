@@ -37,8 +37,16 @@ namespace IronDragon.Runtime {
             var name = (string) rawName;
             var scope = (DragonScope) rawScope;
             if (name.StartsWith("$") && name != "$:") {
-                scope = scope.GlobalScope;
-                name = name.Substring(1);
+                if (name.StartsWith("$$"))
+                {
+                    scope = Dragon.Globals;
+                    name  = name.Substring(2);
+                }
+                else
+                {
+                    scope = scope.RootScope;
+                    name  = name.Substring(1);
+                }
             }
             if (name.StartsWith("@") && scope["<dragon_context_invokemember>"] != null) {
                 if (name.StartsWith("@@")) {
@@ -67,7 +75,7 @@ namespace IronDragon.Runtime {
                 Type type;
                 if ((type = DragonTypeResolver.Resolve(name)) != null) {
                     var @class = DragonClass.BoxClass(type);
-                    scope.GlobalScope[@class.Name] = @class;
+                    Dragon.Globals[@class.Name] = @class;
                     val = @class;
                 }
             }
@@ -167,10 +175,21 @@ namespace IronDragon.Runtime {
                 }
                 return value;
             }
-            string name = CompilerServices.CompileExpression(@var.Name, scope);
+            string name     = CompilerServices.CompileExpression(@var.Name, scope);
+            var   scopeSet = false;
             if (name.StartsWith("$") && name != "$:") {
-                scope = scope.GlobalScope;
-                name = name.Substring(1);
+                if (name.StartsWith("$$"))
+                {
+                    scope = Dragon.Globals;
+                    name  = name.Substring(2);
+                }
+                else
+                {
+                    scope = scope.RootScope;
+                    name  = name.Substring(1);
+                }
+
+                scopeSet = true;
             }
             var found = false;
             if (name.StartsWith("@")) {
@@ -208,7 +227,7 @@ namespace IronDragon.Runtime {
                     break;
                 }
             }
-            if (!found) {
+            if (!found && !scopeSet) {
                 scope = (DragonScope) rawScope;
             }
 
@@ -355,12 +374,28 @@ namespace IronDragon.Runtime {
                 return null;
             }
             if (from.StartsWith("$")) {
-                scope = scope.GlobalScope;
-                from = from.Substring(1);
+                if (from.StartsWith("$$"))
+                {
+                    scope = Dragon.Globals;
+                    from  = from.Substring(2);
+                }
+                else
+                {
+                    scope = scope.RootScope;
+                    from  = from.Substring(1);
+                }
             }
             if (to.StartsWith("$")) {
-                scope = scope.GlobalScope;
-                to = to.Substring(1);
+                if (to.StartsWith("$$"))
+                {
+                    scope = Dragon.Globals;
+                    to  = to.Substring(2);
+                }
+                else
+                {
+                    scope = scope.RootScope;
+                    to  = to.Substring(1);
+                }
             }
             scope.AddAlias(from, to);
             return null;

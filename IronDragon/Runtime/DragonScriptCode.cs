@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DragonScriptCode.cs" company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -39,7 +39,7 @@ namespace IronDragon.Runtime {
         /// </summary>
         public Expression Body { get; }
 
-        private dynamic ConvertElements(DragonArray res)
+        private static dynamic ConvertElements(DragonArray res)
         {
             for (var i = 0; i < res.Count(); i++)
             {
@@ -63,7 +63,7 @@ namespace IronDragon.Runtime {
             return res;
         }
 
-        private dynamic ConvertElements(DragonDictionary res)
+        private static dynamic ConvertElements(DragonDictionary res)
         {
             List<dynamic> keysToRemove = new List<object>();
             keysToRemove.AddRange(res.Keys.OfType<DragonString>());
@@ -107,21 +107,10 @@ namespace IronDragon.Runtime {
             return res;
         }
 
-        public override object Run(Scope scope) {
-            var body = (Body as BlockExpression);
-            body.Scope.MergeWithScope(Dragon.Globals);
-            body.Scope.MergeWithScope(scope);
-
-            var visitor = new VariableNameVisitor();
-            visitor.Visit(body);
-
-            body.SetChildrenScopes(body.Scope);
-
-            var block = CompilerServices.CreateLambdaForExpression(body);
-            var res = block();
-
+        internal static dynamic Convert(dynamic res, DragonScope scope)
+        {
             if (res is Symbol) {
-                var symval = new BlockExpression(new List<Expression> {new VariableExpression(res)}, body.Scope);
+                var symval = new BlockExpression(new List<Expression> {new VariableExpression(res)}, scope);
                 res = CompilerServices.CreateLambdaForExpression(symval)();
             }
             else if (res is DragonInstance) {
@@ -130,7 +119,7 @@ namespace IronDragon.Runtime {
                     res = ((DragonBoxedInstance) so).BoxedObject;
                 }
             }
-            else if (res is DragonNumber)
+            if (res is DragonNumber)
             {
                 res = DragonNumber.Convert(res);
             }
@@ -143,6 +132,23 @@ namespace IronDragon.Runtime {
             else if (res is DragonDictionary) {
                 res = ConvertElements((DragonDictionary)res);
             }
+
+            return res;
+        }
+        
+        public override object Run(Scope scope) {
+            var body = (Body as BlockExpression);
+            body.Scope.MergeWithScope(scope);
+
+            var visitor = new VariableNameVisitor();
+            visitor.Visit(body);
+
+            body.SetChildrenScopes(body.Scope);
+
+            var block = CompilerServices.CreateLambdaForExpression(body);
+            var res = block();
+
+            res = Convert(res, body.Scope);
 
             body.Scope.MergeIntoScope(scope);
 

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="BinaryExpressionTests.cs" Company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -19,169 +19,198 @@
 using IronDragon.Builtins;
 using NUnit.Framework;
 
-namespace EternityChronicles.Tests.IronDragon {
+namespace EternityChronicles.Tests.IronDragon
+{
     [TestFixture]
-    public class BinaryExpressionTests : DragonAbstractTestFixture {
-        public bool O(int a, string z, int b) {
+    public class BinaryExpressionTests : DragonAbstractTestFixture
+    {
+        public bool O(int a, string z, int b)
+        {
             var sourceString = $"{a} {z} {b};";
-            var engine = GetRuntime().GetEngine("IronDragon");
-            var source = engine.CreateScriptSourceFromString(sourceString);
-            return (bool) source.Execute(engine.CreateScope());
+            var engine       = GetRuntime().GetEngine("IronDragon");
+            var source       = engine.CreateScriptSourceFromString(sourceString);
+            return (bool)source.Execute(engine.CreateScope());
         }
 
-        public bool L(bool a, string z, bool b) {
+        public bool L(bool a, string z, bool b)
+        {
             var sourceString = $"{a.ToString().ToLower()} {z} {b.ToString().ToLower()};";
-            var engine = GetRuntime().GetEngine("IronDragon");
-            var source = engine.CreateScriptSourceFromString(sourceString);
-            return (bool) source.Execute(engine.CreateScope());
+            var engine       = GetRuntime().GetEngine("IronDragon");
+            var source       = engine.CreateScriptSourceFromString(sourceString);
+            return (bool)source.Execute(engine.CreateScope());
         }
 
-        public int B(int a, string z, int b) {
+        public int B(int a, string z, int b)
+        {
             var sourceString = $"{a} {z} {b};";
-            var engine = GetRuntime().GetEngine("IronDragon");
-            var source = engine.CreateScriptSourceFromString(sourceString);
-            return (int) source.Execute(engine.CreateScope());
+            var engine       = GetRuntime().GetEngine("IronDragon");
+            var source       = engine.CreateScriptSourceFromString(sourceString);
+            return (int)source.Execute(engine.CreateScope());
         }
 
         [TestCase(1, 1, true)]
         [TestCase(1, 2, false)]
-        public void TestEqualTo(int x, int y, bool expected) {
-            Assert.That(O(x, "==", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestEqualTo(int x, int y, bool expected)
+        {
+            Assert.That(O(x, "==", y), Is.EqualTo(expected));
         }
 
         [TestCase(1, 2, true)]
         [TestCase(1, 1, false)]
-        public void TestNotEqualTo(int x, int y, bool expected) {
-            Assert.That(O(x, "!=", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestNotEqualTo(int x, int y, bool expected)
+        {
+            Assert.That(O(x, "!=", y), Is.EqualTo(expected));
         }
 
         [TestCase(1, 2, true)]
         [TestCase(2, 2, false)]
         [TestCase(2, 1, false)]
-        public void TestLessThan(int x, int y, bool expected) {
-            Assert.That(O(x, "<", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestLessThan(int x, int y, bool expected)
+        {
+            Assert.That(O(x, "<", y), Is.EqualTo(expected));
         }
 
         [TestCase(1, 2, true)]
         [TestCase(2, 2, true)]
         [TestCase(2, 1, false)]
-        public void TestLessThanEqualTo(int x, int y, bool expected) {
-            Assert.That(O(x, "<=", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestLessThanEqualTo(int x, int y, bool expected)
+        {
+            Assert.That(O(x, "<=", y), Is.EqualTo(expected));
         }
 
         [TestCase(2, 1, true)]
         [TestCase(2, 2, false)]
         [TestCase(2, 3, false)]
-        public void TestGreaterThan(int x, int y, bool expected) {
-            Assert.That(O(x, ">", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestGreaterThan(int x, int y, bool expected)
+        {
+            Assert.That(O(x, ">", y), Is.EqualTo(expected));
         }
 
         [TestCase(2, 1, true)]
         [TestCase(2, 2, true)]
         [TestCase(2, 3, false)]
-        public void TestGreaterThanEqualTo(int x, int y, bool expected) {
-            Assert.That(O(x, ">=", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestGreaterThanEqualTo(int x, int y, bool expected)
+        {
+            Assert.That(O(x, ">=", y), Is.EqualTo(expected));
         }
 
-        [TestCase(true, true, true)]
-        [TestCase(true, false, false)]
-        [TestCase(false, true, false)]
+        [TestCase(true,  true,  true)]
+        [TestCase(true,  false, false)]
+        [TestCase(false, true,  false)]
         [TestCase(false, false, false)]
-        public void TestLogicalAnd(bool x, bool y, bool expected) {
-            Assert.That(L(x, "&&", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestLogicalAnd(bool x, bool y, bool expected)
+        {
+            Assert.That(L(x, "&&", y), Is.EqualTo(expected));
         }
 
-        [TestCase(true, true, true)]
-        [TestCase(true, false, true)]
-        [TestCase(false, true, true)]
+        [TestCase(true,  true,  true)]
+        [TestCase(true,  false, true)]
+        [TestCase(false, true,  true)]
         [TestCase(false, false, false)]
-        public void TestLogicalOr(bool x, bool y, bool expected) {
-            Assert.That(L(x, "||", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestLogicalOr(bool x, bool y, bool expected)
+        {
+            Assert.That(L(x, "||", y), Is.EqualTo(expected));
         }
 
-        [TestCase(true, true, false)]
-        [TestCase(true, false, true)]
-        [TestCase(false, true, true)]
+        [TestCase(true,  true,  false)]
+        [TestCase(true,  false, true)]
+        [TestCase(false, true,  true)]
         [TestCase(false, false, false)]
-        [TestCase(true,true,false)]
-        public void TestLogicalXor(bool x, bool y, bool expected) {
-            Assert.That(L(x, "^^", y), NUnit.Framework.Is.EqualTo(expected));
+        [TestCase(true,  true,  false)]
+        public void TestLogicalXor(bool x, bool y, bool expected)
+        {
+            Assert.That(L(x, "^^", y), Is.EqualTo(expected));
         }
 
         [TestCase(1, 2, -1)]
         [TestCase(2, 2, 0)]
         [TestCase(2, 1, 1)]
-        public void TestCompare(int x, int y, int expected) {
-            Assert.That(B(x, "<=>", y), NUnit.Framework.Is.EqualTo(expected));
+        public void TestCompare(int x, int y, int expected)
+        {
+            Assert.That(B(x, "<=>", y), Is.EqualTo(expected));
         }
 
         [Test]
-        public void TestAdd() {
-            Assert.That(B(5, "+", 7), NUnit.Framework.Is.EqualTo(12));
+        public void TestAdd()
+        {
+            Assert.That(B(5, "+", 7), Is.EqualTo(12));
         }
 
         [Test]
-        public void TestBitwiseAnd() {
-            Assert.That(B(2, "&", 1), NUnit.Framework.Is.EqualTo(0));
+        public void TestBitwiseAnd()
+        {
+            Assert.That(B(2, "&", 1), Is.EqualTo(0));
         }
 
         [Test]
-        public void TestBitwiseInverse() {
-            Assert.That(CompileAndExecute("~5"), NUnit.Framework.Is.EqualTo(~5));
+        public void TestBitwiseInverse()
+        {
+            Assert.That(CompileAndExecute("~5"), Is.EqualTo(~5));
         }
 
         [Test]
-        public void TestBitwiseOr() {
-            Assert.That(B(4, "|", 3), NUnit.Framework.Is.EqualTo(7));
+        public void TestBitwiseOr()
+        {
+            Assert.That(B(4, "|", 3), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestBitwiseXor() {
-            Assert.That(B(10, "^", 8), NUnit.Framework.Is.EqualTo(2));
+        public void TestBitwiseXor()
+        {
+            Assert.That(B(10, "^", 8), Is.EqualTo(2));
         }
 
         [Test]
-        public void TestComplexMath1() {
-            Assert.That(CompileAndExecute("5+7*3"), NUnit.Framework.Is.EqualTo(26));
+        public void TestComplexMath1()
+        {
+            Assert.That(CompileAndExecute("5+7*3"), Is.EqualTo(26));
         }
 
         [Test]
-        public void TestComplexMath2() {
-            Assert.That(CompileAndExecute("(5 + 7) * 3;"), NUnit.Framework.Is.EqualTo(36));
+        public void TestComplexMath2()
+        {
+            Assert.That(CompileAndExecute("(5 + 7) * 3;"), Is.EqualTo(36));
         }
 
         [Test]
-        public void TestComplexMath3() {
-            Assert.That(CompileAndExecute("5 + (7 * 3) - 4;"), NUnit.Framework.Is.EqualTo(22));
+        public void TestComplexMath3()
+        {
+            Assert.That(CompileAndExecute("5 + (7 * 3) - 4;"), Is.EqualTo(22));
         }
 
         [Test]
-        public void TestComplexMath4() {
-            Assert.That(CompileAndExecute("5 + 7 * 3 - 4;"), NUnit.Framework.Is.EqualTo(22));
+        public void TestComplexMath4()
+        {
+            Assert.That(CompileAndExecute("5 + 7 * 3 - 4;"), Is.EqualTo(22));
         }
 
         [Test]
-        public void TestComplexMath5() {
-            Assert.That(CompileAndExecute("(5 << 3) + 3 * 5 ** (8 / 4) | 10;"), NUnit.Framework.Is.EqualTo(123));
+        public void TestComplexMath5()
+        {
+            Assert.That(CompileAndExecute("(5 << 3) + 3 * 5 ** (8 / 4) | 10;"), Is.EqualTo(123));
         }
 
         [Test]
-        public void TestComplexMath6() {
-            Assert.That(CompileAndExecute("- 3 * 7;"), NUnit.Framework.Is.EqualTo(-21));
+        public void TestComplexMath6()
+        {
+            Assert.That(CompileAndExecute("- 3 * 7;"), Is.EqualTo(-21));
         }
 
         [Test]
-        public void TestDivide() {
-            Assert.That(B(100, "/", 5), NUnit.Framework.Is.EqualTo(20));
+        public void TestDivide()
+        {
+            Assert.That(B(100, "/", 5), Is.EqualTo(20));
         }
 
         [Test]
-        public void TestExp() {
-            Assert.That(CompileAndExecute("3.0 ** 4.0;"), NUnit.Framework.Is.EqualTo(81));
+        public void TestExp()
+        {
+            Assert.That(CompileAndExecute("3.0 ** 4.0;"), Is.EqualTo(81));
         }
 
         [Test]
-        public void TestIntegrationRuby() {
+        public void TestIntegrationRuby()
+        {
             var Dragonengine = GetRuntime().GetEngine("IronDragon");
             var Dragonsource = Dragonengine.CreateScriptSourceFromString("x + 2;");
 
@@ -194,79 +223,90 @@ namespace EternityChronicles.Tests.IronDragon {
 
             var Dragonscope = Dragonengine.CreateScope();
             Dragonscope.SetVariable("x", x);
-            Assert.That(Dragonsource.Execute(Dragonscope), NUnit.Framework.Is.EqualTo(7));
+            Assert.That(Dragonsource.Execute(Dragonscope), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestLogicalNot() {
-            Assert.That(CompileAndExecute("!true;"), NUnit.Framework.Is.EqualTo(false));
+        public void TestLogicalNot()
+        {
+            Assert.That(CompileAndExecute("!true;"), Is.EqualTo(false));
         }
 
         [Test]
-        public void TestModulus() {
-            Assert.That(B(5, "%", 2), NUnit.Framework.Is.EqualTo(1));
+        public void TestModulus()
+        {
+            Assert.That(B(5, "%", 2), Is.EqualTo(1));
         }
 
         [Test]
-        public void TestMultiply() {
-            Assert.That(B(10, "*", 17), NUnit.Framework.Is.EqualTo(170));
+        public void TestMultiply()
+        {
+            Assert.That(B(10, "*", 17), Is.EqualTo(170));
         }
 
         [Test]
-        public void TestNegate() {
-            Assert.That(CompileAndExecute("- - 3;"), NUnit.Framework.Is.EqualTo(3));
+        public void TestNegate()
+        {
+            Assert.That(CompileAndExecute("- - 3;"), Is.EqualTo(3));
         }
 
         [Test]
-        public void TestPositive() {
-            Assert.That(CompileAndExecute("+ + +3;"), NUnit.Framework.Is.EqualTo(3));
+        public void TestPositive()
+        {
+            Assert.That(CompileAndExecute("+ + +3;"), Is.EqualTo(3));
         }
 
         [Test]
-        public void TestShiftLeft() {
-            Assert.That(B(2, "<<", 2), NUnit.Framework.Is.EqualTo(8));
+        public void TestShiftLeft()
+        {
+            Assert.That(B(2, "<<", 2), Is.EqualTo(8));
         }
 
         [Test]
-        public void TestShiftRight() {
-            Assert.That(B(2, ">>", 2), NUnit.Framework.Is.EqualTo(0));
+        public void TestShiftRight()
+        {
+            Assert.That(B(2, ">>", 2), Is.EqualTo(0));
         }
 
         [Test]
-        public void TestSubtract() {
-            Assert.That(B(7, "-", 5), NUnit.Framework.Is.EqualTo(2));
+        public void TestSubtract()
+        {
+            Assert.That(B(7, "-", 5), Is.EqualTo(2));
         }
 
         [Test]
         public void TestRegex1()
         {
-            Assert.That(CompileAndExecute("r = %/(H(?<a>el+)o) ([A-Z](?<b>.+)d)./; x = 'Hello World!'; x =~ r; a;"), NUnit.Framework.Is.EqualTo("ell"));
+            Assert.That(CompileAndExecute("r = %/(H(?<a>el+)o) ([A-Z](?<b>.+)d)./; x = 'Hello World!'; x =~ r; a;"),
+                        Is.EqualTo("ell"));
         }
 
         [Test]
         public void TestRegex2()
         {
-            var expect = new DragonArray {"ell", "orl"};
+            var expect = new DragonArray { "ell", "orl" };
             Assert.That(
                 CompileAndExecute("x = 'Hello World!'; x =~ %/[^e]+(?<test>el+).+W(?<word>o.+)d/; [test,word];"),
-                NUnit.Framework.Is.EqualTo(expect));
+                Is.EqualTo(expect));
         }
-        
+
         [Test]
-        public void TestExclusiveRange () {
-            var expect = new DragonRange (2, 6);
-            Assert.That (
-                CompileAndExecute ("2..6;"),
-                Is.EqualTo (expect)
+        public void TestExclusiveRange()
+        {
+            var expect = new DragonRange(2, 6);
+            Assert.That(
+                CompileAndExecute("2..6;"),
+                Is.EqualTo(expect)
             );
         }
 
         [Test]
-        public void TestInclusiveRange () {
-            var expect = new DragonRange (2, 6, true);
-            Assert.That (
-                CompileAndExecute ("2...6;"),
-                Is.EqualTo (expect)
+        public void TestInclusiveRange()
+        {
+            var expect = new DragonRange(2, 6, true);
+            Assert.That(
+                CompileAndExecute("2...6;"),
+                Is.EqualTo(expect)
             );
         }
     }

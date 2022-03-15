@@ -19,35 +19,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
- 
-namespace ECX.Core.Loader {
-	using System;
-	
-	/// <summary>
-	/// Thrown if a modules dependencies could not be resolved.
-	/// </summary>
-	/// <remarks>None.</remarks>
-	/// <preliminary />
-	public class UnresolvedDependencyException : Exception {
-		/// <summary>
-		/// Creates a new UnresolvedDependencyException object.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public UnresolvedDependencyException ( ) : base ( ) { }
-		
-		/// <summary>
-		/// Creates a new UnresolvedDependencyException object with the given message.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="message">The message to be given when the execption is thrown.</param>
-		public UnresolvedDependencyException (string message) : base (message) { }
-		
-		/// <summary>
-		/// Creates a new UnresolvedDependencyException object with the given message and inner exception.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="message">The message to be given when the exception is thrown.</param>
-		/// <param name="innerException">The inner exception of this exception.</param>
-		public UnresolvedDependencyException (string message, Exception innerException) : base (message, innerException) { }
-	}
+
+using System;
+
+namespace ECX.Core.Loader
+{
+    /// <summary>
+    ///     Thrown if a modules dependencies could not be resolved.
+    /// </summary>
+    /// <remarks>None.</remarks>
+    /// <preliminary />
+    public class UnresolvedDependencyException : Exception
+    {
+        /// <summary>
+        ///     Creates a new UnresolvedDependencyException object.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public UnresolvedDependencyException()
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new UnresolvedDependencyException object with the given message.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="message">The message to be given when the execption is thrown.</param>
+        public UnresolvedDependencyException(string message) : base(message)
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new UnresolvedDependencyException object with the given message and inner exception.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="message">The message to be given when the exception is thrown.</param>
+        /// <param name="innerException">The inner exception of this exception.</param>
+        public UnresolvedDependencyException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
 }

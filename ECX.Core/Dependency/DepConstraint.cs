@@ -22,58 +22,51 @@
 
 namespace ECX.Core.Dependency
 {
-
     /// <summary>
-    /// Represents a dependency constraint.
+    ///     Represents a dependency constraint.
     /// </summary>
     /// <remarks>None.</remarks>
-    public class DepConstraint {
-		DepVersion _version;
-		string _name;
+    public class DepConstraint
+    {
+        /// <summary>
+        ///     Creates a new DepConstraint object.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public DepConstraint()
+        {
+            Name    = "";
+            Version = new DepVersion(-1, -1, -1, -1);
+        }
 
-		/// <summary>
-		/// Creates a new DepConstraint object.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public DepConstraint () {
-			_name = "";
-			_version = new DepVersion (-1, -1, -1, -1);
-		}
+        /// <summary>
+        ///     Gets or sets the needed version.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public DepVersion Version { get; set; }
 
-		/// <summary>
-		/// Gets or sets the needed version.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public DepVersion Version {
-			get => _version;
-			set => _version = value;
-		}
+        /// <summary>
+        ///     Gets or sets the needed module name.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public string Name { get; set; }
 
-		/// <summary>
-		/// Gets or sets the needed module name.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public string Name {
-			get => _name;
-			set => _name = value;
-		}
+        /// <summary>
+        ///     Sets the version based on a string representation of it.
+        /// </summary>
+        /// <param name="version">The version string</param>
+        /// <remarks>None.</remarks>
+        public void SetVersion(string version)
+        {
+            Version = DepVersion.VersionParse(version);
+        }
 
-		/// <summary>
-		/// Sets the version based on a string representation of it.
-		/// </summary>
-		/// <param name="version">The version string</param>
-		/// <remarks>None.</remarks>
-		public void SetVersion (string version) {
-			_version = DepVersion.VersionParse (version);
-		}
-
-		/// <summary>
-		/// Returns a <see cref="System.String"/> that represents the current <see cref="DepConstraint"/>.
-		/// </summary>
-		/// <returns>A <see cref="System.String"/> that represents the current <see cref="DepConstraint"/>.</returns>
-		public override string ToString ()
-		{
-			return $"{Name}[{Version}]";
-		}
-	}
+        /// <summary>
+        ///     Returns a <see cref="System.String" /> that represents the current <see cref="DepConstraint" />.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents the current <see cref="DepConstraint" />.</returns>
+        public override string ToString()
+        {
+            return $"{Name}[{Version}]";
+        }
+    }
 }

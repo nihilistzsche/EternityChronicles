@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -19,7 +18,7 @@ namespace XDL
     {
         public static List<T> LoadFile(string path, IDataSchema<T> schema)
         {
-            var type = typeof (T);
+            var type = typeof(T);
 
             var objects = new List<T>();
 
@@ -78,7 +77,7 @@ namespace XDL
                 foreach (var elem in root.Elements())
                 {
                     var obj = new T();
-                    
+
                     foreach (var attr in elem.Attributes())
                     {
                         var key = schema.GetKeyForAttribute(attr.Name.LocalName, elem.Name.LocalName);
@@ -93,28 +92,19 @@ namespace XDL
                             var ret = del(attr);
 
                             if (key == "self")
-                            {
-                                obj = (T) ret;
-                            }
+                                obj = (T)ret;
                             else
-                            {
                                 Dynamic.InvokeSet(obj, key, ret);
-                            }
                         }
                         else
                         {
-                            if (key == "self" && typeof (T) == typeof (string))
-                            {
-                                obj = (T) (object) attr.Value;
-                            }
+                            if (key == "self" && typeof(T) == typeof(string))
+                                obj = (T)(object)attr.Value;
                             else if (key != "self")
-                            {
                                 Dynamic.InvokeSet(obj, key, attr.Value);
-                            }
                             else
-                            {
-                                Log.LogMessage("xdl", LogLevel.Warning, "Tried to assign self key without load handler to non-string type.");
-                            }
+                                Log.LogMessage("xdl", LogLevel.Warning,
+                                               "Tried to assign self key without load handler to non-string type.");
                         }
                     }
 
@@ -132,29 +122,19 @@ namespace XDL
                             var ret = del(child);
 
                             if (key == "self")
-                            {
-                                obj = (T) ret;
-                            }
+                                obj = (T)ret;
                             else
-                            {
                                 Dynamic.InvokeSet(obj, key, ret);
-                            }
                         }
                         else
                         {
-                            if (key == "self" && typeof (T) == typeof (string))
-                            {
-                                obj = (T) (object) child.Value;
-                            }
+                            if (key == "self" && typeof(T) == typeof(string))
+                                obj = (T)(object)child.Value;
                             else if (key != "self")
-                            {
                                 Dynamic.InvokeSet(obj, key, child.Value);
-                            }
                             else
-                            {
                                 Log.LogMessage("xdl", LogLevel.Warning,
-                                    "Tried to assign self key without load handler to non-string type.");
-                            }
+                                               "Tried to assign self key without load handler to non-string type.");
                         }
 
                         foreach (var attr in child.Attributes())
@@ -171,33 +151,23 @@ namespace XDL
                                 var ret = adel(attr);
 
                                 if (akey == "self")
-                                {
-                                    obj = (T) ret;
-                                }
+                                    obj = (T)ret;
                                 else
-                                {
                                     Dynamic.InvokeSet(obj, akey, ret);
-                                }
                             }
                             else
                             {
-                                if (akey == "self" && typeof (T) == typeof (string))
-                                {
-                                    obj = (T) (object) attr.Value;
-                                }
+                                if (akey == "self" && typeof(T) == typeof(string))
+                                    obj = (T)(object)attr.Value;
                                 else if (akey != "self")
-                                {
                                     Dynamic.InvokeSet(obj, akey, attr.Value);
-                                }
                                 else
-                                {
                                     Log.LogMessage("xdl", LogLevel.Warning,
-                                        "Tried to assign self key without load handler to non-string type.");
-                                }
+                                                   "Tried to assign self key without load handler to non-string type.");
                             }
                         }
                     }
-                
+
                     objects.Add(obj);
                 }
             }

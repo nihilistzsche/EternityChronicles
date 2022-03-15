@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,12 +9,6 @@ namespace XDL
 {
     public class VariableManager
     {
-        public string FileName { get; set; }
-
-        public Dictionary<string,string> Variables { get; } = new();
-
-        public static VariableManager DefaultManager { get; }
-
         static VariableManager()
         {
             Log.RegisterChannel("xdl");
@@ -27,6 +21,12 @@ namespace XDL
             LoadVariables();
         }
 
+        public string FileName { get; set; }
+
+        public Dictionary<string, string> Variables { get; } = new();
+
+        public static VariableManager DefaultManager { get; }
+
         public void LoadVariables()
         {
             if (FileName == null) return;
@@ -34,18 +34,16 @@ namespace XDL
 
             var lines = File.ReadAllLines(FileName);
 
-            foreach (var parts in lines.Where(line => line.Length > 0 && line[0] != '#').Select(line => line.Split('=')).Where(parts => parts.Count() > 1))
+            foreach (var parts in lines.Where(line => line.Length > 0 && line[0] != '#').Select(line => line.Split('='))
+                                       .Where(parts => parts.Count() > 1))
             {
-                var name = parts[0];
+                var name  = parts[0];
                 var value = parts[1];
 
-                if (value[value.Length - 1] == ';')
-                {
-                    value = value.Substring(0, value.Length - 1);
-                }
+                if (value[value.Length - 1] == ';') value = value.Substring(0, value.Length - 1);
 
                 DefaultManager.Variables[name] = value;
-                Variables[name] = value;
+                Variables[name]                = value;
                 Log.LogMessage("xdl", LogLevel.Info, $"Set variable {name} to value {value}.");
             }
         }
@@ -58,14 +56,15 @@ namespace XDL
             using (var fs = new FileStream(FileName, FileMode.OpenOrCreate))
             {
                 foreach (var bytes in (from key in Variables.Keys
-                    let value = Variables[key]
-                    select $"{key}={value};{Environment.NewLine}"
-                    ).Select(varString => Encoding.UTF8.GetBytes(varString))
-                    )
+                                       let value = Variables[key]
+                                       select $"{key}={value};{Environment.NewLine}"
+                                      ).Select(varString => Encoding.UTF8.GetBytes(varString))
+                        )
                 {
                     fs.Write(bytes, 0, bytes.Length);
                 }
             }
+
             return true;
         }
     }
@@ -74,7 +73,7 @@ namespace XDL
     {
         public static string ReplaceAllVariables(this string @this, VariableManager manager = null)
         {
-            manager = manager ?? VariableManager.DefaultManager;
+            manager ??= VariableManager.DefaultManager;
 
             string current;
             do
@@ -85,7 +84,8 @@ namespace XDL
                     var str = $"$({key})";
                     @this = @this.Replace(str, manager.Variables[key]);
                 }
-            } while (current != @this); 
+            } while (current != @this);
+
             return @this;
         }
     }

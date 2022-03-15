@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DynamicScope.cs" Company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -74,12 +74,12 @@ namespace IronDragon.Runtime {
             Constants = constants;
         }
 
-        internal DragonScope GlobalScope {
+        internal DragonScope RootScope {
             get {
                 if (ParentScope == null) {
                     return this;
                 }
-                return ParentScope.GlobalScope;
+                return ParentScope.RootScope;
             }
         }
 
@@ -111,7 +111,7 @@ namespace IronDragon.Runtime {
         }
 
         public dynamic this[Symbol sym] {
-            get => Resolve(sym, this);
+            get => Resolve(sym);
             set {
                 var val = value;
                 if (val is string) {
@@ -125,7 +125,7 @@ namespace IronDragon.Runtime {
             }
         }
 
-        public DragonScope ParentScope { get; set; }
+        public virtual DragonScope ParentScope { get; set; }
 
         public void MergeWithScope(Scope scope) {
             List<KeyValuePair<string, dynamic>> items = scope.Storage.GetItems();
@@ -190,34 +190,28 @@ namespace IronDragon.Runtime {
                 scope.SetVariable(@var.Key, val);
             }
         }
-        private bool CheckAliases(string name) {
+        protected virtual bool CheckAliases(string name) {
             if (Aliases.ContainsKey(name)) {
                 return true;
             }
-            if (ParentScope != null) {
-                return ParentScope.CheckAliases(name);
-            }
-            return false;
+            return ParentScope?.CheckAliases(name) ?? Dragon.Globals.CheckAliases(name);
         }
 
-        private bool CheckConstant(string name) {
+        protected virtual bool CheckConstant(string name) {
             if (Constants.Contains(name)) {
                 return true;
             }
-            if (ParentScope != null) {
-                return ParentScope.CheckConstant(name);
-            }
-            return false;
+            return ParentScope?.CheckConstant(name) ?? Dragon.Globals.CheckConstant(name);
         }
 
-        private DragonScope GetAlias(string name) {
+        protected virtual DragonScope GetAlias(string name) {
             if (Aliases.ContainsKey(name)) {
                 return this;
             }
             if (ParentScope != null) {
                 return ParentScope.GetAlias(name);
             }
-            return null;
+            return Dragon.Globals.GetAlias(name);
         }
 
         internal void AddAlias(string from, string to) {
@@ -229,7 +223,7 @@ namespace IronDragon.Runtime {
             Constants.Add(to);
         }
 
-        private dynamic Resolve(string name) {
+        protected virtual dynamic Resolve(string name) {
             if (CheckAliases(name)) {
                 var scope = GetAlias(name);
                 return scope.Resolve(scope.Aliases[name]);
@@ -240,17 +234,15 @@ namespace IronDragon.Runtime {
             if (ParentScope != null) {
                 return ParentScope.Resolve(name);
             }
-            return null;
+            return Dragon.Globals.Resolve(name);
         }
 
-        private dynamic Resolve(Symbol sym, DragonScope startingScope) {
+        protected virtual dynamic Resolve(Symbol sym) {
             if (SymVars.ContainsKey(sym)) {
                 return SymVars[sym];
             }
-            if (ParentScope != null) {
-                return ParentScope.Resolve(sym, startingScope);
-            }
-            return startingScope.Resolve(sym.Name);
+            var val = ParentScope != null ? ParentScope.Resolve(sym) : Dragon.Globals.Resolve(sym);
+            return val ?? Resolve(sym.Name);
         }
 
         public void PrintVariables() {

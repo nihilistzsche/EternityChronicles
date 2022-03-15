@@ -22,46 +22,49 @@
 
 using System.IO;
 using System.Reflection;
-using Antlr.Runtime;
 using ECX.Core.Dependency.Resolver;
-using NUnit.Framework;
 using ECX.Core.Loader;
+using NUnit.Framework;
 
 namespace EternityChronicles.Tests.ECX
 {
     [TestFixture]
-	public class CircularDependencyTests {
+    public class CircularDependencyTests
+    {
         [OneTimeSetUp]
         public void SetUp()
         {
             Directory.SetCurrentDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName);
         }
 
-		[Test]
-		public void TestCircularDependencyAonBonA () {
-            ModuleController _mc = new ModuleController ();
+        [Test]
+        public void TestCircularDependencyAonBonA()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-cr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
 
-			Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-01a"); });
-		}
+            Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-01a"); });
+        }
 
-		[Test]
-		public void TestCircularDependencyAonBonConA () {
-			ModuleController _mc = new ModuleController ();
+        [Test]
+        public void TestCircularDependencyAonBonConA()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-cr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
 
             Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-02a"); });
-		}
+        }
 
-		[Test]
-		public void TestCircularDependencyOnSelf () {
-			ModuleController _mc = new ModuleController ();
+        [Test]
+        public void TestCircularDependencyOnSelf()
+        {
+            var _mc = new ModuleController();
 
-			_mc.SearchPath.Add ("data" + Path.DirectorySeparatorChar + "ecx-cr");
+            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
 
             Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-03a"); });
-		}
-	}
+        }
+    }
 }

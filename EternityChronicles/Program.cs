@@ -1,48 +1,41 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using ECX.Core.Loader;
-using EternityChronicles.Glue;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
+using ECX.Core.Loader;
+using EternityChronicles.Glue;
 
 namespace EternityChronicles
 {
-    class Program
+    internal class Program
     {
         public static ICore Core;
 
         public static ModuleController Controller;
-  
-        static int Main(string[] args)
+
+        private static int Main(string[] args)
         {
             Controller = new ModuleController();
 
-            Controller.RegisterNewRole("Core", typeof (ICore), (asm, basetype) =>
-            {
-                Core = (ICore)asm.CreateInstance(basetype.ToString());
-            }, asm => { });
+            Controller.RegisterNewRole("Core", typeof(ICore),
+                                       (asm, basetype) => { Core = (ICore)asm.CreateInstance(basetype.ToString()); },
+                                       asm => { });
 
             Controller.LoadModule("EternityChronicles.Core");
 
             Tuple<SocketInformation, List<SocketInformation>> sockets = null;
-            int? res;
+            int?                                              res;
             while ((res = Core?.Main(sockets != null, sockets, args)) == 9999)
-            {
                 //// 9999 is soft reboot
+            {
                 SoftReboot(ref sockets);
             }
 
-            if (res.HasValue)
-            {
-                return res.Value;
-            } else
-            {
-                return 1;
-            }
+            return res ?? 1;
         }
 
-        static void SoftReboot(ref Tuple<SocketInformation, List<SocketInformation>> sockets)
+        private static void SoftReboot(ref Tuple<SocketInformation, List<SocketInformation>> sockets)
         {
             sockets = Core.DuplicateSockets(Process.GetCurrentProcess().Id);
 

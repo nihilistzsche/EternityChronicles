@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="FlowTests.cs" Company="Michael Tindal">
 // Copyright 2011-2013 Michael Tindal
 //
@@ -18,222 +18,262 @@
 
 using NUnit.Framework;
 
-namespace EternityChronicles.Tests.IronDragon {
+namespace EternityChronicles.Tests.IronDragon
+{
     [TestFixture]
-    public class FlowTests : DragonAbstractTestFixture {
+    public class FlowTests : DragonAbstractTestFixture
+    {
         [Test]
-        public void TestBooleanNumberFalse() {
-            Assert.That(CompileAndExecute("if(0) { true; } else { false; };"), NUnit.Framework.Is.EqualTo(false));
+        public void TestBooleanNumberFalse()
+        {
+            Assert.That(CompileAndExecute("if(0) { true; } else { false; };"), Is.EqualTo(false));
         }
 
         [Test]
-        public void TestBooleanNumberTrue() {
-            Assert.That(CompileAndExecute("if(1) { true; };"), NUnit.Framework.Is.EqualTo(true));
+        public void TestBooleanNumberTrue()
+        {
+            Assert.That(CompileAndExecute("if(1) { true; };"), Is.EqualTo(true));
         }
 
         [Test]
-        public void TestBooleanObjectFalse() {
-            Assert.That(CompileAndExecute("if(nil) { true; } else { false; };"), NUnit.Framework.Is.EqualTo(false));
+        public void TestBooleanObjectFalse()
+        {
+            Assert.That(CompileAndExecute("if(nil) { true; } else { false; };"), Is.EqualTo(false));
         }
 
         [Test]
-        public void TestBooleanObjectTrue() {
-            Assert.That(CompileAndExecute("if('hello') { true; };"), NUnit.Framework.Is.EqualTo(true));
+        public void TestBooleanObjectTrue()
+        {
+            Assert.That(CompileAndExecute("if('hello') { true; };"), Is.EqualTo(true));
         }
 
         [Test]
-        public void TestBreak() {
+        public void TestBreak()
+        {
             Assert.That(CompileAndExecute("i = 10; while((i -= 1) > 0) { break if(i == 5); }; i;"),
-                NUnit.Framework.Is.EqualTo(5));
+                        Is.EqualTo(5));
         }
 
         [Test]
-        public void TestContinue() {
+        public void TestContinue()
+        {
             Assert.That(
                 CompileAndExecute("x = 1; i = 0; while((i += 1) < 10) { continue if (i % 2) == 1; set x *= 2; };"),
-                NUnit.Framework.Is.EqualTo(16));
+                Is.EqualTo(16));
         }
 
         [Test]
-        public void TestDoUntil() {
+        public void TestDoUntil()
+        {
             Assert.That(CompileAndExecute("i = 0; x = 0; y = 2; do { x = ((x + y) * 2); } until((i += 1) == 10);"),
-                NUnit.Framework.Is.EqualTo(4092));
+                        Is.EqualTo(4092));
         }
 
         [Test]
-        public void TestDoWhile() {
+        public void TestDoWhile()
+        {
             Assert.That(CompileAndExecute("i = 0; x = 0; y = 2; do { x = ((x + y) * 2); } while((i += 1) < 10);"),
-                NUnit.Framework.Is.EqualTo(4092));
+                        Is.EqualTo(4092));
         }
 
         [Test]
-        public void TestElse() {
+        public void TestElse()
+        {
             Assert.That(CompileAndExecute("i = 10; if(i % 2 == 1) { i ** 2; } else { (i * 2)/4; };"),
-                NUnit.Framework.Is.EqualTo(5));
+                        Is.EqualTo(5));
         }
 
         [Test]
-        public void TestFor() {
+        public void TestFor()
+        {
             Assert.That(CompileAndExecute("i = 0; for(x = 0; x < 10; x += 2) { i += 1; };"),
-                NUnit.Framework.Is.EqualTo(5));
+                        Is.EqualTo(5));
         }
 
         [Test]
-        public void TestForContinue() {
+        public void TestForContinue()
+        {
             Assert.That(CompileAndExecute("z = 0; for(i = 0; i < 10; i += 1) { continue if (i % 2) == 1; z += 1; };"),
-                NUnit.Framework.Is.EqualTo(5));
+                        Is.EqualTo(5));
         }
 
         [Test]
-        public void TestForIn() {
-            Assert.That(CompileAndExecute("num = 0; for(i in [1,2,4]) { num += i; };"), NUnit.Framework.Is.EqualTo(7));
+        public void TestForIn()
+        {
+            Assert.That(CompileAndExecute("num = 0; for(i in [1,2,4]) { num += i; };"), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestIf() {
-            Assert.That(CompileAndExecute("i = 9.0; if(i % 2 == 1) { i ** 2; };"), NUnit.Framework.Is.EqualTo(81));
+        public void TestIf()
+        {
+            Assert.That(CompileAndExecute("i = 9.0; if(i % 2 == 1) { i ** 2; };"), Is.EqualTo(81));
         }
 
         [Test]
-        public void TestIfElse() {
-            Assert.That(CompileAndExecute("i = 2; if(i >= 2) { i << 2; } else { i; };"), NUnit.Framework.Is.EqualTo(8));
+        public void TestIfElse()
+        {
+            Assert.That(CompileAndExecute("i = 2; if(i >= 2) { i << 2; } else { i; };"), Is.EqualTo(8));
         }
 
         [Test]
-        public void TestIfElseIf() {
-            Assert.That(CompileAndExecute("if(2 < 1) { 7; } else if (3 > 2) { 14; };"), NUnit.Framework.Is.EqualTo(14));
+        public void TestIfElseIf()
+        {
+            Assert.That(CompileAndExecute("if(2 < 1) { 7; } else if (3 > 2) { 14; };"), Is.EqualTo(14));
         }
 
         [Test]
-        public void TestIfElseIf2() {
+        public void TestIfElseIf2()
+        {
             Assert.That(CompileAndExecute("if(1 < 2) { 7; } else if (2 < 3) { 14; } else { 21; };"),
-                NUnit.Framework.Is.EqualTo(7));
+                        Is.EqualTo(7));
         }
 
         [Test]
-        public void TestIfElseIfElse() {
+        public void TestIfElseIfElse()
+        {
             Assert.That(CompileAndExecute("if(2 < 1) { 7; } else if (2 > 3) { 14; } else { 21; };"),
-                NUnit.Framework.Is.EqualTo(21));
+                        Is.EqualTo(21));
         }
 
         [Test]
-        public void TestIfLogicalAnd1() {
-            Assert.That(CompileAndExecute("if((2 < 3) && (4 != 5)) { 7; } else { 9; };"), NUnit.Framework.Is.EqualTo(7));
+        public void TestIfLogicalAnd1()
+        {
+            Assert.That(CompileAndExecute("if((2 < 3) && (4 != 5)) { 7; } else { 9; };"), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestIfLogicalAnd2() {
-            Assert.That(CompileAndExecute("if((2 < 1) && (4 != 4)) { 7; } else { 9; };"), NUnit.Framework.Is.EqualTo(9));
+        public void TestIfLogicalAnd2()
+        {
+            Assert.That(CompileAndExecute("if((2 < 1) && (4 != 4)) { 7; } else { 9; };"), Is.EqualTo(9));
         }
 
         [Test]
-        public void TestIfLogicalNot() {
-            Assert.That(CompileAndExecute("if(! false) { 7; };"), NUnit.Framework.Is.EqualTo(7));
+        public void TestIfLogicalNot()
+        {
+            Assert.That(CompileAndExecute("if(! false) { 7; };"), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestIfLogicalOr1() {
-            Assert.That(CompileAndExecute("if((2 < 1) || (4 != 5)) { 7; } else { 9; };"), NUnit.Framework.Is.EqualTo(7));
+        public void TestIfLogicalOr1()
+        {
+            Assert.That(CompileAndExecute("if((2 < 1) || (4 != 5)) { 7; } else { 9; };"), Is.EqualTo(7));
         }
 
         [Test]
-        public void TestIfLogicalOr2() {
-            Assert.That(CompileAndExecute("if((2 < 1) || (4 != 4)) { 7; } else { 9; };"), NUnit.Framework.Is.EqualTo(9));
+        public void TestIfLogicalOr2()
+        {
+            Assert.That(CompileAndExecute("if((2 < 1) || (4 != 4)) { 7; } else { 9; };"), Is.EqualTo(9));
         }
 
         [Test]
-        public void TestLoop() {
+        public void TestLoop()
+        {
             Assert.That(CompileAndExecute("num = 0; loop { num += 1; break if num == 17; }; num;"),
-                NUnit.Framework.Is.EqualTo(17));
+                        Is.EqualTo(17));
         }
 
         [Test]
-        public void TestRetry() {
+        public void TestRetry()
+        {
             Assert.That(CompileAndExecute("num = 0; for(i = 0; i < 5; i += 1) { num += 1; retry if num == 2; }; num;"),
-                NUnit.Framework.Is.EqualTo(6));
+                        Is.EqualTo(6));
         }
 
         [Test]
-        public void TestSwitch() {
+        public void TestSwitch()
+        {
             Assert.That(CompileAndExecute("i = 10; switch(i) { case 10: { 'case 10!'; } };"),
-                NUnit.Framework.Is.EqualTo("case 10!"));
+                        Is.EqualTo("case 10!"));
         }
 
         [Test]
-        public void TestSwitch2CB1() {
+        public void TestSwitch2CB1()
+        {
             Assert.That(CompileAndExecute("i = 5; switch(i) { case 5: { 'case 5!'; } case 10: { 'case 10!'; } };"),
-                NUnit.Framework.Is.EqualTo("case 5!"));
+                        Is.EqualTo("case 5!"));
         }
 
         [Test]
-        public void TestSwitch2CB2() {
+        public void TestSwitch2CB2()
+        {
             Assert.That(CompileAndExecute("i = 10; switch(i) { case 5: { 'case 5!'; } case 10: { 'case 10!'; } };"),
-                NUnit.Framework.Is.EqualTo("case 10!"));
+                        Is.EqualTo("case 10!"));
         }
 
         [Test]
-        public void TestSwitch2CBD() {
+        public void TestSwitch2CBD()
+        {
             Assert.That(
                 CompileAndExecute(
                     "i = 0; switch(i) { case 5: { 'case 5!'; } case 10: { 'case 10!'; } default: { 'default block!'; } };"),
-                NUnit.Framework.Is.EqualTo("default block!"));
+                Is.EqualTo("default block!"));
         }
 
         [Test]
-        public void TestSwitchDefault() {
+        public void TestSwitchDefault()
+        {
             Assert.That(
                 CompileAndExecute("i = 5; switch(i) { case 10: { 'case 10!'; } default: { 'default block!'; } };"),
-                NUnit.Framework.Is.EqualTo("default block!"));
+                Is.EqualTo("default block!"));
         }
 
         [Test]
-        public void TestUnlessConstruct() {
-            Assert.That(CompileAndExecute("unless(3 > 2) { x = 1; } else { x = 2; };"), NUnit.Framework.Is.EqualTo(2));
+        public void TestUnlessConstruct()
+        {
+            Assert.That(CompileAndExecute("unless(3 > 2) { x = 1; } else { x = 2; };"), Is.EqualTo(2));
         }
 
         [Test]
-        public void TestUnlessConstruct2() {
-            Assert.That(CompileAndExecute("unless(2 > 3) { x = 2; } else { x = 1; };"), NUnit.Framework.Is.EqualTo(2));
+        public void TestUnlessConstruct2()
+        {
+            Assert.That(CompileAndExecute("unless(2 > 3) { x = 2; } else { x = 1; };"), Is.EqualTo(2));
         }
 
         [Test]
-        public void TestUnlessExpression() {
-            Assert.That(CompileAndExecute("x = 2 unless 2 > 3;"), NUnit.Framework.Is.EqualTo(2));
+        public void TestUnlessExpression()
+        {
+            Assert.That(CompileAndExecute("x = 2 unless 2 > 3;"), Is.EqualTo(2));
         }
 
         [Test]
-        public void TestUnlessExpression2() {
-            Assert.That(CompileAndExecute("x = 2; x += 1 unless 2 < 3; x;"), NUnit.Framework.Is.EqualTo(2));
+        public void TestUnlessExpression2()
+        {
+            Assert.That(CompileAndExecute("x = 2; x += 1 unless 2 < 3; x;"), Is.EqualTo(2));
         }
 
         [Test]
-        public void TestUntil() {
+        public void TestUntil()
+        {
             Assert.That(CompileAndExecute("i = 10; x = 0; y = 2; until((i -= 1) == 0) { x = ((x + y) * 2); };"),
-                NUnit.Framework.Is.EqualTo(2044));
+                        Is.EqualTo(2044));
         }
 
         [Test]
-        public void TestUntilExpression() {
+        public void TestUntilExpression()
+        {
             Assert.That(CompileAndExecute("i = 10; x = 0; y = 2; x = ((x + y) * 2) until ((i -= 1) < 0);"),
-                NUnit.Framework.Is.EqualTo(4092));
+                        Is.EqualTo(4092));
         }
 
         [Test]
-        public void TestWhile() {
+        public void TestWhile()
+        {
             Assert.That(CompileAndExecute("i = 10; x = 0; y = 2; while((i -= 1) > 0) { x = ((x + y) * 2); };"),
-                NUnit.Framework.Is.EqualTo(2044));
+                        Is.EqualTo(2044));
         }
 
         [Test]
-        public void TestWhileExpression() {
+        public void TestWhileExpression()
+        {
             Assert.That(CompileAndExecute("i = 10; x = 0; y = 2; x = ((x + y) * 2) while((i -= 1) >= 0);"),
-                NUnit.Framework.Is.EqualTo(4092));
+                        Is.EqualTo(4092));
         }
 
         [Test]
         public void TestSwitchOperator()
         {
-            Assert.That(CompileAndExecute("x = 5; x ?? { 1 => 2, 2 => 4, 3 => 8, 4 => 16, 5 => 32, 6 => 64 };"), NUnit.Framework.Is.EqualTo(32));
+            Assert.That(CompileAndExecute("x = 5; x ?? { 1 => 2, 2 => 4, 3 => 8, 4 => 16, 5 => 32, 6 => 64 };"),
+                        Is.EqualTo(32));
         }
     }
 }

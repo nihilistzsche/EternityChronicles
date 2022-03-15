@@ -7,41 +7,29 @@ namespace DragonMUD.Interpreters
 {
     public class BasicInterpreter : BaseInterpreter
     {
-        public BasicInterpreter() : base()
-        {
-            
-        }
-        
         protected void Interpret(ConnectionCoordinator coordinator, InputEventArgs args, IState oldState)
         {
             var newState = coordinator["current-state"] as IState;
-            var workflow = coordinator["current-workflow"] as Workflow;
-            var step = coordinator["current-workflow-step"] as WorkflowStep;
 
             if (newState != oldState)
             {
-                if (workflow != null)
+                if (coordinator["current-workflow"] is Workflow workflow)
                 {
-					if (workflow.HasStepForState(newState.GetType()))
-                    {
-						workflow.SetWorkflowToStepForCoordinator(newState.GetType(), coordinator);
-                    }
+                    if (workflow.HasStepForState(newState.GetType()))
+                        workflow.SetWorkflowToStepForCoordinator(newState.GetType(), coordinator);
                     else
-                    {
                         workflow.AdvanceWorkflowForCoordinator(coordinator);
-                        
-                    }
-                    step = coordinator["current-workflow-step"] as WorkflowStep;
-                    if (step.NextStep == null)
-                    {
+                    if ((coordinator["current-workflow-step"] as WorkflowStep).NextStep == null)
                         coordinator["current-workflow"] = null;
-                    }
-					newState = Dynamic.InvokeConstructor(step.StateType);
-					coordinator["current-state"] = newState;
+                    newState = Dynamic.InvokeConstructor((coordinator["current-workflow-step"] as WorkflowStep)
+                                                        .StateType);
+                    coordinator["current-state"] = newState;
                 }
+
                 var interpreter = newState.Interpreter ?? new BasicInterpreter();
                 coordinator["current-interpreter"] = interpreter;
             }
+
             if (!coordinator.IsFlagSet("no-message"))
             {
                 var state = coordinator["current-state"] as IState;
@@ -52,7 +40,7 @@ namespace DragonMUD.Interpreters
                 coordinator.ClearFlag("no-message");
             }
         }
-        
+
         public override void Interpret(ConnectionCoordinator coordinator, InputEventArgs args)
         {
             coordinator.ClearFlag("softreboot-displayed");
@@ -60,6 +48,5 @@ namespace DragonMUD.Interpreters
             state.Process(coordinator, args.Input);
             Interpret(coordinator, args, state);
         }
-        
     }
 }

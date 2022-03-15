@@ -1,4 +1,4 @@
-﻿namespace DragonMUD.Utility
+namespace DragonMUD.Utility
 {
     public interface IGameLoopObject
     {

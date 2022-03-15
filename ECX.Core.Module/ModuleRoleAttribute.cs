@@ -20,34 +20,37 @@
 // limitations under the License.
 //
 
- 
-namespace ECX.Core {
-	using System;
-	
-	/// <summary>
-	/// Holds a string representation of a modules roles.
-	/// </summary>
-	/// <remarks>
-	/// This attribute is only valid on assembly targets.
-	/// The roles should be a comma-seperated list of roles that
-	/// the module provides facilities for.
-	/// </remarks>
-	/// <preliminary />
-	[AttributeUsage(AttributeTargets.Assembly)]
-	public class ModuleRoleAttribute : Attribute {
-		/// <summary>
-		/// Creates a new ModuleRoleAttribute with the given roles.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		/// <param name="role">Comma-seperate list of roles the module provides facilities for.</param>
-		public ModuleRoleAttribute (string role) {
-			Roles = role;
-		}
-		
-		/// <summary>
-		/// Retrieves the list of roles from a ModuleRoleAttribute object.
-		/// </summary>
-		/// <remarks>None.</remarks>
-		public string Roles { get; protected set; }
-	}
+
+using System;
+
+namespace ECX.Core
+{
+    /// <summary>
+    ///     Holds a string representation of a modules roles.
+    /// </summary>
+    /// <remarks>
+    ///     This attribute is only valid on assembly targets.
+    ///     The roles should be a comma-seperated list of roles that
+    ///     the module provides facilities for.
+    /// </remarks>
+    /// <preliminary />
+    [AttributeUsage(AttributeTargets.Assembly)]
+    public class ModuleRoleAttribute : Attribute
+    {
+        /// <summary>
+        ///     Creates a new ModuleRoleAttribute with the given roles.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        /// <param name="role">Comma-seperate list of roles the module provides facilities for.</param>
+        public ModuleRoleAttribute(string role)
+        {
+            Roles = role;
+        }
+
+        /// <summary>
+        ///     Retrieves the list of roles from a ModuleRoleAttribute object.
+        /// </summary>
+        /// <remarks>None.</remarks>
+        public string Roles { get; protected set; }
+    }
 }

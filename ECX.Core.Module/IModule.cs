@@ -24,34 +24,35 @@
 namespace ECX.Core
 {
     /// <summary>
-    /// This represents a module entry point class if a plug-in needs one.
+    ///     This represents a module entry point class if a plug-in needs one.
     /// </summary>
     /// <remarks>
-    /// A module does not need a type that implements this interface, it is
-    /// only used if the modules need to do some supplementary information on
-    /// the controller, such as registering a new role, or retrieving a type
-    /// from a module which it depends on.
+    ///     A module does not need a type that implements this interface, it is
+    ///     only used if the modules need to do some supplementary information on
+    ///     the controller, such as registering a new role, or retrieving a type
+    ///     from a module which it depends on.
     /// </remarks>
     /// <preliminary />
-    public interface IModule {
-		/// <summary>
-		/// The entry point of the module.
-		/// </summary>
-		/// <remarks>
-		/// The <paramref name="controller" /> will always be a ModuleController object.
-		/// This method is called when a module is loaded.
-		/// </remarks>
-		/// <param name="controller">The module controller to be used for auxillary operations.</param>
-		void ModuleEntry (object controller);
-		
-		/// <summary>
-		/// The exit point of the module.
-		/// </summary>
-		/// <remarks>
-		/// The <paramref name="controller" /> will always be a ModuleController object.
-		/// This method is called when a module is unloaded.
-		/// </remarks>
-		/// <param name="controller">The module controller to be used for auxillary operations.</param>
-		void ModuleExit (object controller);
-	}
+    public interface IModule
+    {
+        /// <summary>
+        ///     The entry point of the module.
+        /// </summary>
+        /// <remarks>
+        ///     The <paramref name="controller" /> will always be a ModuleController object.
+        ///     This method is called when a module is loaded.
+        /// </remarks>
+        /// <param name="controller">The module controller to be used for auxillary operations.</param>
+        void ModuleEntry(object controller);
+
+        /// <summary>
+        ///     The exit point of the module.
+        /// </summary>
+        /// <remarks>
+        ///     The <paramref name="controller" /> will always be a ModuleController object.
+        ///     This method is called when a module is unloaded.
+        /// </remarks>
+        /// <param name="controller">The module controller to be used for auxillary operations.</param>
+        void ModuleExit(object controller);
+    }
 }

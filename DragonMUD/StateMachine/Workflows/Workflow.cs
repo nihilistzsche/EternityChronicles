@@ -11,16 +11,16 @@ namespace DragonMUD.StateMachine.Workflows
     {
         public readonly Dictionary<string, WorkflowStep> Steps = new();
 
-        public WorkflowStep FirstStep  { get; private set; }
+        public WorkflowStep FirstStep { get; private set; }
 
-		protected static bool CheckState(Type T)
-		{
-			return T.GetInterface("IState") != null && T.GetConstructor(new Type[] { }) != null;
-		}
-
-		public void DebugPrintWorkflow(Type T)
+        protected static bool CheckState(Type T)
         {
-			var step = Steps[T.Name];
+            return T.GetInterface("IState") != null && T.GetConstructor(new Type[] { }) != null;
+        }
+
+        public void DebugPrintWorkflow(Type T)
+        {
+            var step  = Steps[T.Name];
             var zstep = 1;
             while (step != null)
             {
@@ -30,84 +30,75 @@ namespace DragonMUD.StateMachine.Workflows
             }
         }
 
-		protected void AddStep(Type T)
+        protected void AddStep(Type T)
         {
-			if (!CheckState(T) || Steps.ContainsKey(T.Name))
+            if (!CheckState(T) || Steps.ContainsKey(T.Name))
                 return;
 
-			Steps[T.Name] = new WorkflowStep(T);
+            Steps[T.Name] = new WorkflowStep(T);
         }
 
-		public void SetNextStep(Type T, Type K)
+        public void SetNextStep(Type T, Type K)
         {
-			if (!CheckState(T) || !CheckState(K))
-				return;
-			
-			if (!Steps.ContainsKey(T.Name)) return;
+            if (!CheckState(T) || !CheckState(K))
+                return;
 
-			var step = Steps[T.Name];
+            if (!Steps.ContainsKey(T.Name)) return;
 
-			if (!Steps.ContainsKey(K.Name))
-            {
-				AddStep(K);
-            }
+            var step = Steps[T.Name];
 
-			step.NextStep = Steps[K.Name];
+            if (!Steps.ContainsKey(K.Name)) AddStep(K);
+
+            step.NextStep = Steps[K.Name];
         }
 
         public void InsertStepBefore(Type T, Type K)
         {
-			if (!CheckState(T) || !CheckState(K))
-				return;
-
-			if (!Steps.ContainsKey(T.Name))
+            if (!CheckState(T) || !CheckState(K))
                 return;
 
-			var step = Steps[T.Name];
+            if (!Steps.ContainsKey(T.Name))
+                return;
+
+            var step          = Steps[T.Name];
             var oldBeforeStep = (from xstep in Steps.Values where xstep.NextStep == step select xstep).FirstOrDefault();
 
-			if (!Steps.ContainsKey(K.Name))
-				AddStep(K);
+            if (!Steps.ContainsKey(K.Name))
+                AddStep(K);
 
-			var newStep = Steps[K.Name];
+            var newStep = Steps[K.Name];
             newStep.NextStep = step;
-            if (oldBeforeStep != null)
-            {
-	            oldBeforeStep.NextStep = newStep;
-            }
+            if (oldBeforeStep != null) oldBeforeStep.NextStep = newStep;
         }
 
         public void InsertStepAfter(Type T, Type K)
-		{
-			if (!CheckState(T) || !CheckState(K))
-				return;
-			
-			if (!Steps.ContainsKey(T.Name))
+        {
+            if (!CheckState(T) || !CheckState(K))
                 return;
 
-			var step = Steps[T.Name];
+            if (!Steps.ContainsKey(T.Name))
+                return;
 
-			if (!Steps.ContainsKey(K.Name))
-				AddStep(K);
+            var step = Steps[T.Name];
 
-			var newStep = Steps[K.Name];
+            if (!Steps.ContainsKey(K.Name))
+                AddStep(K);
+
+            var newStep = Steps[K.Name];
             newStep.NextStep = step.NextStep;
-            step.NextStep = newStep;
+            step.NextStep    = newStep;
         }
 
-		public void Remove(Type T)
-		{
-			if (!Steps.ContainsKey(T.Name))
+        public void Remove(Type T)
+        {
+            if (!Steps.ContainsKey(T.Name))
                 return;
 
-			var step = Steps[T.Name];
-            
+            var step = Steps[T.Name];
+
             var oldBeforeStep = (from xstep in Steps.Values where xstep.NextStep == step select xstep).FirstOrDefault();
 
-            if (oldBeforeStep != null)
-            {
-	            oldBeforeStep.NextStep = step.NextStep;
-            }
+            if (oldBeforeStep != null) oldBeforeStep.NextStep = step.NextStep;
 
             Steps.Remove(T.Name);
         }
@@ -116,67 +107,70 @@ namespace DragonMUD.StateMachine.Workflows
         {
             var step = FirstStep;
             coordinator["current-workflow-step"] = step;
-			var state = Dynamic.InvokeConstructor(step.StateType);
-			coordinator["current-state"] = state;
+            var state = Dynamic.InvokeConstructor(step.StateType);
+            coordinator["current-state"]    = state;
             coordinator["current-workflow"] = this;
             state.SendSoftRebootMessage(coordinator);
         }
 
         public void AdvanceWorkflowForCoordinator(ConnectionCoordinator coordinator)
         {
-            var step = coordinator["current-workflow-step"] as WorkflowStep;
-            if (step == null)
+            if (coordinator["current-workflow-step"] is not WorkflowStep step)
                 return;
             step = step.NextStep;
             if (step == null)
                 return;
-			var state = Dynamic.InvokeConstructor(step.StateType);
-            coordinator["current-state"] = state;
+            var state = Dynamic.InvokeConstructor(step.StateType);
+            coordinator["current-state"]         = state;
             coordinator["current-workflow-step"] = step;
         }
-        
-		public void SetWorkflowToStepForCoordinator(Type T, ConnectionCoordinator coordinator)
+
+        public void SetWorkflowToStepForCoordinator(Type T, ConnectionCoordinator coordinator)
         {
-			var step = Steps[T.Name];
+            var step = Steps[T.Name];
 
             if (step == null)
                 return;
-            
+
             coordinator["current-workflow-step"] = step;
-			var state = Dynamic.InvokeConstructor(step.StateType);
-			coordinator["current-state"] = state;
+            var state = Dynamic.InvokeConstructor(step.StateType);
+            coordinator["current-state"] = state;
         }
 
-		public bool HasStepForState(Type T)
+        public bool HasStepForState(Type T)
         {
-			return Steps.ContainsKey(T.Name);
+            return Steps.ContainsKey(T.Name);
         }
-        
+
         public static Workflow CreateWorkForSteps(params Type[] steps)
         {
             var xsteps = steps.ToList();
 
-			bool ok = true;
-			xsteps.ForEach((obj) => { if (ok) ok = CheckState(obj); });
-			if (!ok)
-				return null;
+            var ok = true;
+            xsteps.ForEach(obj =>
+                           {
+                               if (ok) ok = CheckState(obj);
+                           });
+            if (!ok)
+                return null;
 
-			var firstStep = xsteps.First();
+            var firstStep = xsteps.First();
             xsteps.RemoveAt(0);
-            
+
             var wf = new Workflow();
 
-			wf.AddStep(firstStep);
+            wf.AddStep(firstStep);
 
             wf.FirstStep = wf.Steps[firstStep.Name];
-            
+
             var curState = firstStep;
-            
-            xsteps.ForEach((state) => {
-				wf.InsertStepAfter(curState, state);
-                curState = state;
-            });
-            
+
+            xsteps.ForEach(state =>
+                           {
+                               wf.InsertStepAfter(curState, state);
+                               curState = state;
+                           });
+
             return wf;
         }
     }

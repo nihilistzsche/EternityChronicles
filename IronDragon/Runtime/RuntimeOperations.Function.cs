@@ -64,7 +64,7 @@ namespace IronDragon.Runtime {
             object singleton = CompilerServices.CompileExpression(rawSingleton, scope);
             if ((singleton is DragonClass)) {
                 var @class = (DragonClass) singleton;
-                if (_inClassDefine) {
+                if (IsInsideClassDefine()) {
                     if (@class.Name == _className) {
                         function.IsSingleton = true;
                         return function;
@@ -109,7 +109,7 @@ namespace IronDragon.Runtime {
 
         internal static dynamic Call(object func, List<FunctionArgument> args, object scope, DragonExpressionType pipeType, bool isOp, bool isPostfix) {
             if (func == null) {
-                if (((DragonScope) scope).GlobalScope["Kernel"] == null) {
+                if (((DragonScope) scope).RootScope["Kernel"] == null) {
                     // map and check Kernel
                 }
                 throw new NotImplementedException();
