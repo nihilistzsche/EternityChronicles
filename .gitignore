@@ -8,3 +8,7 @@ coverage
 packages
 *.user
 TestResult.xml
+**/bin
+**/obj
+.vscode/
+gen/
