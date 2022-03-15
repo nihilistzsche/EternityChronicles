@@ -29,10 +29,5 @@ namespace IronDragon.Runtime
         {
             return SymVars.ContainsKey(sym) ? SymVars[sym] : Resolve(sym.Name);
         }
-
-        public dynamic GetVariable(string varName)
-        {
-            return DragonScriptCode.Convert(Resolve(varName), this);
-        }
     }
 }

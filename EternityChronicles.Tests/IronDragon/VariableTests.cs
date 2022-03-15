@@ -159,8 +159,27 @@ namespace EternityChronicles.Tests.IronDragon
             CompileAndExecute("$$gaTest = 72;");
             var val = Dragon.Globals.GetVariable("gaTest");
             Assert.That(val, Is.EqualTo(72));
+            Dragon.Globals.RemoveVariable("gaTest");
         }
 
+        [Test]
+        public void TestGlobalReference()
+        {
+            Dragon.Globals["gaTest2"] = 142;
+            var val = CompileAndExecute("$$gaTest2 / 2;");
+            Assert.That(val, Is.EqualTo(71));
+            Dragon.Globals.RemoveVariable("gaTest2");
+        }
+
+        [Test]
+        public void TestGlobalImplicitReference()
+        {
+            Dragon.Globals["gaTest3"] = "Beep-boop-beep";
+            var val = CompileAndExecute("gaTest3;");
+            Assert.That(val, Is.EqualTo("Beep-boop-beep"));
+            Dragon.Globals.RemoveVariable("gaTest3");
+        }
+        
         [Test]
         public void TestDifferentRootScope()
         {
@@ -228,7 +247,7 @@ namespace EternityChronicles.Tests.IronDragon
             var source = engine.CreateScriptSourceFromString("x + 10;");
             Dragon.Globals["x"] = 10;
             Assert.That(source.Execute(), Is.EqualTo(20));
-            Dragon.Globals["x"] = null;
+            Dragon.Globals.RemoveVariable("x");
         }
 
         [Test]

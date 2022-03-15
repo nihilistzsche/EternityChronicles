@@ -314,5 +314,18 @@ namespace IronDragon.Runtime
 
             return scope;
         }
+        
+        public dynamic GetVariable(string varName)
+        {
+            return DragonScriptCode.Convert(Resolve(varName), this);
+        }
+
+        public void RemoveVariable(string varName)
+        {
+            if (Variables.ContainsKey(varName))
+            {
+                Variables.Remove(varName);
+            }
+        }
     }
 }
