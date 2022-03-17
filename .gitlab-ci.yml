@@ -40,7 +40,6 @@ nuget:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $PACKAGE_MANAGER_SET =~ /\bnuget\b/'
 
 stages:          # List of stages for jobs, and their order of execution
-  - nuget
   - build
   - test
 
