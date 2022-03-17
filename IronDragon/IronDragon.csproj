@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
         <RootNamespace>IronDragon</RootNamespace>
         <AssemblyName>IronDragon</AssemblyName>
         <FileAlignment>512</FileAlignment>
-        <TargetFrameworkProfile/>
+        <TargetFrameworkProfile />
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <LangVersion>9</LangVersion>
         <NuGetPackageImportStamp>
@@ -37,128 +37,128 @@
         <Prefer32Bit>false</Prefer32Bit>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Data.DataSetExtensions"/>
-        <Reference Include="System.Xml"/>
-        <Reference Include="System.Xml.Linq"/>
-        <Reference Include="System.Data.DataSetExtensions"/>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Xml"/>
-        <Reference Include="System"/>
-        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System" />
+        <Reference Include="System.Xml.Linq" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Builtins\DragonRange.cs"/>
-        <Compile Include="Builtins\Kernel.cs"/>
-        <Compile Include="Builtins\DragonArray.cs"/>
-        <Compile Include="Builtins\DragonDictionary.cs"/>
-        <Compile Include="Builtins\DragonNumber.cs"/>
-        <Compile Include="Builtins\DragonString.cs"/>
-        <Compile Include="Expressions\AccessExpression.cs"/>
-        <Compile Include="Expressions\AccessSetExpression.cs"/>
-        <Compile Include="Expressions\AssignmentExpression.cs"/>
-        <Compile Include="Expressions\BeginExpression.cs"/>
-        <Compile Include="Expressions\BinaryExpression.cs"/>
-        <Compile Include="Expressions\BlockExpression.cs"/>
-        <Compile Include="Expressions\BooleanExpression.cs"/>
-        <Compile Include="Expressions\ClassOpenExpression.cs"/>
-        <Compile Include="Expressions\LoopExpression.cs"/>
-        <Compile Include="Expressions\MethodChangeExpression.cs"/>
-        <Compile Include="Expressions\NumberExpression.cs"/>
-        <Compile Include="Expressions\ObjectMethodChangeExpression.cs"/>
-        <Compile Include="Expressions\RangeExpression.cs"/>
-        <Compile Include="Expressions\RegexExpression.cs"/>
-        <Compile Include="Expressions\RescueExpression.cs"/>
-        <Compile Include="Expressions\CreateArrayExpression.cs"/>
-        <Compile Include="Expressions\ForInExpression.cs"/>
-        <Compile Include="Expressions\ModuleDefinitionExpression.cs"/>
-        <Compile Include="Expressions\ReturnExpression.cs"/>
-        <Compile Include="Expressions\SyncExpression.cs"/>
-        <Compile Include="Expressions\ThrowExpression.cs"/>
-        <Compile Include="Expressions\ConvertExpression.cs"/>
-        <Compile Include="Expressions\DoUntilExpression.cs"/>
-        <Compile Include="Expressions\DoWhileExpression.cs"/>
-        <Compile Include="Expressions\ForExpression.cs"/>
-        <Compile Include="Expressions\IfExpression.cs"/>
-        <Compile Include="Expressions\IScopeExpression.cs"/>
-        <Compile Include="Expressions\LeftHandValueExpression.cs"/>
-        <Compile Include="Expressions\DragonExpression.cs"/>
-        <Compile Include="Expressions\PutsExpression.cs"/>
+        <Compile Include="Builtins\DragonRange.cs" />
+        <Compile Include="Builtins\Kernel.cs" />
+        <Compile Include="Builtins\DragonArray.cs" />
+        <Compile Include="Builtins\DragonDictionary.cs" />
+        <Compile Include="Builtins\DragonNumber.cs" />
+        <Compile Include="Builtins\DragonString.cs" />
+        <Compile Include="Expressions\AccessExpression.cs" />
+        <Compile Include="Expressions\AccessSetExpression.cs" />
+        <Compile Include="Expressions\AssignmentExpression.cs" />
+        <Compile Include="Expressions\BeginExpression.cs" />
+        <Compile Include="Expressions\BinaryExpression.cs" />
+        <Compile Include="Expressions\BlockExpression.cs" />
+        <Compile Include="Expressions\BooleanExpression.cs" />
+        <Compile Include="Expressions\ClassOpenExpression.cs" />
+        <Compile Include="Expressions\LoopExpression.cs" />
+        <Compile Include="Expressions\MethodChangeExpression.cs" />
+        <Compile Include="Expressions\NumberExpression.cs" />
+        <Compile Include="Expressions\ObjectMethodChangeExpression.cs" />
+        <Compile Include="Expressions\RangeExpression.cs" />
+        <Compile Include="Expressions\RegexExpression.cs" />
+        <Compile Include="Expressions\RescueExpression.cs" />
+        <Compile Include="Expressions\CreateArrayExpression.cs" />
+        <Compile Include="Expressions\ForInExpression.cs" />
+        <Compile Include="Expressions\ModuleDefinitionExpression.cs" />
+        <Compile Include="Expressions\ReturnExpression.cs" />
+        <Compile Include="Expressions\SyncExpression.cs" />
+        <Compile Include="Expressions\ThrowExpression.cs" />
+        <Compile Include="Expressions\ConvertExpression.cs" />
+        <Compile Include="Expressions\DoUntilExpression.cs" />
+        <Compile Include="Expressions\DoWhileExpression.cs" />
+        <Compile Include="Expressions\ForExpression.cs" />
+        <Compile Include="Expressions\IfExpression.cs" />
+        <Compile Include="Expressions\IScopeExpression.cs" />
+        <Compile Include="Expressions\LeftHandValueExpression.cs" />
+        <Compile Include="Expressions\DragonExpression.cs" />
+        <Compile Include="Expressions\PutsExpression.cs" />
         <Compile Include="Expressions\DragonExpression.Factory.cs">
             <DependentUpon>DragonExpression.cs</DependentUpon>
         </Compile>
-        <Compile Include="Expressions\SwitchExpression.cs"/>
-        <Compile Include="Expressions\TypeofExpression.cs"/>
-        <Compile Include="Expressions\UnaryExpression.cs"/>
-        <Compile Include="Expressions\UnlessExpression.cs"/>
-        <Compile Include="Expressions\UntilExpression.cs"/>
-        <Compile Include="Expressions\VariableExpression.cs"/>
-        <Compile Include="Expressions\WhileExpression.cs"/>
-        <Compile Include="Lexer\DragonLexer.partial.cs"/>
-        <Compile Include="Lexer\DragonToken.cs"/>
-        <Compile Include="Lexer\DragonTokenFactory.cs"/>
-        <Compile Include="Lexer\DragonTokenQueue.cs"/>
-        <Compile Include="Parser\DragonParser.partial.cs"/>
+        <Compile Include="Expressions\SwitchExpression.cs" />
+        <Compile Include="Expressions\TypeofExpression.cs" />
+        <Compile Include="Expressions\UnaryExpression.cs" />
+        <Compile Include="Expressions\UnlessExpression.cs" />
+        <Compile Include="Expressions\UntilExpression.cs" />
+        <Compile Include="Expressions\VariableExpression.cs" />
+        <Compile Include="Expressions\WhileExpression.cs" />
+        <Compile Include="Lexer\DragonLexer.partial.cs" />
+        <Compile Include="Lexer\DragonToken.cs" />
+        <Compile Include="Lexer\DragonTokenFactory.cs" />
+        <Compile Include="Lexer\DragonTokenQueue.cs" />
+        <Compile Include="Parser\DragonParser.partial.cs" />
         <Compile Include="Properties\Settings.Designer.cs">
             <AutoGen>True</AutoGen>
             <DesignTimeSharedInput>True</DesignTimeSharedInput>
             <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
-        <Compile Include="Runtime\CompilerServices.cs"/>
-        <Compile Include="Runtime\ConstantException.cs"/>
-        <Compile Include="Runtime\DragonExpressionVisitor.cs"/>
-        <Compile Include="Runtime\DragonGlobalScope.cs"/>
-        <Compile Include="Runtime\Operation.cs"/>
-        <Compile Include="Runtime\RuntimeOperations.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Runtime\CompilerServices.cs" />
+        <Compile Include="Runtime\ConstantException.cs" />
+        <Compile Include="Runtime\DragonExpressionVisitor.cs" />
+        <Compile Include="Runtime\DragonGlobalScope.cs" />
+        <Compile Include="Runtime\Operation.cs" />
+        <Compile Include="Runtime\RuntimeOperations.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Runtime\RuntimeOperations.ExceptionSystem.cs">
             <DependentUpon>RuntimeOperations.cs</DependentUpon>
         </Compile>
-        <Compile Include="Runtime\DragonSystemException.cs"/>
-        <Compile Include="Runtime\DragonModule.cs"/>
-        <Compile Include="Runtime\Symbol.cs"/>
-        <Compile Include="Runtime\FunctionArgument.cs"/>
-        <Compile Include="Expressions\FunctionDefinitionExpression.cs"/>
-        <Compile Include="Expressions\FunctionCallExpression.cs"/>
-        <Compile Include="Runtime\DragonPartialFunction.cs"/>
-        <Compile Include="Expressions\CreateDictionaryExpression.cs"/>
-        <Compile Include="Expressions\KeyValuePairExpression.cs"/>
-        <Compile Include="Runtime\DragonFunction.cs"/>
+        <Compile Include="Runtime\DragonSystemException.cs" />
+        <Compile Include="Runtime\DragonModule.cs" />
+        <Compile Include="Runtime\Symbol.cs" />
+        <Compile Include="Runtime\FunctionArgument.cs" />
+        <Compile Include="Expressions\FunctionDefinitionExpression.cs" />
+        <Compile Include="Expressions\FunctionCallExpression.cs" />
+        <Compile Include="Runtime\DragonPartialFunction.cs" />
+        <Compile Include="Expressions\CreateDictionaryExpression.cs" />
+        <Compile Include="Expressions\KeyValuePairExpression.cs" />
+        <Compile Include="Runtime\DragonFunction.cs" />
         <Compile Include="Runtime\DragonFunction.Meta.cs">
             <DependentUpon>DragonFunction.cs</DependentUpon>
         </Compile>
-        <Compile Include="Expressions\YieldExpression.cs"/>
-        <Compile Include="Runtime\YieldCheckVisitor.cs"/>
-        <Compile Include="Expressions\StringExpression.cs"/>
-        <Compile Include="Runtime\DragonClass.cs"/>
+        <Compile Include="Expressions\YieldExpression.cs" />
+        <Compile Include="Runtime\YieldCheckVisitor.cs" />
+        <Compile Include="Expressions\StringExpression.cs" />
+        <Compile Include="Runtime\DragonClass.cs" />
         <Compile Include="Runtime\DragonClass.Meta.cs">
             <DependentUpon>DragonClass.cs</DependentUpon>
         </Compile>
-        <Compile Include="Runtime\DragonNativeFunction.cs"/>
+        <Compile Include="Runtime\DragonNativeFunction.cs" />
         <Compile Include="Runtime\DragonNativeFunction.Meta.cs">
             <DependentUpon>DragonNativeFunction.cs</DependentUpon>
         </Compile>
-        <Compile Include="Expressions\InvokeExpression.cs"/>
-        <Compile Include="Dragon.cs"/>
-        <Compile Include="Runtime\DragonMethodTable.cs"/>
+        <Compile Include="Expressions\InvokeExpression.cs" />
+        <Compile Include="Dragon.cs" />
+        <Compile Include="Runtime\DragonMethodTable.cs" />
         <Compile Include="Runtime\DragonMethodTable.Meta.cs">
             <DependentUpon>DragonMethodTable.cs</DependentUpon>
         </Compile>
         <Compile Include="Runtime\DragonPartialFunction.Meta.cs">
             <DependentUpon>DragonPartialFunction.cs</DependentUpon>
         </Compile>
-        <Compile Include="Runtime\DragonContext.cs"/>
-        <Compile Include="Runtime\DragonScriptCode.cs"/>
-        <Compile Include="Runtime\DragonTextContentProvider.cs"/>
-        <Compile Include="Runtime\VariableNameVisitor.cs"/>
-        <Compile Include="Expressions\ConditionalAssignmentExpression.cs"/>
-        <Compile Include="Expressions\ConditionalAccessSetExpression.cs"/>
-        <Compile Include="Expressions\ParallelAssignmentExpression.cs"/>
-        <Compile Include="Expressions\AliasExpression.cs"/>
+        <Compile Include="Runtime\DragonContext.cs" />
+        <Compile Include="Runtime\DragonScriptCode.cs" />
+        <Compile Include="Runtime\DragonTextContentProvider.cs" />
+        <Compile Include="Runtime\VariableNameVisitor.cs" />
+        <Compile Include="Expressions\ConditionalAssignmentExpression.cs" />
+        <Compile Include="Expressions\ConditionalAccessSetExpression.cs" />
+        <Compile Include="Expressions\ParallelAssignmentExpression.cs" />
+        <Compile Include="Expressions\AliasExpression.cs" />
         <Compile Include="Runtime\RuntimeOperations.Variable.cs">
             <DependentUpon>RuntimeOperations.cs</DependentUpon>
         </Compile>
@@ -174,39 +174,39 @@
         <Compile Include="Runtime\RuntimeOperations.Class.cs">
             <DependentUpon>RuntimeOperations.cs</DependentUpon>
         </Compile>
-        <Compile Include="Expressions\ClassDefinitionExpression.cs"/>
-        <Compile Include="Expressions\InstanceReferenceExpression.cs"/>
-        <Compile Include="Runtime\DragonScope.cs"/>
-        <Compile Include="Runtime\DragonDoNotWrapBoolean.cs"/>
-        <Compile Include="Runtime\DragonExportAttribute.cs"/>
-        <Compile Include="Runtime\DragonDoNotExportAttribute.cs"/>
-        <Compile Include="Expressions\SingletonDefinitionExpression.cs"/>
-        <Compile Include="Runtime\DragonUnaryBoolean.cs"/>
-        <Compile Include="Runtime\DragonMetaObject.cs"/>
-        <Compile Include="Runtime\InteropBinder.cs"/>
-        <Compile Include="Runtime\MetaObjectBuilder.cs"/>
-        <Compile Include="Runtime\DragonTypeResolver.cs"/>
-        <Compile Include="Expressions\IncludeExpression.cs"/>
-        <Compile Include="Runtime\DragonInterface.cs"/>
+        <Compile Include="Expressions\ClassDefinitionExpression.cs" />
+        <Compile Include="Expressions\InstanceReferenceExpression.cs" />
+        <Compile Include="Runtime\DragonScope.cs" />
+        <Compile Include="Runtime\DragonDoNotWrapBoolean.cs" />
+        <Compile Include="Runtime\DragonExportAttribute.cs" />
+        <Compile Include="Runtime\DragonDoNotExportAttribute.cs" />
+        <Compile Include="Expressions\SingletonDefinitionExpression.cs" />
+        <Compile Include="Runtime\DragonUnaryBoolean.cs" />
+        <Compile Include="Runtime\DragonMetaObject.cs" />
+        <Compile Include="Runtime\InteropBinder.cs" />
+        <Compile Include="Runtime\MetaObjectBuilder.cs" />
+        <Compile Include="Runtime\DragonTypeResolver.cs" />
+        <Compile Include="Expressions\IncludeExpression.cs" />
+        <Compile Include="Runtime\DragonInterface.cs" />
         <Compile Include="Runtime\DragonInterface.Meta.cs">
             <DependentUpon>DragonInterface.cs</DependentUpon>
         </Compile>
-        <Compile Include="Expressions\DragonExpressionType.cs"/>
-        <Compile Include="Expressions\SetAssignExpression.cs"/>
-        <Compile Include="Runtime\DragonBoxedClass.cs"/>
-        <Compile Include="Runtime\DragonBoxedInstance.cs"/>
-        <Compile Include="Runtime\DragonInstance.cs"/>
+        <Compile Include="Expressions\DragonExpressionType.cs" />
+        <Compile Include="Expressions\SetAssignExpression.cs" />
+        <Compile Include="Runtime\DragonBoxedClass.cs" />
+        <Compile Include="Runtime\DragonBoxedInstance.cs" />
+        <Compile Include="Runtime\DragonInstance.cs" />
         <Compile Include="Runtime\DragonInstance.Meta.cs">
             <DependentUpon>DragonInstance.cs</DependentUpon>
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <WCFMetadata Include="Service References\"/>
+        <WCFMetadata Include="Service References\" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="Differences.txt"/>
+        <Content Include="Differences.txt" />
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets. -->
     <PropertyGroup Label="GenerateDragonProperties">
@@ -217,7 +217,7 @@
     </Target>
     -->
     <ItemGroup>
-        <None Include="app.config"/>
+        <None Include="app.config" />
         <Antlr4 Include="Parser\DragonParser.g4">
             <CustomToolNamespace>IronDragon.Parser</CustomToolNamespace>
             <Listener>False</Listener>
@@ -231,9 +231,9 @@
         <MonoDevelop>
             <Properties>
                 <Policies>
-                    <DotNetNamingPolicy DirectoryNamespaceAssociation="Hierarchical" ResourceNamePolicy="MSBuild"/>
+                    <DotNetNamingPolicy DirectoryNamespaceAssociation="Hierarchical" ResourceNamePolicy="MSBuild" />
                     <ChangeLogPolicy UpdateMode="ProjectRoot" VcsIntegration="RequireEntry" inheritsSet="Mono">
-                        <MessageStyle LineAlign="0" IncludeDirectoryPaths="True"/>
+                        <MessageStyle LineAlign="0" IncludeDirectoryPaths="True" />
                     </ChangeLogPolicy>
                 </Policies>
             </Properties>
@@ -245,7 +245,7 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <Ragel Include="Lexer\DragonLexer.rl"/>
+        <Ragel Include="Lexer\DragonLexer.rl" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Antlr4">
@@ -257,10 +257,10 @@
             <Version>4.6.6</Version>
         </PackageReference>
         <PackageReference Include="DynamicLanguageRuntime">
-            <Version>1.3.0</Version>
+            <Version>1.3.1</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net47">
-            <Version>1.0.0</Version>
+            <Version>1.0.2</Version>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
@@ -268,10 +268,10 @@
             <Version>5.0.0-alpha</Version>
         </PackageReference>
         <PackageReference Include="RagelMSBuildTask">
-            <Version>1.1.7</Version>
+            <Version>1.2.0</Version>
         </PackageReference>
         <PackageReference Include="Theraot.Core">
-            <Version>3.2.1</Version>
+            <Version>3.2.11</Version>
         </PackageReference>
     </ItemGroup>
 </Project>

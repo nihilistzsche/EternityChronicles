@@ -87,16 +87,16 @@
             <Version>4.3.1</Version>
         </PackageReference>
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-            <Version>6.0.0-preview.5.21301.5</Version>
+            <Version>7.0.0-preview.2.22152.2</Version>
         </PackageReference>
         <PackageReference Include="System.Runtime.Extensions">
             <Version>4.3.1</Version>
         </PackageReference>
         <PackageReference Include="System.Security.AccessControl">
-            <Version>6.0.0-preview.5.21301.5</Version>
+            <Version>6.0.2-mauipre.1.22102.15</Version>
         </PackageReference>
         <PackageReference Include="System.Security.Permissions">
-            <Version>6.0.0-preview.5.21301.5</Version>
+            <Version>7.0.0-preview.2.22152.2</Version>
         </PackageReference>
         <PackageReference Include="System.Security.Principal.Windows">
             <Version>6.0.0-preview.5.21301.5</Version>
@@ -108,7 +108,7 @@
             <Version>4.5.4</Version>
         </PackageReference>
         <PackageReference Include="Theraot.Core">
-            <Version>3.2.6</Version>
+            <Version>3.2.11</Version>
         </PackageReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
