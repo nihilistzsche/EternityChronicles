@@ -18,7 +18,7 @@ namespace ECMSBuildTasks
         protected override string ToolName => "csc.exe";
 
         protected new string ToolPath =>
-            $"{HomePath}{"/.nuget/packages/microsoft.net.compilers.toolset/3.11.0-1.final/tasks/net472"}";
+            $"{HomePath}/.nuget/packages/microsoft.net.compilers.toolset/4.2.0-1.final/tasks/net472";
 
         public string WorkingDirectory { get; set; }
 
