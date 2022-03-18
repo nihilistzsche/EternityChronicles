@@ -29,11 +29,11 @@ namespace IronDragon.Expressions
     public class FunctionCallExpression : DragonExpression
     {
         internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments,
-        DragonExpressionType                       pipeType)
+                                        DragonExpressionType pipeType)
         {
-            Function  = func;
+            Function = func;
             Arguments = arguments;
-            PipeType  = pipeType;
+            PipeType = pipeType;
         }
 
         internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments)
@@ -42,9 +42,9 @@ namespace IronDragon.Expressions
         }
 
         internal FunctionCallExpression(Expression func, List<FunctionArgument> arguments, bool isUnaryOp,
-        bool                                       isPostfix) : this(func, arguments)
+                                        bool isPostfix) : this(func, arguments)
         {
-            IsOp      = isUnaryOp;
+            IsOp = isUnaryOp;
             IsPostfix = isPostfix;
         }
 
@@ -64,9 +64,9 @@ namespace IronDragon.Expressions
         {
             if (Function is VariableExpression && ((VariableExpression)Function).Name is InstanceReferenceExpression)
                 return Operation.Call(typeof(object), ((VariableExpression)Function).Name, Constant(Arguments),
-                Constant(Scope), Constant(PipeType), Constant(IsOp), Constant(IsPostfix));
+                                      Constant(Scope), Constant(PipeType), Constant(IsOp), Constant(IsPostfix));
             return Operation.Call(typeof(object), Function, Constant(Arguments), Constant(Scope), Constant(PipeType),
-            Constant(IsOp), Constant(IsPostfix));
+                                  Constant(IsOp), Constant(IsPostfix));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

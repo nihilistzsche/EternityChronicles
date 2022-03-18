@@ -101,7 +101,7 @@ namespace XDL
                                 Dynamic.InvokeSet(obj, key, attr.Value);
                             else
                                 Log.LogMessage("xdl", LogLevel.Warning,
-                                "Tried to assign self key without load handler to non-string type.");
+                                               "Tried to assign self key without load handler to non-string type.");
                         }
                     }
 
@@ -131,7 +131,7 @@ namespace XDL
                                 Dynamic.InvokeSet(obj, key, child.Value);
                             else
                                 Log.LogMessage("xdl", LogLevel.Warning,
-                                "Tried to assign self key without load handler to non-string type.");
+                                               "Tried to assign self key without load handler to non-string type.");
                         }
 
                         foreach (var attr in child.Attributes())
@@ -160,7 +160,7 @@ namespace XDL
                                     Dynamic.InvokeSet(obj, akey, attr.Value);
                                 else
                                     Log.LogMessage("xdl", LogLevel.Warning,
-                                    "Tried to assign self key without load handler to non-string type.");
+                                                   "Tried to assign self key without load handler to non-string type.");
                             }
                         }
                     }

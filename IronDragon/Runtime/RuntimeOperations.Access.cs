@@ -37,7 +37,7 @@ namespace IronDragon.Runtime
         {
             var names = new List<string>();
             for (var i = 0; i < args.Count; i++) names.Add(string.Format("index{0}", i));
-            var scope    = rawScope as DragonScope;
+            var scope = rawScope as DragonScope;
             var realArgs = new List<object>();
             args.ForEach(arg => realArgs.Add(CompilerServices.CompileExpression(arg.Value, scope)));
 
@@ -45,37 +45,37 @@ namespace IronDragon.Runtime
             eArgs.Add(Expression.Constant(container, typeof(object)));
             realArgs.ForEach(arg => eArgs.Add(Expression.Constant(arg)));
             return Dynamic(typeof(object),
-            new InteropBinder.GetIndex(scope, new CallInfo(args.Count, names)), eArgs);
+                           new InteropBinder.GetIndex(scope, new CallInfo(args.Count, names)), eArgs);
         }
 
         internal static dynamic AccessSet(object container, List<FunctionArgument> args, object value, E type,
-        object                                   rawScope)
+                                          object rawScope)
         {
             var map = new Dictionary<ExpressionType, ExpressionType>();
-            map[E.AddAssign]         = E.Add;
-            map[E.AndAssign]         = E.And;
-            map[E.DivideAssign]      = E.Divide;
+            map[E.AddAssign] = E.Add;
+            map[E.AndAssign] = E.And;
+            map[E.DivideAssign] = E.Divide;
             map[E.ExclusiveOrAssign] = E.ExclusiveOr;
-            map[E.LeftShiftAssign]   = E.LeftShift;
-            map[E.ModuloAssign]      = E.Modulo;
-            map[E.MultiplyAssign]    = E.Multiply;
-            map[E.OrAssign]          = E.Or;
-            map[E.PowerAssign]       = E.Power;
-            map[E.RightShiftAssign]  = E.RightShift;
-            map[E.SubtractAssign]    = E.Subtract;
+            map[E.LeftShiftAssign] = E.LeftShift;
+            map[E.ModuloAssign] = E.Modulo;
+            map[E.MultiplyAssign] = E.Multiply;
+            map[E.OrAssign] = E.Or;
+            map[E.PowerAssign] = E.Power;
+            map[E.RightShiftAssign] = E.RightShift;
+            map[E.SubtractAssign] = E.Subtract;
 
             var incDecMap = new List<ExpressionType>
-            {
-                E.PreIncrementAssign,
-                E.PreDecrementAssign,
-                E.PostIncrementAssign,
-                E.PostDecrementAssign
-            };
+                            {
+                                E.PreIncrementAssign,
+                                E.PreDecrementAssign,
+                                E.PostIncrementAssign,
+                                E.PostDecrementAssign
+                            };
 
             var names = new List<string>();
             for (var i = 0; i < args.Count; i++) names.Add(string.Format("index{0}", i));
 
-            var scope    = rawScope as DragonScope;
+            var scope = rawScope as DragonScope;
             var realArgs = new List<object>();
             args.ForEach(arg => realArgs.Add(CompilerServices.CompileExpression(arg.Value, scope)));
 
@@ -84,9 +84,10 @@ namespace IronDragon.Runtime
             {
                 var nvalue =
                     CompilerServices.CreateLambdaForExpression(
-                    DragonExpression.Binary(Expression.Constant(Access(container, args, scope)),
-                    Expression.Constant(value),
-                    map[type]))();
+                                                               DragonExpression
+                                                                   .Binary(Expression.Constant(Access(container, args, scope)),
+                                                                           Expression.Constant(value),
+                                                                           map[type]))();
                 value = nvalue;
             }
 
@@ -96,7 +97,7 @@ namespace IronDragon.Runtime
                 {
                     var val = Access(container, args, scope);
                     AccessSet(container, args, 1, type == E.PostIncrementAssign ? E.AddAssign : E.SubtractAssign,
-                    rawScope);
+                              rawScope);
                     return val;
                 }
 
@@ -109,14 +110,14 @@ namespace IronDragon.Runtime
             realArgs.ForEach(arg => eArgs.Add(Expression.Constant(arg)));
             eArgs.Add(Expression.Constant(value, typeof(object)));
             return Dynamic(typeof(object),
-            new InteropBinder.SetIndex(scope, new CallInfo(args.Count, names)), eArgs);
+                           new InteropBinder.SetIndex(scope, new CallInfo(args.Count, names)), eArgs);
         }
 
         internal static dynamic ConditionalAccessSet(object container, List<FunctionArgument> args, object value,
-        DragonExpressionType                                conditionalAssignmentType, object rawScope)
+                                                     DragonExpressionType conditionalAssignmentType, object rawScope)
         {
             var scope = rawScope as DragonScope;
-            var v     = Access(container, args, scope);
+            var v = Access(container, args, scope);
             if (Boolean(v))
             {
                 if (conditionalAssignmentType == DragonExpressionType.IfNotNullAssign)

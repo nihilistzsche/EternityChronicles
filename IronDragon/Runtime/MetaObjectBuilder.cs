@@ -18,7 +18,7 @@ namespace IronDragon.Runtime
 {
     internal class MetaObjectBuilder
     {
-        private Expression          _metaResult;
+        private Expression _metaResult;
         private BindingRestrictions _restrictions;
 
         public MetaObjectBuilder(DragonMetaObject target, DynamicMetaObject[] args)
@@ -35,8 +35,10 @@ namespace IronDragon.Runtime
                     AddRestriction(arg.Restrictions);
                 else // Runtime check!
                     AddRestriction(
-                    BindingRestrictions.GetExpressionRestriction(DragonExpression.Binary(arg.Expression,
-                    Expression.Constant(arg.Value), ExpressionType.Equal)));
+                                   BindingRestrictions.GetExpressionRestriction(DragonExpression.Binary(arg.Expression,
+                                                                                    Expression
+                                                                                        .Constant(arg.Value),
+                                                                                    ExpressionType.Equal)));
             }
         }
 

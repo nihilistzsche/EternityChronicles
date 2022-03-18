@@ -175,9 +175,9 @@ namespace IronDragon.Runtime
         protected virtual Expression VisitFunctionDefinition(FunctionDefinitionExpression node)
         {
             node.Arguments.ForEach(arg =>
-            {
-                if (arg.HasDefault) Visit(arg.DefaultValue);
-            });
+                                   {
+                                       if (arg.HasDefault) Visit(arg.DefaultValue);
+                                   });
             Visit(node.Body);
             return node;
         }
@@ -263,9 +263,9 @@ namespace IronDragon.Runtime
         {
             Visit(node.Singleton);
             node.Arguments.ForEach(arg =>
-            {
-                if (arg.HasDefault) Visit(arg.DefaultValue);
-            });
+                                   {
+                                       if (arg.HasDefault) Visit(arg.DefaultValue);
+                                   });
             Visit(node.Body);
             return node;
         }
@@ -279,10 +279,10 @@ namespace IronDragon.Runtime
         {
             Visit(node.Test);
             node.Cases.ForEach(c =>
-            {
-                Visit(c.Body);
-                c.TestValues.ToList().ForEach(t => Visit(t));
-            });
+                               {
+                                   Visit(c.Body);
+                                   c.TestValues.ToList().ForEach(t => Visit(t));
+                               });
             if (node.DefaultBody != null) Visit(node.DefaultBody);
             return node;
         }
@@ -366,24 +366,24 @@ namespace IronDragon.Runtime
             node = VisitIf(node, typeof(BooleanExpression), myNode => VisitBoolean((BooleanExpression)myNode));
 
             node = VisitIf(node, typeof(ClassDefinitionExpression),
-            myNode => VisitClassDefinition((ClassDefinitionExpression)myNode));
+                           myNode => VisitClassDefinition((ClassDefinitionExpression)myNode));
 
             node = VisitIf(node, typeof(ClassOpenExpression),
-            myNode => VisitClassOpen((ClassOpenExpression)myNode));
+                           myNode => VisitClassOpen((ClassOpenExpression)myNode));
 
             node = VisitIf(node, typeof(ConditionalAccessSetExpression),
-            myNode => VisitConditionalAccessSet((ConditionalAccessSetExpression)myNode));
+                           myNode => VisitConditionalAccessSet((ConditionalAccessSetExpression)myNode));
 
             node = VisitIf(node, typeof(ConditionalAssignmentExpression),
-            myNode => VisitConditionalAssignment((ConditionalAssignmentExpression)myNode));
+                           myNode => VisitConditionalAssignment((ConditionalAssignmentExpression)myNode));
 
             node = VisitIf(node, typeof(ConvertExpression), myNode => VisitConvert((ConvertExpression)myNode));
 
             node = VisitIf(node, typeof(CreateArrayExpression),
-            myNode => VisitCreateArray((CreateArrayExpression)myNode));
+                           myNode => VisitCreateArray((CreateArrayExpression)myNode));
 
             node = VisitIf(node, typeof(CreateDictionaryExpression),
-            myNode => VisitCreateDictionary((CreateDictionaryExpression)myNode));
+                           myNode => VisitCreateDictionary((CreateDictionaryExpression)myNode));
 
             node = VisitIf(node, typeof(DoUntilExpression), myNode => VisitDoUntil((DoUntilExpression)myNode));
 
@@ -394,28 +394,28 @@ namespace IronDragon.Runtime
             node = VisitIf(node, typeof(ForInExpression), myNode => VisitForIn((ForInExpression)myNode));
 
             node = VisitIf(node, typeof(FunctionCallExpression),
-            myNode => VisitFunctionCall((FunctionCallExpression)myNode));
+                           myNode => VisitFunctionCall((FunctionCallExpression)myNode));
 
             node = VisitIf(node, typeof(FunctionDefinitionExpression),
-            myNode => VisitFunctionDefinition((FunctionDefinitionExpression)myNode));
+                           myNode => VisitFunctionDefinition((FunctionDefinitionExpression)myNode));
 
             node = VisitIf(node, typeof(IfExpression), myNode => node = VisitIf((IfExpression)myNode));
 
             node = VisitIf(node, typeof(IncludeExpression), myNode => node = VisitInclude((IncludeExpression)myNode));
 
             node = VisitIf(node, typeof(InstanceReferenceExpression),
-            myNode => node = VisitInstanceReference((InstanceReferenceExpression)myNode));
+                           myNode => node = VisitInstanceReference((InstanceReferenceExpression)myNode));
 
             node = VisitIf(node, typeof(InvokeExpression), myNode => node = VisitInvoke((InvokeExpression)myNode));
 
             node = VisitIf(node, typeof(KeyValuePairExpression),
-            myNode => VisitKeyValuePair((KeyValuePairExpression)myNode));
+                           myNode => VisitKeyValuePair((KeyValuePairExpression)myNode));
 
             node = VisitIf(node, typeof(LeftHandValueExpression),
-            myNode => VisitLeftHandValue((LeftHandValueExpression)myNode));
+                           myNode => VisitLeftHandValue((LeftHandValueExpression)myNode));
 
             node = VisitIf(node, typeof(ModuleDefinitionExpression),
-            myNode => VisitModuleDefinition((ModuleDefinitionExpression)myNode));
+                           myNode => VisitModuleDefinition((ModuleDefinitionExpression)myNode));
 
             node = VisitIf(node, typeof(PutsExpression), myNode => VisitPuts((PutsExpression)myNode));
 
@@ -424,10 +424,10 @@ namespace IronDragon.Runtime
             node = VisitIf(node, typeof(ReturnExpression), myNode => VisitReturn((ReturnExpression)myNode));
 
             node = VisitIf(node, typeof(SetAssignExpression),
-            myNode => VisitSetAssign((SetAssignExpression)myNode));
+                           myNode => VisitSetAssign((SetAssignExpression)myNode));
 
             node = VisitIf(node, typeof(SingletonDefinitionExpression),
-            myNode => VisitSingletonDefinition((SingletonDefinitionExpression)myNode));
+                           myNode => VisitSingletonDefinition((SingletonDefinitionExpression)myNode));
 
             node = VisitIf(node, typeof(StringExpression), myNode => VisitString((StringExpression)myNode));
 

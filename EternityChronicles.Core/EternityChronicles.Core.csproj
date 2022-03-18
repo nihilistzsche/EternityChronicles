@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +12,7 @@
         <FileAlignment>512</FileAlignment>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <LangVersion>9</LangVersion>
-        <TargetFrameworkProfile />
+        <TargetFrameworkProfile/>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
     </PropertyGroup>
@@ -34,22 +34,22 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.ComponentModel.Composition" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Numerics" />
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
+        <Reference Include="System"/>
+        <Reference Include="System.ComponentModel.Composition"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Numerics"/>
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Core.cs" />
-        <Compile Include="Data\Greeting.cs" />
-        <Compile Include="Data\Race.cs" />
-        <Compile Include="IMudLib.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Core.cs"/>
+        <Compile Include="Data\Greeting.cs"/>
+        <Compile Include="Data\Race.cs"/>
+        <Compile Include="IMudLib.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\CSLog\CSLog.csproj">
@@ -86,11 +86,11 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <None Include="app.config" />
-        <None Include="config\sys.conf" />
+        <None Include="app.config"/>
+        <None Include="config\sys.conf"/>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="lib\greeting.xml" />
+        <Content Include="lib\greeting.xml"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="DnsClient">
@@ -130,7 +130,7 @@
             <Version>3.2.11</Version>
         </PackageReference>
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">

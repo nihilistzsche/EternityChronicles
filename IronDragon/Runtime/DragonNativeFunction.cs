@@ -38,22 +38,24 @@ namespace IronDragon.Runtime
 
         public DragonNativeFunction(Type target, MethodBase method)
             : base(
-            GetExportName(method) ?? (method.IsConstructor ? "new" : method.Name), GenerateArguments(method),
-            GenerateBody(target, method), new DragonScope())
+                   GetExportName(method) ?? (method.IsConstructor ? "new" : method.Name), GenerateArguments(method),
+                   GenerateBody(target, method), new DragonScope())
         {
             Func<MethodBase, bool> chkDoNotExportMethod = t =>
-            {
-                var a = t.GetCustomAttributes(typeof(DragonDoNotExportAttribute), false).FirstOrDefault();
-                return a != null;
-            };
+                                                          {
+                                                              var a = t
+                                                                      .GetCustomAttributes(typeof(DragonDoNotExportAttribute),
+                                                                          false).FirstOrDefault();
+                                                              return a != null;
+                                                          };
             if (chkDoNotExportMethod(method))
             {
                 Name = "<__doNotExport>";
                 return;
             }
 
-            Target            = target;
-            Method            = method;
+            Target = target;
+            Method = method;
             NumberOfArguments = method.GetParameters().Count();
         }
 
@@ -68,17 +70,19 @@ namespace IronDragon.Runtime
             if (ArgumentCache.ContainsKey(method)) return ArgumentCache[method];
             var args = new List<FunctionArgument>();
             method.GetParameters().ToList().ForEach(p =>
-            {
-                var arg = new FunctionArgument(p.Name);
-                if (p.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any()) arg.IsVarArg = true;
-                if (p.DefaultValue != null && p.DefaultValue.GetType() != typeof(DBNull))
-                {
-                    arg.HasDefault   = true;
-                    arg.DefaultValue = Expression.Constant(p.DefaultValue);
-                }
+                                                    {
+                                                        var arg = new FunctionArgument(p.Name);
+                                                        if (p.GetCustomAttributes(typeof(ParamArrayAttribute), false)
+                                                             .Any()) arg.IsVarArg = true;
+                                                        if (p.DefaultValue != null &&
+                                                            p.DefaultValue.GetType() != typeof(DBNull))
+                                                        {
+                                                            arg.HasDefault = true;
+                                                            arg.DefaultValue = Expression.Constant(p.DefaultValue);
+                                                        }
 
-                args.Add(arg);
-            });
+                                                        args.Add(arg);
+                                                    });
             ArgumentCache[method] = args;
             return args;
         }
@@ -87,9 +91,10 @@ namespace IronDragon.Runtime
         {
             var body = new List<Expression>();
             body.Add(
-            DragonExpression.Invoke(
-            Expression.Constant(method.IsConstructor ? typeof(DragonInstance) : type, typeof(Type)),
-            Expression.Constant(method, typeof(MethodBase)), ArgumentCache[method]));
+                     DragonExpression.Invoke(
+                                             Expression.Constant(method.IsConstructor ? typeof(DragonInstance) : type,
+                                                                 typeof(Type)),
+                                             Expression.Constant(method, typeof(MethodBase)), ArgumentCache[method]));
             body.Add(Expression.Label(DragonParser.ReturnTarget, Expression.Constant(null, typeof(object))));
             return DragonExpression.DragonBlock(body.ToArray());
         }

@@ -62,10 +62,10 @@ namespace DragonMUD.Data
         public static Race GetRaceByName(string raceName)
         {
             return Races.FirstOrDefault(race =>
-                string.Equals(race.Name, raceName,
-                StringComparison.CurrentCultureIgnoreCase) ||
-                string.Equals(race.Abbreviation, raceName,
-                StringComparison.CurrentCultureIgnoreCase));
+                                            string.Equals(race.Name, raceName,
+                                                          StringComparison.CurrentCultureIgnoreCase) ||
+                                            string.Equals(race.Abbreviation, raceName,
+                                                          StringComparison.CurrentCultureIgnoreCase));
         }
 
         private static void InitDataInternal()
@@ -82,11 +82,11 @@ namespace DragonMUD.Data
             {
                 if (Path.GetExtension(raceToLoad) != ".xml") continue;
                 var race = LoadRaceWithPath($"$(KMRaceSourceDir){Path.DirectorySeparatorChar}{raceToLoad}"
-                    .ReplaceAllVariables());
+                                                .ReplaceAllVariables());
 
                 if (race.Name == null) continue;
                 Log.LogMessage("dragonmud", LogLevel.Info,
-                $"Adding race {race.Name}({race.Abbreviation}) to list of races.");
+                               $"Adding race {race.Name}({race.Abbreviation}) to list of races.");
                 Races.Add(race);
             }
 

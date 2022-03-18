@@ -45,7 +45,7 @@ namespace IronDragon.Runtime
 
             var args = (List<FunctionArgument>)rawArguments;
 
-            var body     = (BlockExpression)rawBody;
+            var body = (BlockExpression)rawBody;
             var function = new DragonFunction(name, args, body, scope);
 
             scope[name] = function;
@@ -54,7 +54,7 @@ namespace IronDragon.Runtime
         }
 
         internal static dynamic SingletonDefine(Expression rawSingleton, object rawName, object rawArguments,
-        object                                             rawBody,      object rawScope)
+                                                object rawBody, object rawScope)
         {
             var scope = (DragonScope)rawScope;
 
@@ -62,7 +62,7 @@ namespace IronDragon.Runtime
 
             var args = (List<FunctionArgument>)rawArguments;
 
-            var body     = (BlockExpression)rawBody;
+            var body = (BlockExpression)rawBody;
             var function = new DragonFunction(name, args, body, scope);
 
             object singleton = CompilerServices.CompileExpression(rawSingleton, scope);
@@ -99,8 +99,8 @@ namespace IronDragon.Runtime
             return function;
         }
 
-        internal static dynamic Call(object func,     List<FunctionArgument> args, object scope,
-        DragonExpressionType                pipeType, bool                   isOp, bool   isPostfix)
+        internal static dynamic Call(object func, List<FunctionArgument> args, object scope,
+                                     DragonExpressionType pipeType, bool isOp, bool isPostfix)
         {
             if (func == null)
             {
@@ -112,8 +112,8 @@ namespace IronDragon.Runtime
                 throw new NotImplementedException();
             }
 
-            var realArgs    = new List<object>();
-            var names       = new List<string>();
+            var realArgs = new List<object>();
+            var names = new List<string>();
             var offsetCount = 0;
             if (func is DragonFunction && !(func is DragonPartialFunction))
             {
@@ -121,9 +121,11 @@ namespace IronDragon.Runtime
                 realArgs.Insert(0, scope);
                 if (realArgs.Count() - 1 < names.Count())
                     (func as DragonFunction).Arguments.ForEach(arg =>
-                    {
-                        if (arg.HasDefault) realArgs.Add(new FunctionArgument(arg.Name, arg.DefaultValue));
-                    });
+                                                               {
+                                                                   if (arg.HasDefault)
+                                                                       realArgs.Add(new FunctionArgument(arg.Name,
+                                                                           arg.DefaultValue));
+                                                               });
                 offsetCount = 1;
                 if (pipeType != DragonExpressionType.Empty)
                 {
@@ -144,19 +146,20 @@ namespace IronDragon.Runtime
                     offsetCount = 2;
                 }
 
-                var iref   = (InstanceReference)func;
-                var lval   = CompilerServices.CompileExpression(iref.LValue, (DragonScope)scope);
+                var iref = (InstanceReference)func;
+                var lval = CompilerServices.CompileExpression(iref.LValue, (DragonScope)scope);
                 var imArgs = new List<Expression>();
                 realArgs.ForEach(arg => imArgs.Add(Expression.Constant(arg)));
                 imArgs.Insert(0, Expression.Constant(lval, typeof(object)));
                 if (isOp) imArgs.Add(Expression.Constant(new DragonUnaryBoolean(isPostfix)));
                 if (iref.LValue is VariableExpression &&
-                CompilerServices.CompileExpression((iref.LValue as VariableExpression).Name, (DragonScope)scope) ==
-                "super")
+                    CompilerServices.CompileExpression((iref.LValue as VariableExpression).Name, (DragonScope)scope) ==
+                    "super")
                     imArgs.Add(Expression.Constant(new DragonDoNotWrapBoolean(true)));
                 return Dynamic(typeof(object),
-                new InteropBinder.InvokeMember(iref.Key, new CallInfo(realArgs.Count - offsetCount, names),
-                (DragonScope)scope), imArgs);
+                               new InteropBinder.InvokeMember(iref.Key,
+                                                              new CallInfo(realArgs.Count - offsetCount, names),
+                                                              (DragonScope)scope), imArgs);
             }
             else
             {
@@ -168,14 +171,14 @@ namespace IronDragon.Runtime
             realArgs.ForEach(arg => bArgs.Add(Expression.Constant(ConvertIfNumber(arg))));
             bArgs.Insert(0, Expression.Constant(func, typeof(object)));
             return Dynamic(typeof(object),
-            new InteropBinder.Invoke(scope as DragonScope,
-            new CallInfo(realArgs.Count - offsetCount, names)), bArgs);
+                           new InteropBinder.Invoke(scope as DragonScope,
+                                                    new CallInfo(realArgs.Count - offsetCount, names)), bArgs);
         }
 
         internal static dynamic GenDelegate(object @delegate, List<object> @params, object scope)
         {
             var multicastDelegate = @delegate as MulticastDelegate;
-            var realParams        = new List<object>();
+            var realParams = new List<object>();
             @params.ForEach(p => realParams.Add(p is DragonNumber ? DragonNumber.Convert((DragonNumber)p) : p));
 
             return multicastDelegate != null ? multicastDelegate.DynamicInvoke(realParams.ToArray()) : null;
@@ -196,31 +199,32 @@ namespace IronDragon.Runtime
             var @class = DragonObject.Class;
             do
             {
-                if (@class is DragonBoxedClass && ((DragonBoxedClass)@class).BoxedType == type) return true;
+                if (@class is DragonBoxedClass && ((DragonBoxedClass)@class).BoxedType == type)
+                    return true;
             } while ((@class = @class.Parent) != null);
 
             return false;
         }
 
         internal static dynamic Invoke(Type targetType, MethodBase minfo, List<FunctionArgument> args,
-        DragonScope                         scope)
+                                       DragonScope scope)
         {
             var isClassMethod = minfo.IsStatic;
 
             object target = scope.Variables.ContainsKey("self")
-                ? scope["self"]
-                : isClassMethod
-                    ? targetType
-                    : targetType.GetConstructor(new Type[] { }).Invoke(null);
+                                ? scope["self"]
+                                : isClassMethod
+                                    ? targetType
+                                    : targetType.GetConstructor(new Type[] { }).Invoke(null);
 
             var arguments = new List<object>();
             args.ForEach(arg =>
-            {
-                var _val                       = CompilerServices.CompileExpression(arg.Value, scope);
-                if (_val is DragonString) _val = (string)_val;
-                if (_val is DragonNumber) _val = DragonNumber.Convert((DragonNumber)_val);
-                arguments.Add(_val);
-            });
+                         {
+                             var _val = CompilerServices.CompileExpression(arg.Value, scope);
+                             if (_val is DragonString) _val = (string)_val;
+                             if (_val is DragonNumber) _val = DragonNumber.Convert((DragonNumber)_val);
+                             arguments.Add(_val);
+                         });
 
             while (arguments.Count < minfo.GetParameters().Count()) arguments.Add(null);
 
@@ -231,7 +235,7 @@ namespace IronDragon.Runtime
             }
 
             if (target is DragonInstance && !(target is DragonBoxedInstance) &&
-            ((DragonInstance)target).BackingObject != null)
+                ((DragonInstance)target).BackingObject != null)
                 target = ((DragonInstance)target).BackingObject;
 
             dynamic val = null;

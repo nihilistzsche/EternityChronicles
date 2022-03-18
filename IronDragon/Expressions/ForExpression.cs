@@ -50,31 +50,31 @@ namespace IronDragon.Expressions
 
         public override Expression Reduce()
         {
-            var                     forLabel    = Label("<dragon_for>");
-            VariableExpression      forReturn   = null;
+            var forLabel = Label("<dragon_for>");
+            VariableExpression forReturn = null;
             LeftHandValueExpression forReturnLh = null;
-            var                     useReturn   = true;
+            var useReturn = true;
             if (Body.Type == typeof(void))
             {
                 useReturn = false;
             }
             else
             {
-                forReturn         = Variable(Constant("<dragon_for_return>"));
-                forReturnLh       = LeftHandValue(forReturn);
-                forReturn.Scope   = ((DragonExpression)Body).Scope;
+                forReturn = Variable(Constant("<dragon_for_return>"));
+                forReturnLh = LeftHandValue(forReturn);
+                forReturn.Scope = ((DragonExpression)Body).Scope;
                 forReturnLh.Scope = ((DragonExpression)Body).Scope;
             }
 
-            var forTest   = Variable(Constant("<dragon_for_test>"));
+            var forTest = Variable(Constant("<dragon_for_test>"));
             var forTestLh = LeftHandValue(forTest);
-            forTest.Scope   = ((DragonExpression)Body).Scope;
+            forTest.Scope = ((DragonExpression)Body).Scope;
             forTestLh.Scope = ((DragonExpression)Body).Scope;
             var realBody = new List<Expression>
-            {
-                Init,
-                Label(forLabel)
-            };
+                           {
+                               Init,
+                               Label(forLabel)
+                           };
             var testAssign = Assign(forTestLh, Test);
             realBody.Add(Label(DragonParser.RetryTarget));
             testAssign.Scope = (Body as DragonExpression).Scope;
@@ -84,7 +84,7 @@ namespace IronDragon.Expressions
             {
                 var returnAssign = Assign(forReturnLh, Body);
                 returnAssign.Scope = (Body as DragonExpression).Scope;
-                testIf             = IfThen(forTest, returnAssign);
+                testIf = IfThen(forTest, returnAssign);
             }
             else
             {
@@ -116,7 +116,7 @@ namespace IronDragon.Expressions
             var str = new StringBuilder("for (");
             str.AppendFormat("{0}; ", Init);
             str.AppendFormat("{0}; ", Test);
-            str.AppendFormat("{0})",  Step);
+            str.AppendFormat("{0})", Step);
             str.Append(Body);
             return str.ToString();
         }

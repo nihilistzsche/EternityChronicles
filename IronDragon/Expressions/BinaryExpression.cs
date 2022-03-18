@@ -32,18 +32,18 @@ namespace IronDragon.Expressions
 
         internal BinaryExpression(Expression left, Expression right, ExpressionType type)
         {
-            Left            = left;
-            Right           = right;
-            BinaryNodeType  = type;
+            Left = left;
+            Right = right;
+            BinaryNodeType = type;
             _isDragonBinary = false;
         }
 
         internal BinaryExpression(Expression left, Expression right, DragonExpressionType type)
         {
-            Left                 = left;
-            Right                = right;
+            Left = left;
+            Right = right;
             DragonBinaryNodeType = type;
-            _isDragonBinary      = true;
+            _isDragonBinary = true;
         }
 
         public ExpressionType BinaryNodeType { get; }
@@ -111,32 +111,32 @@ namespace IronDragon.Expressions
             if (BinaryNodeType == ExpressionType.OrElse || BinaryNodeType == ExpressionType.AndAlso)
                 return MakeBinary(BinaryNodeType, Convert<bool>(Left), Convert<bool>(Right));
             return Operation.Binary(Type, Convert<object>(Left), Convert<object>(Right), Constant(BinaryNodeType),
-            Constant(Scope));
+                                    Constant(Scope));
         }
 
         protected Expression ReduceCompare()
         {
             return Operation.Compare(typeof(int), Convert(Left, typeof(object)), Convert(Right, typeof(object)),
-            Constant(Scope));
+                                     Constant(Scope));
         }
 
         protected Expression ReduceLogicalXor()
         {
             return new IfExpression(
-            new BinaryExpression(Left, Right, ExpressionType.AndAlso),
-            Constant(false),
-            new IfExpression(
-            new BinaryExpression(Left, Right, ExpressionType.OrElse),
-            Constant(true),
-            Constant(false)
-            )
-            );
+                                    new BinaryExpression(Left, Right, ExpressionType.AndAlso),
+                                    Constant(false),
+                                    new IfExpression(
+                                                     new BinaryExpression(Left, Right, ExpressionType.OrElse),
+                                                     Constant(true),
+                                                     Constant(false)
+                                                    )
+                                   );
         }
 
         protected Expression ReduceMatch()
         {
             return Operation.Match(typeof(bool), Constant(Left), Constant(Right), Constant(DragonBinaryNodeType),
-            Constant(Scope));
+                                   Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)
@@ -148,25 +148,25 @@ namespace IronDragon.Expressions
         public override string ToString()
         {
             var ops = new Dictionary<ExpressionType, string>();
-            ops[ExpressionType.Add]                = "+";
-            ops[ExpressionType.And]                = "&";
-            ops[ExpressionType.AndAlso]            = "&&";
-            ops[ExpressionType.Divide]             = "/";
-            ops[ExpressionType.Equal]              = "==";
-            ops[ExpressionType.ExclusiveOr]        = "^";
-            ops[ExpressionType.GreaterThan]        = ">";
+            ops[ExpressionType.Add] = "+";
+            ops[ExpressionType.And] = "&";
+            ops[ExpressionType.AndAlso] = "&&";
+            ops[ExpressionType.Divide] = "/";
+            ops[ExpressionType.Equal] = "==";
+            ops[ExpressionType.ExclusiveOr] = "^";
+            ops[ExpressionType.GreaterThan] = ">";
             ops[ExpressionType.GreaterThanOrEqual] = ">=";
-            ops[ExpressionType.LeftShift]          = "<<";
-            ops[ExpressionType.LessThan]           = "<";
-            ops[ExpressionType.LessThanOrEqual]    = "<=";
-            ops[ExpressionType.Modulo]             = "%";
-            ops[ExpressionType.Multiply]           = "*";
-            ops[ExpressionType.NotEqual]           = "!=";
-            ops[ExpressionType.Or]                 = "|";
-            ops[ExpressionType.OrElse]             = "||";
-            ops[ExpressionType.Power]              = "**";
-            ops[ExpressionType.RightShift]         = ">>";
-            ops[ExpressionType.Subtract]           = "-";
+            ops[ExpressionType.LeftShift] = "<<";
+            ops[ExpressionType.LessThan] = "<";
+            ops[ExpressionType.LessThanOrEqual] = "<=";
+            ops[ExpressionType.Modulo] = "%";
+            ops[ExpressionType.Multiply] = "*";
+            ops[ExpressionType.NotEqual] = "!=";
+            ops[ExpressionType.Or] = "|";
+            ops[ExpressionType.OrElse] = "||";
+            ops[ExpressionType.Power] = "**";
+            ops[ExpressionType.RightShift] = ">>";
+            ops[ExpressionType.Subtract] = "-";
             return string.Format("({0} {1} {2})", Left, ops[BinaryNodeType], Right);
         }
     }

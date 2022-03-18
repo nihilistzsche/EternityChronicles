@@ -20,22 +20,22 @@ namespace EternityChronicles.Core.Data
         public string GetKeyForTag(string tag)
         {
             return tag switch
-            {
-                "description" => "Description",
-                "statbonuses" => "Bonuses",
-                _             => null
-            };
+                   {
+                       "description" => "Description",
+                       "statbonuses" => "Bonuses",
+                       _ => null
+                   };
         }
 
         public string GetKeyForAttribute(string attribute, string tag)
         {
             if (tag != "race") return null;
             return attribute switch
-            {
-                "name" => "Name",
-                "abbr" => "Abbreviation",
-                _      => null
-            };
+                   {
+                       "name" => "Name",
+                       "abbr" => "Abbreviation",
+                       _ => null
+                   };
         }
 
         public DataLoadHandler GetLoadHandlerForKey(string key)

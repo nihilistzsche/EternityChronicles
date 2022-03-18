@@ -31,13 +31,13 @@ namespace IronDragon.Runtime
         internal DragonBoxedInstance(object obj, DragonScope scope, DragonClass @class) : base(@class)
         {
             BoxedObject = obj;
-            BoxedScope  = scope;
+            BoxedScope = scope;
         }
 
         protected DragonBoxedInstance(object obj, DragonScope scope) : base(GetBoxClass(obj))
         {
             BoxedObject = obj;
-            BoxedScope  = scope;
+            BoxedScope = scope;
         }
 
         internal object BoxedObject { get; }
@@ -56,7 +56,7 @@ namespace IronDragon.Runtime
             var boxed = new DragonBoxedInstance(obj, scope ?? new DragonScope());
             BoxCache[obj] = boxed;
             if (scope == null) return boxed;
-            var objScope                         = scope.SearchForObject(obj, out var name);
+            var objScope = scope.SearchForObject(obj, out var name);
             if (objScope != null) objScope[name] = boxed;
             return boxed;
         }
@@ -66,7 +66,7 @@ namespace IronDragon.Runtime
             if (obj == null) return null;
             var boxed = new DragonBoxedInstance(obj, scope ?? new DragonScope());
             if (scope == null) return boxed;
-            var objScope                         = scope.SearchForObject(obj, out var name);
+            var objScope = scope.SearchForObject(obj, out var name);
             if (objScope != null) objScope[name] = boxed;
             return boxed;
         }
@@ -88,13 +88,17 @@ namespace IronDragon.Runtime
             var fields =
                 obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
             DragonObject.InstanceVariables.Variables.Keys.ToList().ForEach(key =>
-            {
-                var fq = fields.Where(field => field.Name == key).ToList();
-                if (!fq.Any()) return;
-                var val                      = DragonObject.InstanceVariables[key];
-                if (val is DragonNumber) val = DragonNumber.Convert(val);
-                fq.First().SetValue(obj, val);
-            });
+                                                                           {
+                                                                               var fq = fields
+                                                                                   .Where(field => field.Name == key)
+                                                                                   .ToList();
+                                                                               if (!fq.Any()) return;
+                                                                               var val =
+                                                                                   DragonObject.InstanceVariables[key];
+                                                                               if (val is DragonNumber)
+                                                                                   val = DragonNumber.Convert(val);
+                                                                               fq.First().SetValue(obj, val);
+                                                                           });
         }
 
         // .net -> Dragon

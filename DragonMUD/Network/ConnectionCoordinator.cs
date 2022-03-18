@@ -34,12 +34,12 @@ namespace DragonMUD.Network
     {
         private const int InputBufferSize = 1024;
 
-        private readonly StringBuilder _inputBuffer    = new();
-        private readonly byte[]        _inputBufferRaw = new byte[InputBufferSize];
+        private readonly StringBuilder _inputBuffer = new();
+        private readonly byte[] _inputBufferRaw = new byte[InputBufferSize];
 
         public ConnectionCoordinator(Socket socket, ConnectionPool owner)
         {
-            Owner  = owner;
+            Owner = owner;
             Socket = socket;
 
             if (socket.Connected)
@@ -136,7 +136,7 @@ namespace DragonMUD.Network
             if (inputString.Length == 0 || inputString[0] == '\x04')
             {
                 Log.LogMessage("dragonmud", LogLevel.Info,
-                $"Encountered end-of-file from socket {socket.Handle.ToInt32()}, closing connection...");
+                               $"Encountered end-of-file from socket {socket.Handle.ToInt32()}, closing connection...");
                 owner.Owner.RemoveConnection(this);
                 return;
             }

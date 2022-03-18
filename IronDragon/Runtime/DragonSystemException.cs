@@ -11,7 +11,7 @@ namespace IronDragon.Runtime
             var klass = obj.Class;
 
             var exceptionFound = false;
-            var _class         = obj.Class;
+            var _class = obj.Class;
             do
             {
                 if (_class.Name.Equals("Exception"))
@@ -26,12 +26,12 @@ namespace IronDragon.Runtime
             if (exceptionFound)
             {
                 ExceptionClass = klass;
-                InnerObject    = obj;
+                InnerObject = obj;
             }
             else
             {
                 ExceptionClass = Dragon.Box(typeof(DragonSystemException));
-                InnerObject    = null;
+                InnerObject = null;
             }
         }
 

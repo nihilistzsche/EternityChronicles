@@ -31,9 +31,9 @@ namespace IronDragon.Expressions
     {
         internal FunctionDefinitionExpression(string name, List<FunctionArgument> arguments, Expression body)
         {
-            Name      = name;
+            Name = name;
             Arguments = arguments;
-            Body      = body;
+            Body = body;
         }
 
         public string Name { get; }
@@ -54,9 +54,9 @@ namespace IronDragon.Expressions
             realBody.Add(Label(DragonParser.ReturnTarget, Constant(null, typeof(object))));
 
             return Operation.Define(typeof(DragonFunction), Constant(Name),
-            Constant(Arguments),
-            Constant(DragonParser.CreateBlock(realBody)),
-            Constant(Scope));
+                                    Constant(Arguments),
+                                    Constant(DragonParser.CreateBlock(realBody)),
+                                    Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)
@@ -67,7 +67,7 @@ namespace IronDragon.Expressions
         public override string ToString()
         {
             return string.Format("[FunctionDefinitionExpression: Name={0}, Arguments={1}, Block={2}, Type={3}]", Name,
-            Arguments, Body, Type);
+                                 Arguments, Body, Type);
         }
     }
 }

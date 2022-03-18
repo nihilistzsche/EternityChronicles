@@ -36,12 +36,12 @@ namespace IronDragon.Builtins
             DragonNativeFunction nfunc;
 
             GetType().GetMethods(BindingFlags.Static | BindingFlags.NonPublic).ToList()
-                .ForEach(method =>
-                {
-                    nfunc                      = new DragonNativeFunction(GetType(), method);
-                    Dragon.Globals[nfunc.Name] = nfunc;
-                });
-            var assembly     = typeof(Kernel).Assembly;
+                     .ForEach(method =>
+                              {
+                                  nfunc = new DragonNativeFunction(GetType(), method);
+                                  Dragon.Globals[nfunc.Name] = nfunc;
+                              });
+            var assembly = typeof(Kernel).Assembly;
             var resourceName = assembly.GetManifestResourceNames().Single(n => n.EndsWith("core.dragon"));
 
             var stream = assembly.GetManifestResourceStream(resourceName);
@@ -57,7 +57,7 @@ namespace IronDragon.Builtins
         {
             var xexpression = string.Format("{0};", eval);
 
-            var        res = DragonParser.Parse(xexpression);
+            var res = DragonParser.Parse(xexpression);
             Expression block;
             if (res != null)
             {
@@ -79,7 +79,7 @@ namespace IronDragon.Builtins
         private static dynamic ClassEval(object self, string eval, DragonScope scope)
         {
             DragonClass @class;
-            var         instance = self as DragonInstance;
+            var instance = self as DragonInstance;
             if (instance != null)
                 @class = instance.Class;
             else
@@ -99,19 +99,19 @@ namespace IronDragon.Builtins
         {
             if (!(self is DragonInstance instance)) return null;
 
-            var        xexpression = string.Format("{0};", eval);
-            var        res         = DragonParser.Parse(xexpression);
+            var xexpression = string.Format("{0};", eval);
+            var res = DragonParser.Parse(xexpression);
             Expression block;
             if (res != null)
             {
-                scope["self"]                          = scope["super"] = instance;
+                scope["self"] = scope["super"] = instance;
                 scope["<dragon_context_invokemember>"] = true;
                 string selfName;
-                var    selfScope = scope.SearchForObject(instance, out selfName);
+                var selfScope = scope.SearchForObject(instance, out selfName);
                 if (selfScope != null && selfName != null)
                 {
                     scope["<dragon_context_selfscope>"] = selfScope;
-                    scope["<dragon_context_selfname>"]  = selfName;
+                    scope["<dragon_context_selfname>"] = selfName;
                 }
 
                 block = DragonExpression.DragonBlock(res);

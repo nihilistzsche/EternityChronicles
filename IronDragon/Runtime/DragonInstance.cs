@@ -27,10 +27,10 @@ namespace IronDragon.Runtime
     {
         public DragonInstance(DragonClass @class)
         {
-            _class            = @class;
-            SingletonMethods  = new Dictionary<string, DragonFunction>();
-            UndefinedMethods  = new List<string>();
-            RemovedMethods    = new List<string>();
+            _class = @class;
+            SingletonMethods = new Dictionary<string, DragonFunction>();
+            UndefinedMethods = new List<string>();
+            RemovedMethods = new List<string>();
             InstanceVariables = new DragonScope();
         }
 

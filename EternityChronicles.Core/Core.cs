@@ -24,7 +24,7 @@ namespace EternityChronicles.Core
         private static readonly Dictionary<string, AppDomain> LoadedMudlibs = new();
 
         private readonly List<IGameLoopObject> _gameLoopObjects = new();
-        private          ModuleController      _controller;
+        private ModuleController _controller;
 
         private MDKMaster _dbMaster;
 
@@ -55,7 +55,7 @@ namespace EternityChronicles.Core
         }
 
         public int Main(bool softReboot, Tuple<SocketInformation, List<SocketInformation>> sockets,
-        params string[]      args)
+                        params string[] args)
         {
             SetUpPort(args);
 
@@ -76,7 +76,8 @@ namespace EternityChronicles.Core
 
             while (_server.IsRunning)
             {
-                foreach (var loopObject in _gameLoopObjects) loopObject.OnGameLoop();
+                foreach (var loopObject in _gameLoopObjects)
+                    loopObject.OnGameLoop();
             }
 
             return _server.SoftReboot ? 9999 : 0;
@@ -111,36 +112,36 @@ namespace EternityChronicles.Core
             _controller = new ModuleController();
             _controller.SearchPath.Add("lib/sys/bundles");
             _controller.RegisterNewRole("mudlib", typeof(IMudLib), (asm, basetype) =>
-            {
-                var info = _controller.GetInfoForAssembly(asm);
-                if (info == null) return;
-                var domain =
-                    _controller.GetAppDomainForAssembly(asm);
-                if (domain == null) return;
-                // Register data loader with Dragon here
-                var baseObject =
-                    (IMudLib)asm.CreateInstance(
-                    basetype.ToString());
-                if (baseObject == null) return;
-                var methodName = baseObject.GetMudLibMethod();
+                                                                   {
+                                                                       var info = _controller.GetInfoForAssembly(asm);
+                                                                       if (info == null) return;
+                                                                       var domain =
+                                                                           _controller.GetAppDomainForAssembly(asm);
+                                                                       if (domain == null) return;
+                                                                       // Register data loader with Dragon here
+                                                                       var baseObject =
+                                                                           (IMudLib)asm.CreateInstance(
+                                                                            basetype.ToString());
+                                                                       if (baseObject == null) return;
+                                                                       var methodName = baseObject.GetMudLibMethod();
 
-                foreach (var method in asm.GetTypes().Select(
-                    type => type.GetMethod(methodName,
-                    BindingFlags.Public    |
-                    BindingFlags.NonPublic |
-                    BindingFlags.Static)))
-                    method?.Invoke(null, new object[] { });
+                                                                       foreach (var method in asm.GetTypes().Select(
+                                                                                 type => type.GetMethod(methodName,
+                                                                                     BindingFlags.Public |
+                                                                                     BindingFlags.NonPublic |
+                                                                                     BindingFlags.Static)))
+                                                                           method?.Invoke(null, new object[] { });
 
-                // Load Dragon files in the mudlib here
-                LoadedMudlibs.Add(info.Name, domain);
-            }, asm => { });
+                                                                       // Load Dragon files in the mudlib here
+                                                                       LoadedMudlibs.Add(info.Name, domain);
+                                                                   }, asm => { });
             _controller.ModuleLoaded += (sender, args) =>
-            {
-                Log.LogMessage("sys", LogLevel.Info,
-                "[ECX] Module {0} ({1}) with roles ({2}) loaded.",
-                sender.Name,
-                sender.Version.ToString(), sender.Roles);
-            };
+                                        {
+                                            Log.LogMessage("sys", LogLevel.Info,
+                                                           "[ECX] Module {0} ({1}) with roles ({2}) loaded.",
+                                                           sender.Name,
+                                                           sender.Version.ToString(), sender.Roles);
+                                        };
         }
 
         private void LoadMudLibs()
@@ -150,7 +151,7 @@ namespace EternityChronicles.Core
             if (!modules.Any())
             {
                 Log.LogMessage("sys", LogLevel.Warning,
-                "[WARNING] A mudlib plugin could not be found.  A mudlib is required for the IronDragon bridge to function properly, please install a mudlib plugin into your plugin folder.");
+                               "[WARNING] A mudlib plugin could not be found.  A mudlib is required for the IronDragon bridge to function properly, please install a mudlib plugin into your plugin folder.");
             }
             else
             {
@@ -196,8 +197,8 @@ namespace EternityChronicles.Core
 
         // Workflow
 
-        private bool InitServer(string[]                  args, bool softReboot,
-        Tuple<SocketInformation, List<SocketInformation>> sockets)
+        private bool InitServer(string[] args, bool softReboot,
+                                Tuple<SocketInformation, List<SocketInformation>> sockets)
         {
             bool res;
             if (softReboot)

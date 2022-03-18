@@ -29,7 +29,7 @@ namespace IronDragon.Expressions
     {
         internal UnaryExpression(Expression expr, ExpressionType type)
         {
-            Expression    = expr;
+            Expression = expr;
             UnaryNodeType = type;
         }
 

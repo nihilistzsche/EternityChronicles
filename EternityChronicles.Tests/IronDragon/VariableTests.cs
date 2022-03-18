@@ -37,14 +37,14 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestAlias()
         {
             Assert.That(CompileAndExecute("def osize(s) { return s; }; alias osize size; size(25);"),
-            Is.EqualTo(25));
+                        Is.EqualTo(25));
         }
 
         [Test]
         public void TestAliasConstDoesNotPollute()
         {
             Assert.That(CompileAndExecute("num = 10; alias num x; def func(y) { x = 10; x + y; }; func(7);"),
-            Is.EqualTo(17));
+                        Is.EqualTo(17));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestAliasOverwriteChildScope()
         {
             Assert.That(CompileAndExecute("num = 20; xnum = 40; do { alias xnum num; num; } while(0);"),
-            Is.EqualTo(40));
+                        Is.EqualTo(40));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace EternityChronicles.Tests.IronDragon
         [Test]
         public void TestChainedTypeof()
         {
-            var  val    = CompileAndExecute("typeof(typeof(2));");
+            var val = CompileAndExecute("typeof(typeof(2));");
             bool isType = val == typeof(Type);
             Assert.IsTrue(isType);
         }
@@ -179,7 +179,7 @@ namespace EternityChronicles.Tests.IronDragon
             Assert.That(val, Is.EqualTo("Beep-boop-beep"));
             Dragon.Globals.RemoveVariable("gaTest3");
         }
-        
+
         [Test]
         public void TestDifferentRootScope()
         {
@@ -229,7 +229,7 @@ namespace EternityChronicles.Tests.IronDragon
             Dragon.Execute("def test(x) { return x + 10; }; y = 20;");
 
             var test = Dragon.Globals.GetVariable("test");
-            var y    = Dragon.Globals.GetVariable("y");
+            var y = Dragon.Globals.GetVariable("y");
 
             Assert.That(test(y), Is.EqualTo(30));
         }
@@ -290,7 +290,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestLocalConstOkay()
         {
             Assert.That(CompileAndExecute("def func(a) { const _lx = 7; }; func(5); _lx = 5; _lx;"),
-            Is.EqualTo(5));
+                        Is.EqualTo(5));
         }
 
         [Test]
@@ -318,7 +318,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestNestedParallelAssignment()
         {
             var expect = new DragonArray { 1, new DragonArray { 2, 3 }, 4 };
-            var real   = CompileAndExecute("pa,(pb,pc),pd=1,[2,3],4;");
+            var real = CompileAndExecute("pa,(pb,pc),pd=1,[2,3],4;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -326,7 +326,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestNestedParallelAssignmentTwo()
         {
             var expect = new DragonArray { 1, new DragonArray { 2, null }, 3 };
-            var real   = CompileAndExecute("pa,(pb,pc),pd=1,2,3;");
+            var real = CompileAndExecute("pa,(pb,pc),pd=1,2,3;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -340,7 +340,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssigmentWildcardLhsInMiddle()
         {
             var expect = new DragonArray { 1, new DragonArray { 2, 3 }, null };
-            var real   = CompileAndExecute("pa,*pb,pc=1,2,3");
+            var real = CompileAndExecute("pa,*pb,pc=1,2,3");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -348,7 +348,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentEvalAll()
         {
             var expect = new DragonArray { 0, 1, 2 };
-            var real   = CompileAndExecute("px = 0; pa,pb,pc=px,++px,++px;");
+            var real = CompileAndExecute("px = 0; pa,pb,pc=px,++px,++px;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -356,7 +356,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentSimple()
         {
             var expect = new DragonArray { 1, 2 };
-            var real   = CompileAndExecute("pa,pb=1,2;");
+            var real = CompileAndExecute("pa,pb=1,2;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -364,7 +364,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentWildcardLhsAtEnd()
         {
             var expect = new DragonArray { 1, 2, new DragonArray { 3, 4 } };
-            var real   = CompileAndExecute("pa,pb,*pc=1,2,3,4");
+            var real = CompileAndExecute("pa,pb,*pc=1,2,3,4");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -372,7 +372,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentWildcardLhsRhs()
         {
             var expect = new DragonArray { 1, 2, 3 };
-            var real   = CompileAndExecute("pb=[1,2,3];*pa = *pb;");
+            var real = CompileAndExecute("pb=[1,2,3];*pa = *pb;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -380,7 +380,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentWildcardOnlyLhs()
         {
             var expect = new DragonArray { 1, 2, 3 };
-            var real   = CompileAndExecute("*pa=[1,2,3];");
+            var real = CompileAndExecute("*pa=[1,2,3];");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -388,7 +388,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentWildcardOnlyRhs()
         {
             var expect = new DragonArray { 1, 2, 3 };
-            var real   = CompileAndExecute("pb=[1,2,3]; pa,pb,pc = *pb;");
+            var real = CompileAndExecute("pb=[1,2,3]; pa,pb,pc = *pb;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -396,7 +396,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentWildcardRhsAtEnd()
         {
             var expect = new DragonArray { 1, 2, 3 };
-            var real   = CompileAndExecute("pb=[2,3];pa,pb,pc = 1,*pb;");
+            var real = CompileAndExecute("pb=[2,3];pa,pb,pc = 1,*pb;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
@@ -404,14 +404,14 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestParallelAssignmentWildcardRhsInMiddle()
         {
             var expect = new DragonArray { 1, 2, 3, 4 };
-            var real   = CompileAndExecute("pb=[2,3];pa,pb,pc,pd = 1,*pb,4;");
+            var real = CompileAndExecute("pb=[2,3];pa,pb,pc,pd = 1,*pb,4;");
             Assert.That(real, Is.EqualTo(expect));
         }
 
         [Test]
         public void TestPassStringToDragon()
         {
-            var engine       = GetRuntime().GetEngine("IronDragon");
+            var engine = GetRuntime().GetEngine("IronDragon");
             var Dragonscope1 = engine.CreateScope();
 
             var source1 = engine.CreateScriptSourceFromString("def test1(x) { x << ' world!'; x; }");
@@ -439,7 +439,7 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var engine = GetRuntime().GetEngine("IronDragon");
             var source = engine.CreateScriptSourceFromString("x + 10;");
-            var scope  = engine.CreateScope();
+            var scope = engine.CreateScope();
             scope.SetVariable("x", 5);
             Assert.That(source.Execute(scope), Is.EqualTo(15));
         }
@@ -449,7 +449,7 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var engine = GetRuntime().GetEngine("IronDragon");
             var source = engine.CreateScriptSourceFromString("x = (7 + 3) / 2;");
-            var scope  = engine.CreateScope();
+            var scope = engine.CreateScope();
 
             source.Execute(scope);
 
@@ -496,7 +496,7 @@ namespace EternityChronicles.Tests.IronDragon
         [Test]
         public void TestTypeof()
         {
-            var  val    = CompileAndExecute("typeof(1 ** 2);");
+            var val = CompileAndExecute("typeof(1 ** 2);");
             bool isType = val == typeof(double);
             Assert.IsTrue(isType);
         }
@@ -505,9 +505,9 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestCustomAssignOp()
         {
             Assert.That(
-            (int)CompileAndExecute(
-            "class Number { def +*=(v) { self += v; self *= v; self; }; };  x = 2; x +*= 3; x;"),
-            Is.EqualTo(15));
+                        (int)CompileAndExecute(
+                                               "class Number { def +*=(v) { self += v; self *= v; self; }; };  x = 2; x +*= 3; x;"),
+                        Is.EqualTo(15));
         }
     }
 }

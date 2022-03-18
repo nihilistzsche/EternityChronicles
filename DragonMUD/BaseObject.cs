@@ -27,11 +27,11 @@ namespace DragonMUD
 
         public BaseObject()
         {
-            _mFlagbase        = new List<ulong> { 0UL };
-            _mFlags           = new Dictionary<string, int>();
-            _mFlagReasons     = new Dictionary<string, string>();
+            _mFlagbase = new List<ulong> { 0UL };
+            _mFlags = new Dictionary<string, int>();
+            _mFlagReasons = new Dictionary<string, string>();
             _mCurrentBitPower = 0;
-            _mProperties      = new DragonMUDProperties();
+            _mProperties = new DragonMUDProperties();
         }
 
         public dynamic this[string propertyPath]

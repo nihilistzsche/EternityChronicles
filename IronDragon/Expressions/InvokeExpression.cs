@@ -31,8 +31,8 @@ namespace IronDragon.Expressions
         internal InvokeExpression(Expression type, Expression method, List<FunctionArgument> arguments)
         {
             TargetType = type;
-            Method     = method;
-            Arguments  = arguments;
+            Method = method;
+            Arguments = arguments;
         }
 
         public Expression TargetType { get; }
@@ -59,7 +59,7 @@ namespace IronDragon.Expressions
         public override string ToString()
         {
             return string.Format("[InvokeExpression: TargetType={0}, Method={1}, Arguments={2}, Type={3}]", TargetType,
-            Method, Arguments, Type);
+                                 Method, Arguments, Type);
         }
     }
 }

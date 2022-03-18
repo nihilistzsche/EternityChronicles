@@ -33,7 +33,7 @@ namespace IronDragon.Lexer
     public partial class DragonLexer
     {
         private readonly Dictionary<int, int> _lineIndexes = new();
-        private          string[]             _lines;
+        private string[] _lines;
 
         public string CreateString()
         {
@@ -77,7 +77,7 @@ namespace IronDragon.Lexer
         {
             var text = CreateString();
             Queue.AddToken("INTEGER", text, int.Parse(text.Substring(2), NumberStyles.HexNumber),
-            DragonTokenCategory.Number);
+                           DragonTokenCategory.Number);
         }
 
         public void String()
@@ -105,7 +105,7 @@ namespace IronDragon.Lexer
 
         private void SetupLineIndexes(string source)
         {
-            _lines          = source.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.None);
+            _lines = source.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.None);
             _lineIndexes[0] = 0;
             for (var i = 1; i < _lines.Length; i++) _lineIndexes[i] = _lines[i - 1].Length;
         }

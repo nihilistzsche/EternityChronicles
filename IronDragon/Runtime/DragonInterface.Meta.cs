@@ -43,32 +43,32 @@ namespace IronDragon.Runtime
             public override DynamicMetaObject BindCreateInstance(CreateInstanceBinder binder, DynamicMetaObject[] args)
             {
                 return new DynamicMetaObject(Expression.Constant(null),
-                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                                             BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
             public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
             {
                 return new DynamicMetaObject(Expression.Constant(null),
-                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                                             BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
             public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder,
-            params DynamicMetaObject[]                                            args)
+                                                               params DynamicMetaObject[] args)
             {
                 return new DynamicMetaObject(Expression.Constant(null),
-                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                                             BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
             public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
             {
                 return new DynamicMetaObject(Expression.Constant(null),
-                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                                             BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
 
             public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
             {
                 return new DynamicMetaObject(Expression.Constant(null),
-                BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                                             BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
             }
         }
 

@@ -37,7 +37,7 @@ namespace IronDragon.Runtime
 
         public FunctionArgument(string name, Expression value)
         {
-            Name  = name;
+            Name = name;
             Value = value;
         }
 
@@ -61,8 +61,8 @@ namespace IronDragon.Runtime
         {
             return
                 string.Format(
-                "[FunctionArgument: Index={0}, Name={1}, HasDefault={2}, DefaultValue={3}, IsVarArg={4}, IsFunction={5}, IsLiteral={6}, Value={7}]",
-                Index, Name, HasDefault, DefaultValue, IsVarArg, IsFunction, IsLiteral, Value);
+                              "[FunctionArgument: Index={0}, Name={1}, HasDefault={2}, DefaultValue={3}, IsVarArg={4}, IsFunction={5}, IsLiteral={6}, Value={7}]",
+                              Index, Name, HasDefault, DefaultValue, IsVarArg, IsFunction, IsLiteral, Value);
         }
 
         public override int GetHashCode()

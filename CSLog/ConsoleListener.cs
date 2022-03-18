@@ -15,8 +15,8 @@ namespace CSLog
         public void LogMessage(string message, LogLevel level, string channelName)
         {
             var stream = level == LogLevel.Fatal || level == LogLevel.Critical
-                ? Console.OpenStandardError()
-                : Console.OpenStandardOutput();
+                             ? Console.OpenStandardError()
+                             : Console.OpenStandardOutput();
 
             var formatter = Formatter ?? new DefaultFormatter();
 
@@ -45,7 +45,7 @@ namespace CSLog
                 throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
 
-            var temp     = $"{colorForMessage}{message}";
+            var temp = $"{colorForMessage}{message}";
             var imessage = formatter.FormatString($"`w[`c{channelName}`w] {temp}`x\n");
 
             var bytes = Encoding.UTF8.GetBytes(imessage);

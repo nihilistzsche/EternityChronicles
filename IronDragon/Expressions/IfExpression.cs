@@ -29,8 +29,8 @@ namespace IronDragon.Expressions
     {
         internal IfExpression(Expression test, Expression ifTrue, Expression ifFalse)
         {
-            Test    = test;
-            IfTrue  = ifTrue;
+            Test = test;
+            IfTrue = ifTrue;
             IfFalse = ifFalse;
         }
 

@@ -19,13 +19,13 @@ namespace EternityChronicles
             Controller = new ModuleController();
 
             Controller.RegisterNewRole("Core", typeof(ICore),
-            (asm, basetype) => { Core = (ICore)asm.CreateInstance(basetype.ToString()); },
-            asm => { });
+                                       (asm, basetype) => { Core = (ICore)asm.CreateInstance(basetype.ToString()); },
+                                       asm => { });
 
             Controller.LoadModule("EternityChronicles.Core");
 
             Tuple<SocketInformation, List<SocketInformation>> sockets = null;
-            int?                                              res;
+            int? res;
             while ((res = Core?.Main(sockets != null, sockets, args)) == 9999)
                 //// 9999 is soft reboot
                 SoftReboot(ref sockets);

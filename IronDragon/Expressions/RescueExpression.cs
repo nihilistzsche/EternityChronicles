@@ -31,8 +31,8 @@ namespace IronDragon.Expressions
         internal RescueExpression(List<string> exceptionTypes, Expression body, string varName = "$#")
         {
             ExceptionTypes = exceptionTypes;
-            Body           = body;
-            VarName        = varName;
+            Body = body;
+            VarName = varName;
         }
 
         public List<string> ExceptionTypes { get; }

@@ -11,9 +11,9 @@ namespace DragonMUD.Utility
             // ReSharper disable once ConvertToLocalFunction
             string getStringSpacing(string s)
             {
-                var spacing   = new StringBuilder();
+                var spacing = new StringBuilder();
                 var clrString = hook.ProcessMessage(s, false);
-                var i         = clrString.Length;
+                var i = clrString.Length;
                 while (i++ < 78) spacing.Append(" ");
 
                 return spacing.ToString();

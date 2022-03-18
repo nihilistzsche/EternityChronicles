@@ -33,34 +33,34 @@ namespace IronDragon.Expressions
 
         public override Expression Reduce()
         {
-            var                 whileLabel  = Label("<dragon_do_while>");
+            var whileLabel = Label("<dragon_do_while>");
             ParameterExpression whileReturn = null;
-            var                 useReturn   = true;
+            var useReturn = true;
             if (Body.Type == typeof(void))
                 useReturn = false;
             else
                 whileReturn = Variable(Body.Type, "<dragon_do_while_return>");
             var whileTest = Variable(typeof(bool), "<dragon_do_while_test>");
             var realBody = new List<Expression>
-            {
-                Label(whileLabel),
-                Label(DragonParser.RetryTarget),
-                useReturn ? Assign(whileReturn, Body) : Body,
-                Label(DragonParser.ContinueTarget),
-                Assign(whileTest, Boolean(Test)),
-                IfThen(whileTest, Goto(whileLabel)),
-                Label(DragonParser.BreakTarget)
-            };
+                           {
+                               Label(whileLabel),
+                               Label(DragonParser.RetryTarget),
+                               useReturn ? Assign(whileReturn, Body) : Body,
+                               Label(DragonParser.ContinueTarget),
+                               Assign(whileTest, Boolean(Test)),
+                               IfThen(whileTest, Goto(whileLabel)),
+                               Label(DragonParser.BreakTarget)
+                           };
 
             if (useReturn)
             {
                 realBody.Add(whileReturn);
 
                 return Block(new[]
-                {
-                    whileTest,
-                    whileReturn
-                }, realBody);
+                             {
+                                 whileTest,
+                                 whileReturn
+                             }, realBody);
             }
 
             return Block(new[] { whileTest }, realBody);

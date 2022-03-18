@@ -28,8 +28,8 @@ namespace IronDragon.Expressions
     public class ConditionalAccessSetExpression : AccessSetExpression
     {
         internal ConditionalAccessSetExpression(Expression container, List<FunctionArgument> arguments,
-        Expression                                         value,
-        DragonExpressionType                               conditionalAssignmentType)
+                                                Expression value,
+                                                DragonExpressionType conditionalAssignmentType)
             : base(container, arguments, value, ExpressionType.Assign)
         {
             ConditionalAssignmentType = conditionalAssignmentType;
@@ -40,7 +40,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.ConditionalAccessSet(Type, Container, Constant(Arguments), Convert(Value, typeof(object)),
-            Constant(ConditionalAssignmentType), Constant(Scope));
+                                                  Constant(ConditionalAssignmentType), Constant(Scope));
         }
     }
 }

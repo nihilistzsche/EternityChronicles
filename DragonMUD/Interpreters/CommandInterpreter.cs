@@ -45,24 +45,24 @@ namespace DragonMUD.Interpreters
             if (!VerifyMethodSignature(method))
             {
                 Log.LogMessage("dragonmud", LogLevel.Debug,
-                $"Method #{method.Name} from logic {logic.GetType().Name} does not have a valid signature, and will not be registered.  DragonMUD.Network.ConnectionCoordinator must always be the first argument type.");
+                               $"Method #{method.Name} from logic {logic.GetType().Name} does not have a valid signature, and will not be registered.  DragonMUD.Network.ConnectionCoordinator must always be the first argument type.");
                 return;
             }
 
             var commandAttribute = method.GetCustomAttribute<CommandAttribute>();
 
             var info = new CommandInfo
-            {
-                name   = commandAttribute.Name,
-                method = method,
-                flags  = commandAttribute.Flags,
-                help =
-                {
-                    ["short"] = commandAttribute.ShortHelp,
-                    ["long"]  = commandAttribute.LongHelp
-                },
-                owner = logic
-            };
+                       {
+                           name = commandAttribute.Name,
+                           method = method,
+                           flags = commandAttribute.Flags,
+                           help =
+                           {
+                               ["short"] = commandAttribute.ShortHelp,
+                               ["long"] = commandAttribute.LongHelp
+                           },
+                           owner = logic
+                       };
 
             RegisteredCommands.Add(commandAttribute.Name, info);
             commandAttribute.Aliases.ForEach(alias => { RegisteredCommands.Add(alias, info); });
@@ -89,7 +89,7 @@ namespace DragonMUD.Interpreters
 
             var commandMethods =
                 from method in logic.GetType()
-                    .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                    .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 where method.GetCustomAttribute<CommandAttribute>() != null
                 select method;
 
@@ -97,7 +97,7 @@ namespace DragonMUD.Interpreters
         }
 
         private bool ValidateInput(CommandInfo command, ConnectionCoordinator coordinator, bool onlyFlagsAndLevel,
-        string[]                               parts)
+                                   string[] parts)
         {
             var numArgs = command.method.GetParameters().Length;
             if (!onlyFlagsAndLevel)
@@ -111,9 +111,9 @@ namespace DragonMUD.Interpreters
             }
 
             var failedFlags = (from flag in command.flags
-                where !coordinator.IsFlagSet(flag) || !coordinator["current-character"]
-                    ?.IsFlagSet(flag)
-                select flag).Any();
+                               where !coordinator.IsFlagSet(flag) || !coordinator["current-character"]
+                                         ?.IsFlagSet(flag)
+                               select flag).Any();
 
             if (failedFlags)
                 return false;
@@ -125,15 +125,15 @@ namespace DragonMUD.Interpreters
         private CommandInfo FindCommand(string name)
         {
             return (from kvp in RegisteredCommands
-                where kvp.Key.StartsWith(name, StringComparison.InvariantCulture)
-                select kvp.Value).First();
+                    where kvp.Key.StartsWith(name, StringComparison.InvariantCulture)
+                    select kvp.Value).First();
         }
 
         public override void Interpret(ConnectionCoordinator coordinator, InputEventArgs input)
         {
             var regex = new Regex(@"\s");
             var parts = regex.Split(input.Input.ToLower());
-            var info  = FindCommand(parts[0].ToLower());
+            var info = FindCommand(parts[0].ToLower());
 
             if (info == null)
             {
@@ -165,7 +165,7 @@ namespace DragonMUD.Interpreters
             if (xargs.Count() > info.method.GetParameters().Length)
             {
                 var zargs = xargs.Skip(info.method.GetParameters().Length)
-                    .Take(xargs.Count() - info.method.GetParameters().Length);
+                                 .Take(xargs.Count() - info.method.GetParameters().Length);
                 xargs = xargs.Take(info.method.GetParameters().Length).ToList();
                 xargs.Add(string.Join(" ", zargs));
             }
@@ -200,7 +200,7 @@ namespace DragonMUD.Interpreters
             {
                 using var fs =
                     new FileStream($"$(BundleDir)/lib/help/#{info.help["long"]}".ReplaceAllVariables(), FileMode.Open,
-                    FileAccess.Read);
+                                   FileAccess.Read);
                 var bytes = new byte[fs.Length];
                 fs.Read(bytes, 0, (int)fs.Length);
                 coordinator.SendMessage(Encoding.UTF8.GetString(bytes));
@@ -212,8 +212,8 @@ namespace DragonMUD.Interpreters
         {
             var info = FindCommand(command);
             coordinator.SendMessage(info == null
-                ? "No command found."
-                : $"Command #{info.name}, Optional Arguments: #{(from p in info.method.GetParameters() where p.HasDefaultValue select p).Count()}, Flags Required: #{string.Join("", "", info.flags)}");
+                                        ? "No command found."
+                                        : $"Command #{info.name}, Optional Arguments: #{(from p in info.method.GetParameters() where p.HasDefaultValue select p).Count()}, Flags Required: #{string.Join("", "", info.flags)}");
         }
 
         public class CommandInfo
@@ -224,7 +224,7 @@ namespace DragonMUD.Interpreters
 
             public MethodInfo method;
 
-            public int    minLevel;
+            public int minLevel;
             public string name;
 
             public dynamic owner;

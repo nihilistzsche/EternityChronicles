@@ -42,10 +42,10 @@ namespace IronDragon.Runtime
             else
                 func = func.MakeGenericType(body.Type);
             var lambda = (from m in typeof(Expression).GetMethods()
-                where m.Name                             == "Lambda"
-                where m.GetParameters()[0].ParameterType == typeof(Expression)
-                where m.GetParameters()[1].ParameterType == typeof(ParameterExpression[])
-                select m).First();
+                          where m.Name == "Lambda"
+                          where m.GetParameters()[0].ParameterType == typeof(Expression)
+                          where m.GetParameters()[1].ParameterType == typeof(ParameterExpression[])
+                          select m).First();
 
             // Collect parameters here by analyzing the tree using a custom visitor pattern to see which
             // variables are assigned (without a set statement) or used in a block.
@@ -66,7 +66,8 @@ namespace IronDragon.Runtime
 
             dynamic block =
                 ((LambdaExpression)
-                lambda.Invoke(typeof(Expression), new object[] { realBody, new ParameterExpression[] { } })).Compile();
+                    lambda.Invoke(typeof(Expression), new object[] { realBody, new ParameterExpression[] { } }))
+                .Compile();
             return block;
         }
 

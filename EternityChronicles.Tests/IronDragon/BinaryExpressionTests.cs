@@ -27,24 +27,24 @@ namespace EternityChronicles.Tests.IronDragon
         public bool O(int a, string z, int b)
         {
             var sourceString = $"{a} {z} {b};";
-            var engine       = GetRuntime().GetEngine("IronDragon");
-            var source       = engine.CreateScriptSourceFromString(sourceString);
+            var engine = GetRuntime().GetEngine("IronDragon");
+            var source = engine.CreateScriptSourceFromString(sourceString);
             return (bool)source.Execute(engine.CreateScope());
         }
 
         public bool L(bool a, string z, bool b)
         {
             var sourceString = $"{a.ToString().ToLower()} {z} {b.ToString().ToLower()};";
-            var engine       = GetRuntime().GetEngine("IronDragon");
-            var source       = engine.CreateScriptSourceFromString(sourceString);
+            var engine = GetRuntime().GetEngine("IronDragon");
+            var source = engine.CreateScriptSourceFromString(sourceString);
             return (bool)source.Execute(engine.CreateScope());
         }
 
         public int B(int a, string z, int b)
         {
             var sourceString = $"{a} {z} {b};";
-            var engine       = GetRuntime().GetEngine("IronDragon");
-            var source       = engine.CreateScriptSourceFromString(sourceString);
+            var engine = GetRuntime().GetEngine("IronDragon");
+            var source = engine.CreateScriptSourceFromString(sourceString);
             return (int)source.Execute(engine.CreateScope());
         }
 
@@ -94,29 +94,29 @@ namespace EternityChronicles.Tests.IronDragon
             Assert.That(O(x, ">=", y), Is.EqualTo(expected));
         }
 
-        [TestCase(true,  true,  true)]
-        [TestCase(true,  false, false)]
-        [TestCase(false, true,  false)]
+        [TestCase(true, true, true)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, false)]
         [TestCase(false, false, false)]
         public void TestLogicalAnd(bool x, bool y, bool expected)
         {
             Assert.That(L(x, "&&", y), Is.EqualTo(expected));
         }
 
-        [TestCase(true,  true,  true)]
-        [TestCase(true,  false, true)]
-        [TestCase(false, true,  true)]
+        [TestCase(true, true, true)]
+        [TestCase(true, false, true)]
+        [TestCase(false, true, true)]
         [TestCase(false, false, false)]
         public void TestLogicalOr(bool x, bool y, bool expected)
         {
             Assert.That(L(x, "||", y), Is.EqualTo(expected));
         }
 
-        [TestCase(true,  true,  false)]
-        [TestCase(true,  false, true)]
-        [TestCase(false, true,  true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(false, true, true)]
         [TestCase(false, false, false)]
-        [TestCase(true,  true,  false)]
+        [TestCase(true, true, false)]
         public void TestLogicalXor(bool x, bool y, bool expected)
         {
             Assert.That(L(x, "^^", y), Is.EqualTo(expected));
@@ -217,7 +217,7 @@ namespace EternityChronicles.Tests.IronDragon
             var rubyengine = GetRuntime().GetEngine("IronRuby");
             var rubysource =
                 rubyengine.CreateScriptSourceFromString(
-                "class AddTest; def initialize(num); @num = num; end; def +(other); @num + other; end; end; x = AddTest.new(5);");
+                                                        "class AddTest; def initialize(num); @num = num; end; def +(other); @num + other; end; end; x = AddTest.new(5);");
 
             var x = rubysource.Execute(rubyengine.CreateScope());
 
@@ -278,7 +278,7 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestRegex1()
         {
             Assert.That(CompileAndExecute("r = %/(H(?<a>el+)o) ([A-Z](?<b>.+)d)./; x = 'Hello World!'; x =~ r; a;"),
-            Is.EqualTo("ell"));
+                        Is.EqualTo("ell"));
         }
 
         [Test]
@@ -286,8 +286,8 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect = new DragonArray { "ell", "orl" };
             Assert.That(
-            CompileAndExecute("x = 'Hello World!'; x =~ %/[^e]+(?<test>el+).+W(?<word>o.+)d/; [test,word];"),
-            Is.EqualTo(expect));
+                        CompileAndExecute("x = 'Hello World!'; x =~ %/[^e]+(?<test>el+).+W(?<word>o.+)d/; [test,word];"),
+                        Is.EqualTo(expect));
         }
 
         [Test]
@@ -295,9 +295,9 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect = new DragonRange(2, 6);
             Assert.That(
-            CompileAndExecute("2..6;"),
-            Is.EqualTo(expect)
-            );
+                        CompileAndExecute("2..6;"),
+                        Is.EqualTo(expect)
+                       );
         }
 
         [Test]
@@ -305,9 +305,9 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var expect = new DragonRange(2, 6, true);
             Assert.That(
-            CompileAndExecute("2...6;"),
-            Is.EqualTo(expect)
-            );
+                        CompileAndExecute("2...6;"),
+                        Is.EqualTo(expect)
+                       );
         }
     }
 }

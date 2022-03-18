@@ -32,26 +32,26 @@ namespace IronDragon.Runtime
         {
             if (rawName.GetType() == typeof(InstanceReference))
             {
-                var iref   = (InstanceReference)rawName;
-                var lval   = CompilerServices.CompileExpression(iref.LValue, (DragonScope)rawScope);
+                var iref = (InstanceReference)rawName;
+                var lval = CompilerServices.CompileExpression(iref.LValue, (DragonScope)rawScope);
                 var gmArgs = new List<Expression>();
                 gmArgs.Add(Expression.Constant(lval, typeof(object)));
                 return Dynamic(typeof(object), new InteropBinder.GetMember(iref.Key, (DragonScope)rawScope), gmArgs);
             }
 
-            var name  = (string)rawName;
+            var name = (string)rawName;
             var scope = (DragonScope)rawScope;
             if (name.StartsWith("$") && name != "$:")
             {
                 if (name.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    name  = name.Substring(2);
+                    name = name.Substring(2);
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    name  = name.Substring(1);
+                    name = name.Substring(1);
                 }
             }
 
@@ -65,15 +65,22 @@ namespace IronDragon.Runtime
                     var @class = ((DragonInstance)_val).Class;
                     return
                         CompilerServices.CompileExpression(
-                        DragonExpression.Variable(DragonExpression.InstanceRef(Expression.Constant(@class),
-                        Expression.Constant(name.Substring(2)))), scope);
+                                                           DragonExpression
+                                                               .Variable(DragonExpression
+                                                                             .InstanceRef(Expression.Constant(@class),
+                                                                                 Expression
+                                                                                     .Constant(name
+                                                                                         .Substring(2)))),
+                                                           scope);
                 }
 
                 return
                     CompilerServices.CompileExpression(
-                    DragonExpression.Variable(
-                    DragonExpression.InstanceRef(DragonExpression.Variable(Expression.Constant("self")),
-                    Expression.Constant(name.Substring(1)))), scope);
+                                                       DragonExpression.Variable(
+                                                        DragonExpression
+                                                            .InstanceRef(DragonExpression.Variable(Expression.Constant("self")),
+                                                                         Expression.Constant(name.Substring(1)))),
+                                                       scope);
             }
 
             var val = scope[name];
@@ -86,7 +93,7 @@ namespace IronDragon.Runtime
                 {
                     var @class = DragonClass.BoxClass(type);
                     Dragon.Globals[@class.Name] = @class;
-                    val                         = @class;
+                    val = @class;
                 }
             }
 
@@ -101,37 +108,39 @@ namespace IronDragon.Runtime
         internal static dynamic Assign(VariableExpression var, dynamic value, E type, bool isConst, object rawScope)
         {
             var scope = (DragonScope)rawScope;
-            var map   = new Dictionary<ExpressionType, ExpressionType>();
-            map[E.AddAssign]         = E.Add;
-            map[E.AndAssign]         = E.And;
-            map[E.DivideAssign]      = E.Divide;
+            var map = new Dictionary<ExpressionType, ExpressionType>();
+            map[E.AddAssign] = E.Add;
+            map[E.AndAssign] = E.And;
+            map[E.DivideAssign] = E.Divide;
             map[E.ExclusiveOrAssign] = E.ExclusiveOr;
-            map[E.LeftShiftAssign]   = E.LeftShift;
-            map[E.ModuloAssign]      = E.Modulo;
-            map[E.MultiplyAssign]    = E.Multiply;
-            map[E.OrAssign]          = E.Or;
-            map[E.PowerAssign]       = E.Power;
-            map[E.RightShiftAssign]  = E.RightShift;
-            map[E.SubtractAssign]    = E.Subtract;
+            map[E.LeftShiftAssign] = E.LeftShift;
+            map[E.ModuloAssign] = E.Modulo;
+            map[E.MultiplyAssign] = E.Multiply;
+            map[E.OrAssign] = E.Or;
+            map[E.PowerAssign] = E.Power;
+            map[E.RightShiftAssign] = E.RightShift;
+            map[E.SubtractAssign] = E.Subtract;
 
             var incDecMap = new List<ExpressionType>
-            {
-                E.PreIncrementAssign,
-                E.PreDecrementAssign,
-                E.PostIncrementAssign,
-                E.PostDecrementAssign
-            };
+                            {
+                                E.PreIncrementAssign,
+                                E.PreDecrementAssign,
+                                E.PostIncrementAssign,
+                                E.PostDecrementAssign
+                            };
 
             if (var.Name is InstanceReferenceExpression)
             {
                 var iref = CompilerServices.CompileExpression(var.Name as InstanceReferenceExpression, scope);
-                var lval = CompilerServices.CompileExpression(iref.LValue,                             scope);
+                var lval = CompilerServices.CompileExpression(iref.LValue, scope);
                 if (map.ContainsKey(type))
                     value =
                         CompilerServices.CreateLambdaForExpression(
-                        DragonExpression.Binary(
-                        Expression.Constant(Resolve(CompilerServices.CompileExpression(iref, scope), scope)),
-                        Expression.Constant(value), map[type]))();
+                                                                   DragonExpression.Binary(
+                                                                    Expression
+                                                                        .Constant(Resolve(CompilerServices.CompileExpression(iref, scope),
+                                                                            scope)),
+                                                                    Expression.Constant(value), map[type]))();
                 if (incDecMap.Contains(type))
                 {
                     var gmArgs = new List<Expression>();
@@ -148,7 +157,7 @@ namespace IronDragon.Runtime
                 }
 
                 var smArgs = new List<Expression>();
-                smArgs.Add(Expression.Constant(lval,  typeof(object)));
+                smArgs.Add(Expression.Constant(lval, typeof(object)));
                 smArgs.Add(Expression.Constant(value, typeof(object)));
                 return Dynamic(typeof(object), new InteropBinder.SetMember(iref.Key, scope), smArgs);
             }
@@ -174,8 +183,10 @@ namespace IronDragon.Runtime
                 {
                     var nvalue =
                         CompilerServices.CreateLambdaForExpression(
-                        DragonExpression.Binary(Expression.Constant(ResolveSymbol(sym, scope)),
-                        Expression.Constant(value), map[type]))();
+                                                                   DragonExpression
+                                                                       .Binary(Expression.Constant(ResolveSymbol(sym, scope)),
+                                                                               Expression.Constant(value),
+                                                                               map[type]))();
                     scope[sym] = nvalue;
                     return nvalue;
                 }
@@ -198,19 +209,19 @@ namespace IronDragon.Runtime
                 return value;
             }
 
-            string name     = CompilerServices.CompileExpression(var.Name, scope);
-            var    scopeSet = false;
+            string name = CompilerServices.CompileExpression(var.Name, scope);
+            var scopeSet = false;
             if (name.StartsWith("$") && name != "$:")
             {
                 if (name.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    name  = name.Substring(2);
+                    name = name.Substring(2);
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    name  = name.Substring(1);
+                    name = name.Substring(1);
                 }
 
                 scopeSet = true;
@@ -223,27 +234,30 @@ namespace IronDragon.Runtime
                 {
                     var ivar =
                         DragonExpression.Variable(
-                        DragonExpression.InstanceRef(DragonExpression.Variable(Expression.Constant("self")),
-                        Expression.Constant(name.Substring(1))));
+                                                  DragonExpression
+                                                      .InstanceRef(DragonExpression.Variable(Expression.Constant("self")),
+                                                                   Expression.Constant(name.Substring(1))));
                     if (map.ContainsKey(type))
                         value =
                             CompilerServices.CreateLambdaForExpression(
-                            DragonExpression.Binary(ivar, Expression.Constant(value), map[type]))();
+                                                                       DragonExpression.Binary(ivar,
+                                                                           Expression.Constant(value),
+                                                                           map[type]))();
                     var assn = DragonExpression.Assign(DragonExpression.LeftHandValue(ivar),
-                    Expression.Constant(value));
+                                                       Expression.Constant(value));
                     return CompilerServices.CompileExpression(assn, scope);
                 }
 
                 found = true;
-                name  = name.Substring(1);
+                name = name.Substring(1);
             }
 
             if (name == "self")
                 if (scope["<dragon_context_selfname>"] != null &&
-                scope["<dragon_context_selfscope>"]    != null &&
-                scope["<dragon_context_invokemember>"] != null)
+                    scope["<dragon_context_selfscope>"] != null &&
+                    scope["<dragon_context_invokemember>"] != null)
                 {
-                    name  = scope["<dragon_context_selfname>"];
+                    name = scope["<dragon_context_selfname>"];
                     scope = scope["<dragon_context_selfscope>"];
                     found = true;
                 }
@@ -264,8 +278,10 @@ namespace IronDragon.Runtime
             {
                 var nvalue =
                     CompilerServices.CreateLambdaForExpression(
-                    DragonExpression.Binary(Expression.Constant(Resolve(name, scope)), Expression.Constant(value),
-                    map[type]))();
+                                                               DragonExpression
+                                                                   .Binary(Expression.Constant(Resolve(name, scope)),
+                                                                           Expression.Constant(value),
+                                                                           map[type]))();
                 scope[name] = nvalue;
                 return nvalue;
             }
@@ -288,12 +304,12 @@ namespace IronDragon.Runtime
             return value;
         }
 
-        internal static dynamic ConditionalAssign(VariableExpression var,                       dynamic value,
-        DragonExpressionType                                         conditionalAssignmentType, bool    isConst,
-        object                                                       rawScope)
+        internal static dynamic ConditionalAssign(VariableExpression var, dynamic value,
+                                                  DragonExpressionType conditionalAssignmentType, bool isConst,
+                                                  object rawScope)
         {
             var scope = rawScope as DragonScope;
-            var v     = Resolve(CompilerServices.CompileExpression(var.Name, scope), scope);
+            var v = Resolve(CompilerServices.CompileExpression(var.Name, scope), scope);
             if (Boolean(v))
             {
                 if (conditionalAssignmentType == DragonExpressionType.IfNotNullAssign)
@@ -309,12 +325,12 @@ namespace IronDragon.Runtime
         }
 
         internal static dynamic ParallelAssign(
-        List<ParallelAssignmentExpression.ParallelAssignmentInfo> leftHandValues,
-        List<ParallelAssignmentExpression.ParallelAssignmentInfo> rightHandValues, object rawScope)
+            List<ParallelAssignmentExpression.ParallelAssignmentInfo> leftHandValues,
+            List<ParallelAssignmentExpression.ParallelAssignmentInfo> rightHandValues, object rawScope)
         {
-            var scope   = rawScope as DragonScope;
+            var scope = rawScope as DragonScope;
             var rvalues = new List<object>();
-            var fval    = CompilerServices.CompileExpression(rightHandValues[0].Value as Expression, scope);
+            var fval = CompilerServices.CompileExpression(rightHandValues[0].Value as Expression, scope);
 
             if (fval is List<object> && !rightHandValues[0].IsWildcard)
                 rvalues = new List<object>(fval as List<object>);
@@ -335,8 +351,8 @@ namespace IronDragon.Runtime
                     }
                 }
 
-            var i      = 0;
-            var k      = 0;
+            var i = 0;
+            var k = 0;
             var result = new DragonArray();
 
             foreach (var _lvalue in leftHandValues)
@@ -347,14 +363,14 @@ namespace IronDragon.Runtime
                 if (lvalue is List<ParallelAssignmentExpression.ParallelAssignmentInfo>)
                 {
                     result.Add(ParallelAssign(lvalue as List<ParallelAssignmentExpression.ParallelAssignmentInfo>,
-                    new List<ParallelAssignmentExpression.ParallelAssignmentInfo>
-                    {
-                        new()
-                        {
-                            IsWildcard = false,
-                            Value      = Expression.Constant(rvalues[i++])
-                        }
-                    }, scope));
+                                              new List<ParallelAssignmentExpression.ParallelAssignmentInfo>
+                                              {
+                                                  new()
+                                                  {
+                                                      IsWildcard = false,
+                                                      Value = Expression.Constant(rvalues[i++])
+                                                  }
+                                              }, scope));
                 }
                 else if (_lvalue.IsWildcard)
                 {
@@ -391,11 +407,11 @@ namespace IronDragon.Runtime
         internal static dynamic Alias(object rawFrom, object rawTo, object rawScope)
         {
             string from, to;
-            var    scope = (DragonScope)rawScope;
+            var scope = (DragonScope)rawScope;
             if (rawFrom is string)
-                @from = (string)rawFrom;
+                from = (string)rawFrom;
             else if (rawFrom is Symbol)
-                @from = ((Symbol)rawFrom).Name;
+                from = ((Symbol)rawFrom).Name;
             else
                 return null;
             if (rawTo is string)
@@ -409,12 +425,12 @@ namespace IronDragon.Runtime
                 if (from.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    from  = from.Substring(2);
+                    from = from.Substring(2);
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    from  = from.Substring(1);
+                    from = from.Substring(1);
                 }
             }
 
@@ -423,12 +439,12 @@ namespace IronDragon.Runtime
                 if (to.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    to    = to.Substring(2);
+                    to = to.Substring(2);
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    to    = to.Substring(1);
+                    to = to.Substring(1);
                 }
             }
 
@@ -447,7 +463,7 @@ namespace IronDragon.Runtime
         internal static dynamic Range(Expression startExpr, Expression endExpr, bool inclusive)
         {
             var start = (int)CompilerServices.CreateLambdaForExpression(startExpr)();
-            var end   = (int)CompilerServices.CreateLambdaForExpression(endExpr)();
+            var end = (int)CompilerServices.CreateLambdaForExpression(endExpr)();
 
             return new DragonRange(start, end, inclusive);
         }

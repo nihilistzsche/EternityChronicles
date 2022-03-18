@@ -30,7 +30,7 @@ namespace IronDragon.Expressions
         public InstanceReferenceExpression(Expression lvalue, Expression key) : base(Constant(""))
         {
             LValue = lvalue;
-            Key    = key;
+            Key = key;
         }
 
         public Expression LValue { get; }

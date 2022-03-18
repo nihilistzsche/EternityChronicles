@@ -32,8 +32,8 @@ namespace IronDragon.Expressions
     {
         internal AssignmentExpression(LeftHandValueExpression left, Expression right, ExpressionType assignType)
         {
-            Left          = left;
-            Right         = right ?? Constant(null);
+            Left = left;
+            Right = right ?? Constant(null);
             ExtraNodeType = assignType;
         }
 
@@ -61,27 +61,27 @@ namespace IronDragon.Expressions
             if (rl is AccessExpression)
                 return
                     Convert(
-                    AccessSet((rl as AccessExpression).Container, (rl as AccessExpression).Arguments,
-                    Right,                                        ExtraNodeType), Type);
+                            AccessSet((rl as AccessExpression).Container, (rl as AccessExpression).Arguments,
+                                      Right, ExtraNodeType), Type);
             return Operation.Assign(Right.Type, Constant(rl), Convert(Right, typeof(object)),
-            Constant(ExtraNodeType), Constant(IsConst), Constant(Scope));
+                                    Constant(ExtraNodeType), Constant(IsConst), Constant(Scope));
         }
 
         public override string ToString()
         {
             var assign = new Dictionary<ExpressionType, string>();
-            assign[ExpressionType.Assign]            = "=";
-            assign[ExpressionType.AddAssign]         = "+=";
-            assign[ExpressionType.SubtractAssign]    = "-=";
-            assign[ExpressionType.MultiplyAssign]    = "*=";
-            assign[ExpressionType.DivideAssign]      = "/=";
-            assign[ExpressionType.ModuloAssign]      = "%=";
-            assign[ExpressionType.LeftShiftAssign]   = "<<=";
-            assign[ExpressionType.RightShiftAssign]  = ">>=";
-            assign[ExpressionType.AndAssign]         = "&=";
-            assign[ExpressionType.OrAssign]          = "|=";
+            assign[ExpressionType.Assign] = "=";
+            assign[ExpressionType.AddAssign] = "+=";
+            assign[ExpressionType.SubtractAssign] = "-=";
+            assign[ExpressionType.MultiplyAssign] = "*=";
+            assign[ExpressionType.DivideAssign] = "/=";
+            assign[ExpressionType.ModuloAssign] = "%=";
+            assign[ExpressionType.LeftShiftAssign] = "<<=";
+            assign[ExpressionType.RightShiftAssign] = ">>=";
+            assign[ExpressionType.AndAssign] = "&=";
+            assign[ExpressionType.OrAssign] = "|=";
             assign[ExpressionType.ExclusiveOrAssign] = "^=";
-            assign[ExpressionType.PowerAssign]       = "**=";
+            assign[ExpressionType.PowerAssign] = "**=";
             return string.Format("{0} {1} {2}", Left, assign[ExtraNodeType], Right);
         }
     }

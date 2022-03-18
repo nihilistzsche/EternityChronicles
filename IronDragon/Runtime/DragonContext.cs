@@ -25,18 +25,18 @@ using Microsoft.Scripting.Runtime;
 
 namespace IronDragon.Runtime
 {
-	/// <summary>
-	///     TODO: Update summary.
-	/// </summary>
-	public class DragonContext : LanguageContext
+    /// <summary>
+    ///     TODO: Update summary.
+    /// </summary>
+    public class DragonContext : LanguageContext
     {
         public DragonContext(ScriptDomainManager domainManager, IDictionary<string, object> options) : base(
-        domainManager)
+         domainManager)
         {
         }
 
         public override ScriptCode CompileSourceCode(SourceUnit sourceUnit, CompilerOptions options,
-        ErrorSink                                               errorSink)
+                                                     ErrorSink errorSink)
         {
             var res = DragonParser.Parse(sourceUnit.GetCode(), sourceUnit);
 

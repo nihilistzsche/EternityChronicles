@@ -31,13 +31,13 @@ namespace IronDragon.Expressions
     public class ParallelAssignmentExpression : DragonExpression
     {
         internal ParallelAssignmentExpression(List<ParallelAssignmentInfo> lvalues,
-        List<ParallelAssignmentInfo>                                       rvalues)
+                                              List<ParallelAssignmentInfo> rvalues)
         {
-            LeftHandValues  = lvalues;
+            LeftHandValues = lvalues;
             RightHandValues = rvalues;
         }
 
-        public List<ParallelAssignmentInfo> LeftHandValues  { get; }
+        public List<ParallelAssignmentInfo> LeftHandValues { get; }
         public List<ParallelAssignmentInfo> RightHandValues { get; }
 
         public override Type Type => typeof(object);
@@ -45,19 +45,19 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.ParallelAssign(typeof(object), Constant(LeftHandValues), Constant(RightHandValues),
-            Constant(Scope));
+                                            Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)
         {
             LeftHandValues.ForEach(value =>
-            {
-                if (value.Value is DragonExpression) value.Value.SetScope(scope);
-            });
+                                   {
+                                       if (value.Value is DragonExpression) value.Value.SetScope(scope);
+                                   });
             RightHandValues.ForEach(value =>
-            {
-                if (value.Value is DragonExpression) value.Value.SetScope(scope);
-            });
+                                    {
+                                        if (value.Value is DragonExpression) value.Value.SetScope(scope);
+                                    });
         }
 
         public override string ToString()
@@ -70,7 +70,7 @@ namespace IronDragon.Expressions
         /// </summary>
         public struct ParallelAssignmentInfo
         {
-            public bool    IsWildcard;
+            public bool IsWildcard;
             public dynamic Value;
         }
     }

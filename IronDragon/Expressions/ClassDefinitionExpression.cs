@@ -28,10 +28,10 @@ namespace IronDragon.Expressions
     public class ClassDefinitionExpression : DragonExpression
     {
         internal ClassDefinitionExpression(string name, string parent,
-        List<Expression>                          contents)
+                                           List<Expression> contents)
         {
-            Name     = name;
-            Parent   = parent;
+            Name = name;
+            Parent = parent;
             Contents = contents;
         }
 
@@ -51,7 +51,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.DefineClass(typeof(DragonClass), Constant(Name), Constant(Parent), Constant(Contents),
-            Constant(Scope));
+                                         Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

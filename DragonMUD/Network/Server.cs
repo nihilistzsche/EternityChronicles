@@ -90,7 +90,7 @@ namespace DragonMUD.Network
 
         public void StartSoftReboot()
         {
-            IsRunning  = false;
+            IsRunning = false;
             SoftReboot = true;
         }
     }

@@ -9,7 +9,7 @@
         <AssemblyName>EternityChronicles.Tests</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <LangVersion>9</LangVersion>
-        <TargetFrameworkProfile />
+        <TargetFrameworkProfile/>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
     </PropertyGroup>
@@ -40,37 +40,37 @@
         <Reference Include="IronRuby.Libraries.Yaml">
             <HintPath>..\Extern\IronRuby.Libraries.Yaml.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System" />
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System"/>
     </ItemGroup>
     <Choose>
         <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
             <ItemGroup>
-                <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+                <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"/>
             </ItemGroup>
         </When>
-        <Otherwise />
+        <Otherwise/>
     </Choose>
     <ItemGroup>
-        <Compile Include="ECX\CircularDependencyTests.cs" />
-        <Compile Include="ECX\DependencyResolverTests.cs" />
-        <Compile Include="ECX\IECXTestRole1.cs" />
-        <Compile Include="ECX\ModuleLoaderTests.cs" />
-        <Compile Include="ECX\RefCountTests.cs" />
-        <Compile Include="ECX\RoleRegistrationTests.cs" />
-        <Compile Include="ECX\UnloadingTests.cs" />
-        <Compile Include="ECX\UnresolvedDependencyTests.cs" />
-        <Compile Include="IronDragon\AccessTests.cs" />
-        <Compile Include="IronDragon\BinaryExpressionTests.cs" />
-        <Compile Include="IronDragon\ClassTests.cs" />
-        <Compile Include="IronDragon\ExceptionSystemTests.cs" />
-        <Compile Include="IronDragon\FlowTests.cs" />
-        <Compile Include="IronDragon\FunctionConstraint.cs" />
-        <Compile Include="IronDragon\DragonIs.cs" />
-        <Compile Include="IronDragon\FunctionTests.cs" />
-        <Compile Include="IronDragon\DragonAbstractTestFixture.cs" />
-        <Compile Include="IronDragon\VariableTests.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="ECX\CircularDependencyTests.cs"/>
+        <Compile Include="ECX\DependencyResolverTests.cs"/>
+        <Compile Include="ECX\IECXTestRole1.cs"/>
+        <Compile Include="ECX\ModuleLoaderTests.cs"/>
+        <Compile Include="ECX\RefCountTests.cs"/>
+        <Compile Include="ECX\RoleRegistrationTests.cs"/>
+        <Compile Include="ECX\UnloadingTests.cs"/>
+        <Compile Include="ECX\UnresolvedDependencyTests.cs"/>
+        <Compile Include="IronDragon\AccessTests.cs"/>
+        <Compile Include="IronDragon\BinaryExpressionTests.cs"/>
+        <Compile Include="IronDragon\ClassTests.cs"/>
+        <Compile Include="IronDragon\ExceptionSystemTests.cs"/>
+        <Compile Include="IronDragon\FlowTests.cs"/>
+        <Compile Include="IronDragon\FunctionConstraint.cs"/>
+        <Compile Include="IronDragon\DragonIs.cs"/>
+        <Compile Include="IronDragon\FunctionTests.cs"/>
+        <Compile Include="IronDragon\DragonAbstractTestFixture.cs"/>
+        <Compile Include="IronDragon\VariableTests.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\ECMSBuildTasks\ECMSBuildTasks.csproj">
@@ -91,18 +91,18 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <ECXCr Include="ECX\src\*-cr-*.cs" />
-        <ECXDr Include="ECX\src\*-dr-*.cs" />
-        <ECXLd Include="ECX\src\*-ld-*.cs" Exclude="ECX\src\ecx-ld-04.cs;ECX\src\ecx-ld-05.cs" />
-        <ECXLda Include="ECX\src\ecx-ld-04.cs" />
-        <ECXLdb Include="ECX\src\ecx-ld-05.cs" />
-        <ECXRc Include="ECX\src\*-rc-*.cs" />
-        <ECXRs Include="ECX\src\*-rs-*.cs" />
-        <ECXUl Include="ECX\src\*-ul-*.cs" />
-        <ECXUr Include="ECX\src\*-ur-*.cs" />
-        <ECXRra Include="ECX\src\*-rr-01*.cs" />
-        <ECXRrb Include="ECX\src\*-rr-02*.cs" />
-        <ECXRrx Include="ECX\src\IECXTestRole2.cs" />
+        <ECXCr Include="ECX\src\*-cr-*.cs"/>
+        <ECXDr Include="ECX\src\*-dr-*.cs"/>
+        <ECXLd Include="ECX\src\*-ld-*.cs" Exclude="ECX\src\ecx-ld-04.cs;ECX\src\ecx-ld-05.cs"/>
+        <ECXLda Include="ECX\src\ecx-ld-04.cs"/>
+        <ECXLdb Include="ECX\src\ecx-ld-05.cs"/>
+        <ECXRc Include="ECX\src\*-rc-*.cs"/>
+        <ECXRs Include="ECX\src\*-rs-*.cs"/>
+        <ECXUl Include="ECX\src\*-ul-*.cs"/>
+        <ECXUr Include="ECX\src\*-ur-*.cs"/>
+        <ECXRra Include="ECX\src\*-rr-01*.cs"/>
+        <ECXRrb Include="ECX\src\*-rr-02*.cs"/>
+        <ECXRrx Include="ECX\src\IECXTestRole2.cs"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Antlr3.Runtime">
@@ -148,65 +148,65 @@
             </ItemGroup>
         </When>
     </Choose>
-    <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <Import Project="$(SolutionDir)\ECMSBuildTasks\resources\ECMSBuildTasks.tasks" />
+    <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(SolutionDir)\ECMSBuildTasks\resources\ECMSBuildTasks.tasks"/>
     <Target Name="MakeModuleDirs">
-        <MakeDir Directories="$(TargetDir)\data" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-cr" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-dr" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-ld" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-ld-2" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-ld-3" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-rc" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-rr" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-rs" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-ul" />
-        <MakeDir Directories="$(TargetDir)\data\ecx-ur" />
+        <MakeDir Directories="$(TargetDir)\data"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-cr"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-dr"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-ld"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-ld-2"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-ld-3"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-rc"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-rr"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-rs"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-ul"/>
+        <MakeDir Directories="$(TargetDir)\data\ecx-ur"/>
     </Target>
     <Target Name="ECXCr" Inputs="@(ECXCr)" Outputs="@(ECXCr-&gt;$(TargetDir)\data\ecx-cr\%(filename).dll)">
-        <Message Text="Building ecx-cr test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXCr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-cr" />
+        <Message Text="Building ecx-cr test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXCr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-cr"/>
     </Target>
     <Target Name="ECXDr" Inputs="@(ECXDr)" Outputs="@(ECXDr-&gt;$(TargetDir)\data\ecx-dr\%(filename).dll)">
-        <Message Text="Building ecx-dr test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXDr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-dr" />
+        <Message Text="Building ecx-dr test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXDr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-dr"/>
     </Target>
     <Target Name="ECXLd" Inputs="@(ECXLd)" Outputs="@(ECXLd-&gt;$(TargetDir)\data\ecx-ld\%(filename).dll)">
-        <Message Text="Building ecx-ld test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXLd)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld" />
+        <Message Text="Building ecx-ld test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXLd)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld"/>
     </Target>
     <Target Name="ECXLda" Inputs="@(ECXLda)" Outputs="@(ECXLda-&gt;$(TargetDir)\data\ecx-ld-2\%(filename).dll)">
-        <ECXModuleDLLTask Sources="@(ECXLda)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld-2" />
+        <ECXModuleDLLTask Sources="@(ECXLda)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld-2"/>
     </Target>
     <Target Name="ECXLdb" Inputs="@(ECXLdb)" Outputs="@(ECXLdb-&gt;$(TargetDir)\data\ecx-ld-3\%(filename).dll)">
-        <ECXModuleDLLTask Sources="@(ECXLdb)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld-3" />
+        <ECXModuleDLLTask Sources="@(ECXLdb)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld-3"/>
     </Target>
     <Target Name="ECXRc" Inputs="@(ECXRc)" Outputs="@(ECXRc-&gt;$(TargetDir)\data\ecx-rc\%(filename).dll)">
-        <Message Text="Building ecx-rc test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXRc)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rc" />
+        <Message Text="Building ecx-rc test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXRc)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rc"/>
     </Target>
     <Target Name="ECXRra" Inputs="@(ECXRra)" Outputs="@(ECXRra-&gt;$(TargetDir)\data\ecx-rr\%(filename).dll)">
-        <Message Text="Building ecx-rr test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXRra)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rr" />
+        <Message Text="Building ecx-rr test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXRra)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rr"/>
     </Target>
     <Target Name="ECXRrx" Inputs="@(ECXRrx)" Outputs="@(ECXRrx-&gt;$(TargetDir)\data\ecx-rr\ecx-iecxrr2.dll)">
-        <ECXModuleDLLTask Sources="@(ECXRrx)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rr" OutputName="ecx-iecxrr2.dll" />
+        <ECXModuleDLLTask Sources="@(ECXRrx)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rr" OutputName="ecx-iecxrr2.dll"/>
     </Target>
     <Target Name="ECXRrb" DependsOnTargets="ECXRrx" Inputs="@(ECXRrb)" Outputs="@(ECXRrb-&gt;$(TargetDir)\data\ecx-rr\%(filename).dll)">
-        <ECXModuleDLLTask Sources="@(ECXRrb)" LinkDir="$(TargetDir)" Includes="$(TargetDir)\data\ecx-rr\ecx-iecxrr2.dll" OutputDir="$(TargetDir)\data\ecx-rr" />
+        <ECXModuleDLLTask Sources="@(ECXRrb)" LinkDir="$(TargetDir)" Includes="$(TargetDir)\data\ecx-rr\ecx-iecxrr2.dll" OutputDir="$(TargetDir)\data\ecx-rr"/>
     </Target>
     <Target Name="ECXRs" Inputs="@(ECXRs)" Outputs="@(ECXRs-&gt;$(TargetDir)\data\ecx-rs\%(filename).dll)">
-        <Message Text="Building ecx-rs test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXRs)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rs" />
+        <Message Text="Building ecx-rs test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXRs)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rs"/>
     </Target>
     <Target Name="ECXUl" Inputs="@(ECXUl)" Outputs="@(ECXUl-&gt;$(TargetDir)\data\ecx-ul\%(filename).dll)">
-        <Message Text="Building ecx-ul test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXUl)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ul" />
+        <Message Text="Building ecx-ul test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXUl)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ul"/>
     </Target>
     <Target Name="ECXUr" Inputs="@(ECXUr)" Outputs="@(ECXUr-&gt;$(TargetDir)\data\ecx-ur\%(filename).dll)">
-        <Message Text="Building ecx-ur test dlls..." />
-        <ECXModuleDLLTask Sources="@(ECXUr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ur" />
+        <Message Text="Building ecx-ur test dlls..."/>
+        <ECXModuleDLLTask Sources="@(ECXUr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ur"/>
     </Target>
     <PropertyGroup>
         <ModuleDepends>
@@ -225,7 +225,7 @@
             ECXUr
         </ModuleDepends>
     </PropertyGroup>
-    <Target Name="BuildModuleDLLs" DependsOnTargets="$(ModuleDepends)" />
+    <Target Name="BuildModuleDLLs" DependsOnTargets="$(ModuleDepends)"/>
     <PropertyGroup>
         <BuildDependsOn>
             $(BuildDependsOn);

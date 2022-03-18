@@ -28,9 +28,9 @@ namespace IronDragon.Expressions
     public class ClassOpenExpression : DragonExpression
     {
         internal ClassOpenExpression(Expression name,
-        List<Expression>                        contents)
+                                     List<Expression> contents)
         {
-            Name     = name;
+            Name = name;
             Contents = contents;
         }
 
@@ -48,7 +48,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.DefineClassOpen(typeof(DragonClass), Constant(Name), Constant(Contents),
-            Constant(Scope));
+                                             Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

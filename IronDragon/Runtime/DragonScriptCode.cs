@@ -46,9 +46,9 @@ namespace IronDragon.Runtime
         {
             for (var i = 0; i < res.Count(); i++)
             {
-                if (res[i] is DragonString) res[i]     = (string)res[i];
-                if (res[i] is DragonNumber) res[i]     = DragonNumber.Convert(res[i]);
-                if (res[i] is DragonArray) res[i]      = ConvertElements((DragonArray)res[i]);
+                if (res[i] is DragonString) res[i] = (string)res[i];
+                if (res[i] is DragonNumber) res[i] = DragonNumber.Convert(res[i]);
+                if (res[i] is DragonArray) res[i] = ConvertElements((DragonArray)res[i]);
                 if (res[i] is DragonDictionary) res[i] = ConvertElements((DragonDictionary)res[i]);
             }
 
@@ -60,41 +60,42 @@ namespace IronDragon.Runtime
             List<dynamic> keysToRemove = new List<object>();
             keysToRemove.AddRange(res.Keys.OfType<DragonString>());
             keysToRemove.ForEach(o =>
-            {
-                string s   = o;
-                var    val = res[o];
-                res.Remove(o);
-                res[s] = val;
-            });
+                                 {
+                                     string s = o;
+                                     var val = res[o];
+                                     res.Remove(o);
+                                     res[s] = val;
+                                 });
 
             keysToRemove.Clear();
 
             keysToRemove.AddRange(
-            res.Keys.Where(
-            key =>
-                res[key] is DragonString || res[key] is DragonNumber || res[key] is DragonArray ||
-                res[key] is DragonDictionary));
+                                  res.Keys.Where(
+                                                 key =>
+                                                     res[key] is DragonString || res[key] is DragonNumber ||
+                                                     res[key] is DragonArray ||
+                                                     res[key] is DragonDictionary));
 
             keysToRemove.ForEach(o =>
-            {
-                if (res[o] is DragonString)
-                {
-                    string s = res[o];
-                    res[o] = s;
-                }
-                else if (res[o] is DragonNumber)
-                {
-                    res[o] = DragonNumber.Convert(res[o]);
-                }
-                else if (res[o] is DragonArray)
-                {
-                    res[o] = ConvertElements((DragonArray)res[o]);
-                }
-                else if (res[o] is DragonDictionary)
-                {
-                    res[o] = ConvertElements((DragonDictionary)res[o]);
-                }
-            });
+                                 {
+                                     if (res[o] is DragonString)
+                                     {
+                                         string s = res[o];
+                                         res[o] = s;
+                                     }
+                                     else if (res[o] is DragonNumber)
+                                     {
+                                         res[o] = DragonNumber.Convert(res[o]);
+                                     }
+                                     else if (res[o] is DragonArray)
+                                     {
+                                         res[o] = ConvertElements((DragonArray)res[o]);
+                                     }
+                                     else if (res[o] is DragonDictionary)
+                                     {
+                                         res[o] = ConvertElements((DragonDictionary)res[o]);
+                                     }
+                                 });
 
             return res;
         }
@@ -108,7 +109,7 @@ namespace IronDragon.Runtime
             }
             else if (res is DragonInstance)
             {
-                var so                             = (DragonInstance)res;
+                var so = (DragonInstance)res;
                 if (so is DragonBoxedInstance) res = ((DragonBoxedInstance)so).BoxedObject;
             }
 
@@ -117,7 +118,7 @@ namespace IronDragon.Runtime
             else if (res is DragonString)
                 res = (string)res;
             else if (res is DragonArray)
-                res                               = ConvertElements((DragonArray)res);
+                res = ConvertElements((DragonArray)res);
             else if (res is DragonDictionary) res = ConvertElements((DragonDictionary)res);
 
             return res;
@@ -134,7 +135,7 @@ namespace IronDragon.Runtime
             body.SetChildrenScopes(body.Scope);
 
             var block = CompilerServices.CreateLambdaForExpression(body);
-            var res   = block();
+            var res = block();
 
             res = Convert(res, body.Scope);
 

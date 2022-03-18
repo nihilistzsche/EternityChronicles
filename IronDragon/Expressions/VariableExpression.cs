@@ -35,7 +35,7 @@ namespace IronDragon.Expressions
         internal VariableExpression(Symbol sym)
         {
             HasSym = true;
-            Sym    = sym;
+            Sym = sym;
         }
 
         public Expression Name { get; }
@@ -49,8 +49,8 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return HasSym
-                ? Operation.ResolveSymbol(typeof(object), Constant(Sym), Constant(Scope))
-                : Operation.Resolve(typeof(object), Name, Constant(Scope));
+                       ? Operation.ResolveSymbol(typeof(object), Constant(Sym), Constant(Scope))
+                       : Operation.Resolve(typeof(object), Name, Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

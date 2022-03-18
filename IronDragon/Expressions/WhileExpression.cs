@@ -43,26 +43,26 @@ namespace IronDragon.Expressions
 
         public override Expression Reduce()
         {
-            var                 whileLabel  = Label("<dragon_while>");
+            var whileLabel = Label("<dragon_while>");
             ParameterExpression whileReturn = null;
-            var                 useReturn   = true;
+            var useReturn = true;
             if (Body.Type == typeof(void))
                 useReturn = false;
             else
                 whileReturn = Variable(Body.Type, "<dragon_while_return>");
             var whileTest = Variable(typeof(bool), "<dragon_while_test>");
             var realBody = new List<Expression>
-            {
-                Label(whileLabel),
-                Label(DragonParser.ContinueTarget),
-                Assign(whileTest, Boolean(Test)),
-                Label(DragonParser.RetryTarget),
-                useReturn
-                    ? IfThen(whileTest, Assign(whileReturn, Body))
-                    : IfThen(whileTest, Body),
-                IfThen(whileTest, Goto(whileLabel)),
-                Label(DragonParser.BreakTarget)
-            };
+                           {
+                               Label(whileLabel),
+                               Label(DragonParser.ContinueTarget),
+                               Assign(whileTest, Boolean(Test)),
+                               Label(DragonParser.RetryTarget),
+                               useReturn
+                                   ? IfThen(whileTest, Assign(whileReturn, Body))
+                                   : IfThen(whileTest, Body),
+                               IfThen(whileTest, Goto(whileLabel)),
+                               Label(DragonParser.BreakTarget)
+                           };
             if (useReturn)
             {
                 realBody.Add(Convert(whileReturn, Body.Type));

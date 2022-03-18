@@ -13,7 +13,7 @@
         <LangVersion>9</LangVersion>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
-        <TargetFrameworkProfile />
+        <TargetFrameworkProfile/>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>True</DebugSymbols>
@@ -34,31 +34,31 @@
         <SignAssembly>True</SignAssembly>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AssemblyInfo.cs" />
-        <Compile Include="TypeExtensions.cs" />
-        <Compile Include="Dependency\Resolver\CircularDependencyException.cs" />
-        <Compile Include="Dependency\DepConstraint.cs" />
-        <Compile Include="Dependency\DepNode.cs" />
-        <Compile Include="Dependency\DepOps.cs" />
-        <Compile Include="Dependency\Resolver\DepResolver.cs" />
-        <Compile Include="Dependency\DepVersion.cs" />
-        <Compile Include="Module\DomainStillReferencedException.cs" />
-        <Compile Include="Loader\InvalidModuleException.cs" />
-        <Compile Include="Loader\ModuleController.cs" />
-        <Compile Include="Loader\ModuleImageException.cs" />
-        <Compile Include="Module\ModuleInfo.cs" />
-        <Compile Include="Loader\ModuleLoader.cs" />
-        <Compile Include="Loader\ModuleNotFoundException.cs" />
-        <Compile Include="Module\ModuleRole.cs" />
-        <Compile Include="Loader\UnresolvedDependencyException.cs" />
+        <Compile Include="AssemblyInfo.cs"/>
+        <Compile Include="TypeExtensions.cs"/>
+        <Compile Include="Dependency\Resolver\CircularDependencyException.cs"/>
+        <Compile Include="Dependency\DepConstraint.cs"/>
+        <Compile Include="Dependency\DepNode.cs"/>
+        <Compile Include="Dependency\DepOps.cs"/>
+        <Compile Include="Dependency\Resolver\DepResolver.cs"/>
+        <Compile Include="Dependency\DepVersion.cs"/>
+        <Compile Include="Module\DomainStillReferencedException.cs"/>
+        <Compile Include="Loader\InvalidModuleException.cs"/>
+        <Compile Include="Loader\ModuleController.cs"/>
+        <Compile Include="Loader\ModuleImageException.cs"/>
+        <Compile Include="Module\ModuleInfo.cs"/>
+        <Compile Include="Loader\ModuleLoader.cs"/>
+        <Compile Include="Loader\ModuleNotFoundException.cs"/>
+        <Compile Include="Module\ModuleRole.cs"/>
+        <Compile Include="Loader\UnresolvedDependencyException.cs"/>
     </ItemGroup>
-    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
     <ItemGroup>
-        <Antlr3 Include="Dependency\Parser\ECX.g" />
+        <Antlr3 Include="Dependency\Parser\ECX.g"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\ECMSBuildTasks\ECMSBuildTasks.csproj">
@@ -86,7 +86,7 @@
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets. -->
     <Target Name="Antlr" Inputs="@(Antlr)" Outputs="@(Antlr-&gt;%(filename)Parser.cs;@(Antlr-&gt;%(filename)Lexer.cs)">
-        <AntlrTask Sources="@(Antlr)" />
+        <AntlrTask Sources="@(Antlr)"/>
     </Target>
     <PropertyGroup>
         <BuildDependsOn>

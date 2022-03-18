@@ -8,7 +8,7 @@ namespace DragonMUD.Utility
     {
         public InfoDisplay()
         {
-            Display  = new StringBuilder();
+            Display = new StringBuilder();
             OldColor = "";
         }
 
@@ -33,9 +33,9 @@ namespace DragonMUD.Utility
             var hook = new ColorProcessWriteHook();
             if (hook.ProcessMessage(line, false).Length + 4 >= 80)
             {
-                var    components = line.Split(' ');
-                var    tmpLine    = new StringBuilder();
-                var    i          = 1;
+                var components = line.Split(' ');
+                var tmpLine = new StringBuilder();
+                var i = 1;
                 string areWeTooLong;
                 string areWeTooLongNC;
                 tmpLine.Append(components[0]);
@@ -43,13 +43,13 @@ namespace DragonMUD.Utility
                 OldColor = "";
                 do
                 {
-                    o              = i;
-                    areWeTooLong   = $"{tmpLine} {components[i]}";
+                    o = i;
+                    areWeTooLong = $"{tmpLine} {components[i]}";
                     areWeTooLongNC = hook.ProcessMessage(areWeTooLong, false);
                     if (areWeTooLongNC.Length + 4 < 80)
                     {
-                        var c                        = components[i++];
-                        var location                 = c.IndexOf("`", StringComparison.InvariantCulture);
+                        var c = components[i++];
+                        var location = c.IndexOf("`", StringComparison.InvariantCulture);
                         if (location != -1) OldColor = c.Substring(location, 2);
                         tmpLine.Append($" {c}");
                     }

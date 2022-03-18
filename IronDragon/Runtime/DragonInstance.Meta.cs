@@ -62,13 +62,14 @@ namespace IronDragon.Runtime
             }
 
             public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder,
-            params DynamicMetaObject[]                                            args)
+                                                               params DynamicMetaObject[] args)
             {
                 if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesFrom(Value, Value.BackingObject);
                 var dmo =
                     InteropBinder.InvokeMember.Bind(
-                    new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope), this, args);
+                                                    new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope),
+                                                    this, args);
                 if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesTo(Value, Value.BackingObject);
                 return dmo;
@@ -79,7 +80,7 @@ namespace IronDragon.Runtime
                 if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesFrom(Value, Value.BackingObject);
                 var dmo = InteropBinder.GetMember.Bind(new InteropBinder.GetMember(binder.Name, Scope),
-                this);
+                                                       this);
                 if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesTo(Value, Value.BackingObject);
                 return dmo;
@@ -90,7 +91,7 @@ namespace IronDragon.Runtime
                 if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesFrom(Value, Value.BackingObject);
                 var dmo = InteropBinder.SetMember.Bind(new InteropBinder.SetMember(binder.Name, Scope),
-                this, value);
+                                                       this, value);
                 if (!(Value is DragonBoxedInstance) && Value.BackingObject != null)
                     DragonBoxedInstance.SyncInstanceVariablesTo(Value, Value.BackingObject);
                 return dmo;

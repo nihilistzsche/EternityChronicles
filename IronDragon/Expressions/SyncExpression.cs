@@ -29,7 +29,7 @@ namespace IronDragon.Expressions
     {
         internal SyncExpression(string varName, Expression body)
         {
-            Body    = body;
+            Body = body;
             VarName = varName;
         }
 

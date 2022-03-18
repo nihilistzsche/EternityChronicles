@@ -6,9 +6,9 @@ namespace IronDragon.Runtime
     {
         public DragonModule(string name, DragonScope context, List<object> contents)
         {
-            Name     = name;
+            Name = name;
             Contents = contents;
-            Context  = context;
+            Context = context;
         }
 
         internal DragonModule()

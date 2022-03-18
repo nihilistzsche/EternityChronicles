@@ -20,16 +20,16 @@ namespace MDK.Master
 
         public void Save(List<T> objects)
         {
-            var db         = DBMaster.Client.GetDatabase(DBMaster.DBName);
-            var x          = new T();
+            var db = DBMaster.Client.GetDatabase(DBMaster.DBName);
+            var x = new T();
             var collection = db.GetCollection<T>(x.CollectionName);
             collection.InsertMany(objects);
         }
 
         public List<T> Load()
         {
-            var db         = DBMaster.Client.GetDatabase(DBMaster.DBName);
-            var x          = new T();
+            var db = DBMaster.Client.GetDatabase(DBMaster.DBName);
+            var x = new T();
             var collection = db.GetCollection<T>(x.CollectionName);
             return collection.AsQueryable().ToList();
         }

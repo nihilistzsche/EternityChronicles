@@ -44,7 +44,7 @@ namespace CSLog
         {
             if (channels != null)
                 foreach (var channel in channels.Select(channelName => Channels[channelName])
-                    .Where(channel => channel != null))
+                                                .Where(channel => channel != null))
                     RegisterListener(channel, listener, levels);
             else
                 foreach (var channel in Channels.Keys.Select(channelName => Channels[channelName]))

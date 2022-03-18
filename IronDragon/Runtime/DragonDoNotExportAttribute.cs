@@ -18,7 +18,8 @@ using System;
 namespace IronDragon.Runtime
 {
     [AttributeUsage(
-    AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method | AttributeTargets.Struct)]
+                       AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method |
+                       AttributeTargets.Struct)]
     public class DragonDoNotExportAttribute : Attribute
     {
     }

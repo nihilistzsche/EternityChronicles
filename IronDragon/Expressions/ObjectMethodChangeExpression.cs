@@ -29,13 +29,13 @@ namespace IronDragon.Expressions
     {
         internal ObjectMethodChangeExpression(Expression lvalue, string varName, bool isRemove)
         {
-            LValue   = lvalue;
-            VarName  = varName;
+            LValue = lvalue;
+            VarName = varName;
             IsRemove = isRemove;
         }
 
-        public Expression LValue   { get; }
-        public bool       IsRemove { get; }
+        public Expression LValue { get; }
+        public bool IsRemove { get; }
 
         public string VarName { get; }
 
@@ -45,7 +45,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.ObjectMethodChange(Type, Constant(LValue), Constant(VarName), Constant(IsRemove),
-            Constant(Scope));
+                                                Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

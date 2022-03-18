@@ -20,7 +20,7 @@ namespace DragonMUD.StateMachine.Workflows
 
         public void DebugPrintWorkflow(Type T)
         {
-            var step  = Steps[T.Name];
+            var step = Steps[T.Name];
             var zstep = 1;
             while (step != null)
             {
@@ -60,7 +60,7 @@ namespace DragonMUD.StateMachine.Workflows
             if (!Steps.ContainsKey(T.Name))
                 return;
 
-            var step          = Steps[T.Name];
+            var step = Steps[T.Name];
             var oldBeforeStep = (from xstep in Steps.Values where xstep.NextStep == step select xstep).FirstOrDefault();
 
             if (!Steps.ContainsKey(K.Name))
@@ -86,7 +86,7 @@ namespace DragonMUD.StateMachine.Workflows
 
             var newStep = Steps[K.Name];
             newStep.NextStep = step.NextStep;
-            step.NextStep    = newStep;
+            step.NextStep = newStep;
         }
 
         public void Remove(Type T)
@@ -108,7 +108,7 @@ namespace DragonMUD.StateMachine.Workflows
             var step = FirstStep;
             coordinator["current-workflow-step"] = step;
             var state = Dynamic.InvokeConstructor(step.StateType);
-            coordinator["current-state"]    = state;
+            coordinator["current-state"] = state;
             coordinator["current-workflow"] = this;
             state.SendSoftRebootMessage(coordinator);
         }
@@ -121,7 +121,7 @@ namespace DragonMUD.StateMachine.Workflows
             if (step == null)
                 return;
             var state = Dynamic.InvokeConstructor(step.StateType);
-            coordinator["current-state"]         = state;
+            coordinator["current-state"] = state;
             coordinator["current-workflow-step"] = step;
         }
 
@@ -148,9 +148,9 @@ namespace DragonMUD.StateMachine.Workflows
 
             var ok = true;
             xsteps.ForEach(obj =>
-            {
-                if (ok) ok = CheckState(obj);
-            });
+                           {
+                               if (ok) ok = CheckState(obj);
+                           });
             if (!ok)
                 return null;
 
@@ -166,10 +166,10 @@ namespace DragonMUD.StateMachine.Workflows
             var curState = firstStep;
 
             xsteps.ForEach(state =>
-            {
-                wf.InsertStepAfter(curState, state);
-                curState = state;
-            });
+                           {
+                               wf.InsertStepAfter(curState, state);
+                               curState = state;
+                           });
 
             return wf;
         }

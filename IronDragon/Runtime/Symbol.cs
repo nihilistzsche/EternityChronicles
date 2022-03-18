@@ -39,7 +39,7 @@ namespace IronDragon.Runtime
             }
             else
             {
-                sym                       = new Symbol(name);
+                sym = new Symbol(name);
                 DragonScope.Symbols[name] = sym;
             }
 

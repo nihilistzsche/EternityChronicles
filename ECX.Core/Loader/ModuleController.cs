@@ -48,13 +48,13 @@ namespace ECX.Core.Loader
         /// <remarks>None.</remarks>
         public ModuleController()
         {
-            AppDomainMap         = new Dictionary<string, AppDomain>();
+            AppDomainMap = new Dictionary<string, AppDomain>();
             AppDomainAssemblyMap = new Dictionary<Assembly, AppDomain>();
-            RefCounts            = new Dictionary<AppDomain, int>();
-            SearchPath           = new List<string>();
-            Roles                = new List<ModuleRole>();
-            Loader               = new ModuleLoader(SearchPath, this);
-            InfoMap              = new Dictionary<string, ModuleInfo>();
+            RefCounts = new Dictionary<AppDomain, int>();
+            SearchPath = new List<string>();
+            Roles = new List<ModuleRole>();
+            Loader = new ModuleLoader(SearchPath, this);
+            InfoMap = new Dictionary<string, ModuleInfo>();
         }
 
         #region Members
@@ -228,7 +228,7 @@ namespace ECX.Core.Loader
 
             if (RefCounts[domain] > 1)
                 throw new DomainStillReferencedException(
-                $"The domain holding the module {name} cannot be unloaded because it is still being referenced.");
+                                                         $"The domain holding the module {name} cannot be unloaded because it is still being referenced.");
 
             // okay, everything's good.  This will remove the domain from the reference list since its reference count is now 0.
             DecRef(domain);
@@ -378,9 +378,9 @@ namespace ECX.Core.Loader
             if (role == null) return ret;
 
             var modules = from s in SearchPath
-                where Directory.Exists(s)
-                from f in Directory.GetFiles(s, "*.dll")
-                select f;
+                          where Directory.Exists(s)
+                          from f in Directory.GetFiles(s, "*.dll")
+                          select f;
 
             foreach (var module in modules)
             {

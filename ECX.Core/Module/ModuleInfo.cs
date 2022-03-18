@@ -41,7 +41,7 @@ namespace ECX.Core.Module
         /// <param name="_asm">The owning assembly.</param>
         public ModuleInfo(Assembly assembly)
         {
-            Name    = assembly.GetName().Name;
+            Name = assembly.GetName().Name;
             Version = DepVersion.VersionParse(assembly.GetName().Version.ToString());
 
             var _depAttr = assembly.GetCustomAttributes(typeof(ModuleDependencyAttribute), false);

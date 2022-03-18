@@ -12,7 +12,7 @@
         <SignAssembly>false</SignAssembly>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <LangVersion>9</LangVersion>
-        <TargetFrameworkProfile />
+        <TargetFrameworkProfile/>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
     </PropertyGroup>
@@ -35,28 +35,28 @@
         <ConsolePause>False</ConsolePause>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.ComponentModel.Composition" />
-        <Reference Include="System.ComponentModel.DataAnnotations" />
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Data.OracleClient" />
-        <Reference Include="System.Drawing" />
-        <Reference Include="System.Net" />
-        <Reference Include="System.Security" />
-        <Reference Include="System.ServiceProcess" />
-        <Reference Include="System.Transactions" />
-        <Reference Include="WindowsBase" />
+        <Reference Include="System"/>
+        <Reference Include="System.ComponentModel.Composition"/>
+        <Reference Include="System.ComponentModel.DataAnnotations"/>
+        <Reference Include="System.Configuration"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Data.OracleClient"/>
+        <Reference Include="System.Drawing"/>
+        <Reference Include="System.Net"/>
+        <Reference Include="System.Security"/>
+        <Reference Include="System.ServiceProcess"/>
+        <Reference Include="System.Transactions"/>
+        <Reference Include="WindowsBase"/>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AssemblyInfo.cs" />
-        <Compile Include="IModule.cs" />
-        <Compile Include="ModuleDependencyAttribute.cs" />
-        <Compile Include="ModuleRoleAttribute.cs" />
+        <Compile Include="AssemblyInfo.cs"/>
+        <Compile Include="IModule.cs"/>
+        <Compile Include="ModuleDependencyAttribute.cs"/>
+        <Compile Include="ModuleRoleAttribute.cs"/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="app.config" />
+        <None Include="app.config"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="System.Collections.NonGeneric">
@@ -102,5 +102,5 @@
             <Version>3.2.11</Version>
         </PackageReference>
     </ItemGroup>
-    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
 </Project>

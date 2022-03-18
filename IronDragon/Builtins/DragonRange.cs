@@ -6,8 +6,8 @@ namespace IronDragon.Builtins
     {
         public DragonRange(int start, int end, bool inclusive = false)
         {
-            Start     = start;
-            End       = end;
+            Start = start;
+            End = end;
             Inclusive = inclusive;
         }
 

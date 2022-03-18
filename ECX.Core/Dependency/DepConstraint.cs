@@ -34,7 +34,7 @@ namespace ECX.Core.Dependency
         /// <remarks>None.</remarks>
         public DepConstraint()
         {
-            Name    = "";
+            Name = "";
             Version = new DepVersion(-1, -1, -1, -1);
         }
 

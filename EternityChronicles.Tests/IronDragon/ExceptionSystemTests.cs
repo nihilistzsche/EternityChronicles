@@ -40,83 +40,83 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestRescue1()
         {
             Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue Exception => e { x = 10; }; x;"),
-            Is.EqualTo(10));
+                        Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescue2()
         {
             Assert.That(
-            CompileAndExecute(
-            "x = 0; begin { throw DragonException(); } rescue DragonException1, DragonException => e { x = 10; }; x;"),
-            Is.EqualTo(10));
+                        CompileAndExecute(
+                                          "x = 0; begin { throw DragonException(); } rescue DragonException1, DragonException => e { x = 10; }; x;"),
+                        Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescue3()
         {
             Assert.That(CompileAndExecute("x = 0; begin { throw Exception(); } rescue * => e { x = 10; }; x;"),
-            Is.EqualTo(10));
+                        Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescue4()
         {
             Assert.That(
-            CompileAndExecute(
-            "x = 0; begin { throw Exception('test'); } rescue Exception => z { x = z.Message; }; x;"),
-            Is.EqualTo("test"));
+                        CompileAndExecute(
+                                          "x = 0; begin { throw Exception('test'); } rescue Exception => z { x = z.Message; }; x;"),
+                        Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescue5()
         {
             Assert.That(
-            CompileAndExecute(
-            "x = 0; begin { throw DragonException('test'); } rescue DragonException1, DragonException => z { x = z.Dragonmessage; }; x;"),
-            Is.EqualTo("test"));
+                        CompileAndExecute(
+                                          "x = 0; begin { throw DragonException('test'); } rescue DragonException1, DragonException => z { x = z.Dragonmessage; }; x;"),
+                        Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescue6()
         {
             Assert.That(
-            CompileAndExecute("x = 0; begin { throw Exception('test'); } rescue * => z { x = z.Message; }; x;"),
-            Is.EqualTo("test"));
+                        CompileAndExecute("x = 0; begin { throw Exception('test'); } rescue * => z { x = z.Message; }; x;"),
+                        Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescue7()
         {
             Assert.That(
-            CompileAndExecute(
-            "x = 0; exc = 'Exception'; begin { throw Exception('test'); } rescue exc => z { x = z.Message; }; x;"),
-            Is.EqualTo("test"));
+                        CompileAndExecute(
+                                          "x = 0; exc = 'Exception'; begin { throw Exception('test'); } rescue exc => z { x = z.Message; }; x;"),
+                        Is.EqualTo("test"));
         }
 
         [Test]
         public void TestRescueEnsure()
         {
             Assert.That(
-            CompileAndExecute(
-            "x = 0; begin { throw Exception(); } rescue * => z { x = z; } ensure { x = 10; }; x;"),
-            Is.EqualTo(10));
+                        CompileAndExecute(
+                                          "x = 0; begin { throw Exception(); } rescue * => z { x = z; } ensure { x = 10; }; x;"),
+                        Is.EqualTo(10));
         }
 
         [Test]
         public void TestRescueElse()
         {
             Assert.That(CompileAndExecute("x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; }; x;"),
-            Is.EqualTo(25));
+                        Is.EqualTo(25));
         }
 
         [Test]
         public void TestRescueElseEnsure()
         {
             Assert.That(
-            CompileAndExecute(
-            "x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; } ensure { x *= 2; }; x;"),
-            Is.EqualTo(50));
+                        CompileAndExecute(
+                                          "x = 0; begin { y = 10; } rescue * => z { x = z; } else { x = 25; } ensure { x *= 2; }; x;"),
+                        Is.EqualTo(50));
         }
     }
 }

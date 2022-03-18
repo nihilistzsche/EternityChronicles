@@ -37,8 +37,8 @@ namespace XDL
         {
             if (obj == null) return;
 
-            using var fs  = new FileStream(path, FileMode.Open);
-            var       doc = XDocument.Load(fs);
+            using var fs = new FileStream(path, FileMode.Open);
+            var doc = XDocument.Load(fs);
 
             foreach (var tag in _tagToKeyReference.Keys)
             {
@@ -49,7 +49,7 @@ namespace XDL
 
                 var ty = typeof(T);
                 var fi = ty.GetField(_tagToKeyReference[tag],
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                 fi?.SetValue(obj, elem.Value);
             }
@@ -73,7 +73,7 @@ namespace XDL
 
                     var ty = typeof(T);
                     var fi = ty.GetField(_tagToAttributeReference[tag][attribute],
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                     fi?.SetValue(obj, attr.Value);
                 }

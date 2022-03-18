@@ -26,7 +26,7 @@ namespace IronDragon.Expressions
     public class SingletonDefinitionExpression : FunctionDefinitionExpression
     {
         public SingletonDefinitionExpression(Expression singleton, string name, List<FunctionArgument> arguments,
-        Expression                                      body) : base(name, arguments, body)
+                                             Expression body) : base(name, arguments, body)
         {
             Singleton = singleton;
         }
@@ -43,9 +43,9 @@ namespace IronDragon.Expressions
             realBody.Add(Label(DragonParser.ReturnTarget, Constant(null, typeof(object))));
 
             return Operation.SingletonDefine(typeof(DragonFunction), Constant(Singleton), Constant(Name),
-            Constant(Arguments),
-            Constant(DragonParser.CreateBlock(realBody)),
-            Constant(Scope));
+                                             Constant(Arguments),
+                                             Constant(DragonParser.CreateBlock(realBody)),
+                                             Constant(Scope));
         }
     }
 }

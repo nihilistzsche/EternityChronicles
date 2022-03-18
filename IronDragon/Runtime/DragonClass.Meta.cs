@@ -44,21 +44,23 @@ namespace IronDragon.Runtime
             {
                 return
                     InteropBinder.InvokeMember.Bind(
-                    new InteropBinder.InvokeMember("new", binder.CallInfo, Scope), this, args);
+                                                    new InteropBinder.InvokeMember("new", binder.CallInfo, Scope), this,
+                                                    args);
             }
 
             public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
             {
                 return InteropBinder.InvokeMember.Bind(new InteropBinder.InvokeMember("new", binder.CallInfo, Scope),
-                this, args);
+                                                       this, args);
             }
 
             public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder,
-            params DynamicMetaObject[]                                            args)
+                                                               params DynamicMetaObject[] args)
             {
                 return
                     InteropBinder.InvokeMember.Bind(
-                    new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope), this, args);
+                                                    new InteropBinder.InvokeMember(binder.Name, binder.CallInfo, Scope),
+                                                    this, args);
             }
 
             public override DynamicMetaObject BindGetMember(GetMemberBinder binder)

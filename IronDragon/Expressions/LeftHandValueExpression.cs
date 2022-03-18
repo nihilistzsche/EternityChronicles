@@ -40,7 +40,7 @@ namespace IronDragon.Expressions
         {
             if (Value is IndexExpression)
             {
-                var i   = (IndexExpression)Value;
+                var i = (IndexExpression)Value;
                 var obj = i.Object;
                 if (obj is VariableExpression) return i.Update((obj as VariableExpression).Reduce(), i.Arguments);
                 return i;

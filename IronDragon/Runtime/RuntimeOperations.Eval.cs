@@ -38,28 +38,28 @@ namespace IronDragon.Runtime
         internal static dynamic String(object rawEval, object rawScope)
         {
             StringBuilder @new;
-            var           eval = rawEval as string;
+            var eval = rawEval as string;
 
             var components = eval.Split(new[] { "#{" }, StringSplitOptions.None);
             if (components.Count() == 1) return new DragonString(eval);
             @new = new StringBuilder(components[0]);
             for (var i = 1; i < components.Count(); i++)
             {
-                var parts        = components[i].Split(new[] { "}" }, StringSplitOptions.None);
-                var expression   = parts[0];
+                var parts = components[i].Split(new[] { "}" }, StringSplitOptions.None);
+                var expression = parts[0];
                 var escapeString = false;
                 if (expression != null && expression[0] == ':')
                 {
                     escapeString = true;
-                    expression   = expression.Substring(1);
+                    expression = expression.Substring(1);
                 }
 
                 if (expression != null)
                 {
-                    var scope       = (DragonScope)rawScope;
+                    var scope = (DragonScope)rawScope;
                     var xexpression = string.Format("{0};", expression);
 
-                    var        res = DragonParser.Parse(xexpression);
+                    var res = DragonParser.Parse(xexpression);
                     Expression block;
                     if (res != null)
                         block = DragonExpression.DragonBlock(res);
@@ -72,7 +72,7 @@ namespace IronDragon.Runtime
                     var val = CompilerServices.CompileExpression(block, myScope);
                     if (val != null)
                     {
-                        string stringVal                             = val.ToString();
+                        string stringVal = val.ToString();
                         if (escapeString && val is string) stringVal = string.Format("\"{0}\"", stringVal);
                         @new.Append(stringVal ?? "");
                     }

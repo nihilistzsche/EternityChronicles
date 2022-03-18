@@ -11,31 +11,31 @@ namespace IronDragon.Builtins
     public class DragonNumber
     {
         private static readonly List<Type> _numberTypes = new()
-        {
-            typeof(bool),
-            typeof(byte),
-            typeof(sbyte),
-            typeof(short),
-            typeof(ushort),
-            typeof(int),
-            typeof(uint),
-            typeof(long),
-            typeof(ulong),
-            typeof(float),
-            typeof(double),
-            typeof(decimal)
-        };
+                                                          {
+                                                              typeof(bool),
+                                                              typeof(byte),
+                                                              typeof(sbyte),
+                                                              typeof(short),
+                                                              typeof(ushort),
+                                                              typeof(int),
+                                                              typeof(uint),
+                                                              typeof(long),
+                                                              typeof(ulong),
+                                                              typeof(float),
+                                                              typeof(double),
+                                                              typeof(decimal)
+                                                          };
 
         public DragonNumber()
         {
             _internal = default(int);
-            _myType   = typeof(int);
+            _myType = typeof(int);
         }
 
         public DragonNumber(object val)
         {
             _internal = val;
-            _myType   = val.GetType();
+            _myType = val.GetType();
         }
 
         private object _internal { get; }
@@ -56,7 +56,7 @@ namespace IronDragon.Builtins
         {
             if (obj is DragonNumber)
                 return RuntimeOperations.Convert(((DragonNumber)obj)._internal, _myType) ==
-                    RuntimeOperations.Convert(_internal,                        _myType);
+                       RuntimeOperations.Convert(_internal, _myType);
             if (_numberTypes.Contains(obj.GetType()))
                 return RuntimeOperations.Convert(obj, _myType) == RuntimeOperations.Convert(_internal, _myType);
             return false;

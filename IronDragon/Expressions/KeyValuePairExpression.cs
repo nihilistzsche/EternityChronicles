@@ -30,7 +30,7 @@ namespace IronDragon.Expressions
     {
         internal KeyValuePairExpression(Expression key, Expression value)
         {
-            Key   = key;
+            Key = key;
             Value = value;
         }
 
@@ -43,7 +43,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.KeyValuePair(typeof(KeyValuePair<object, object>), Convert(Key, typeof(object)),
-            Convert(Value,                                                                   typeof(object)));
+                                          Convert(Value, typeof(object)));
         }
 
         public override string ToString()

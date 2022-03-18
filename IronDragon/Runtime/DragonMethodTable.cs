@@ -40,10 +40,11 @@ namespace IronDragon.Runtime
         {
             DragonFunction funcToRemove = null;
             Functions.ForEach(func =>
-            {
-                if (func.Name.Equals(function.Name) && func.Arguments.Count == function.Arguments.Count &&
-                !(function is DragonNativeFunction)) funcToRemove = func;
-            });
+                              {
+                                  if (func.Name.Equals(function.Name) &&
+                                      func.Arguments.Count == function.Arguments.Count &&
+                                      !(function is DragonNativeFunction)) funcToRemove = func;
+                              });
             if (funcToRemove != null)
                 Functions.Remove(funcToRemove);
             Functions.Add(function);
@@ -53,7 +54,7 @@ namespace IronDragon.Runtime
         {
             if (!Functions.Any()) return null;
             if (Functions.Count == 1 && !exactMatch) return Functions[0];
-            var                         q = Functions.Where(f => f.Arguments.Count == args.Count);
+            var q = Functions.Where(f => f.Arguments.Count == args.Count);
             IEnumerable<DragonFunction> fq;
             IEnumerable<DragonFunction> rq;
             if (q.Any())
@@ -62,7 +63,7 @@ namespace IronDragon.Runtime
                 var nq = Functions.Where(f => CheckForNameMatch(f, args));
                 if (nq.Any()) return nq.First();
                 fq = Functions.Where(f => f is DragonNativeFunction)
-                    .Where(f => CheckForMatch(f as DragonNativeFunction, args));
+                              .Where(f => CheckForMatch(f as DragonNativeFunction, args));
                 if (fq.Any())
                 {
                     var _fq = fq.Where(f => CheckForNameMatch(f, args));
@@ -82,7 +83,7 @@ namespace IronDragon.Runtime
             }
 
             fq = Functions.Where(f => f is DragonNativeFunction)
-                .Where(f => CheckForMatch(f as DragonNativeFunction, args));
+                          .Where(f => CheckForMatch(f as DragonNativeFunction, args));
             if (fq.Any())
             {
                 var _fq = fq.Where(f => CheckForNameMatch(f, args));
@@ -108,7 +109,7 @@ namespace IronDragon.Runtime
             {
                 if (args[i].Name != null)
                 {
-                    var i1        = i;
+                    var i1 = i;
                     var nameMatch = function.Arguments.Where(arg => arg.Name == args[i1].Name);
                     if (!nameMatch.Any()) return false;
                     match = true;
@@ -123,15 +124,15 @@ namespace IronDragon.Runtime
             if (args.Count == function.Arguments.Count) return true;
             if (args.Count > function.Arguments.Count)
                 return function.Arguments.Any() && function.Arguments.Last().IsVarArg;
-            var myCount    = args.Count;
+            var myCount = args.Count;
             var theirCount = function.Arguments.Count;
             function.Arguments.ForEach(arg =>
-            {
-                if (arg.HasDefault) theirCount--;
-            });
-            var vo                                                                 = 0;
+                                       {
+                                           if (arg.HasDefault) theirCount--;
+                                       });
+            var vo = 0;
             if (function.Arguments.Any() && function.Arguments.Last().IsVarArg) vo = 1;
-            if (myCount      == theirCount) return true;
+            if (myCount == theirCount) return true;
             if (myCount + vo == theirCount) return true;
             return false;
         }
@@ -142,14 +143,14 @@ namespace IronDragon.Runtime
             {
                 var innerArgs = new List<object>();
                 args.ForEach(arg =>
-                {
-                    var val                      = CompilerServices.CreateLambdaForExpression(arg.Value)();
-                    if (val is DragonString) val = (string)val;
-                    if (val is DragonNumber) val = DragonNumber.Convert((DragonNumber)val);
-                    innerArgs.Add(val);
-                });
+                             {
+                                 var val = CompilerServices.CreateLambdaForExpression(arg.Value)();
+                                 if (val is DragonString) val = (string)val;
+                                 if (val is DragonNumber) val = DragonNumber.Convert((DragonNumber)val);
+                                 innerArgs.Add(val);
+                             });
                 var match = true;
-                var i     = 0;
+                var i = 0;
                 foreach (var param in function.Method.GetParameters())
                 {
                     if (innerArgs[i++].GetType() != param.ParameterType)
@@ -168,15 +169,15 @@ namespace IronDragon.Runtime
                 return false;
             }
 
-            var myCount    = args.Count;
+            var myCount = args.Count;
             var theirCount = function.Arguments.Count;
             function.Arguments.ForEach(arg =>
-            {
-                if (arg.HasDefault) theirCount--;
-            });
-            var vo                                                                 = 0;
+                                       {
+                                           if (arg.HasDefault) theirCount--;
+                                       });
+            var vo = 0;
             if (function.Arguments.Any() && function.Arguments.Last().IsVarArg) vo = 1;
-            if (myCount      == theirCount) return true;
+            if (myCount == theirCount) return true;
             if (myCount + vo == theirCount) return true;
             return false;
         }
@@ -186,30 +187,30 @@ namespace IronDragon.Runtime
             var sb = new StringBuilder(string.Format("[DragonMethodTable]: {0} ({1})", Name, Functions.Count));
             sb.AppendLine();
             Functions.ForEach(func =>
-            {
-                sb.AppendFormat("  {0}(", func.Name);
-                if (func is DragonNativeFunction)
-                {
-                    var snf = (DragonNativeFunction)func;
-                    var sep = "";
-                    foreach (var p in snf.Method.GetParameters())
-                    {
-                        sb.AppendFormat("{0}{1} {2}", sep, p.ParameterType.Name, p.Name);
-                        sep = ",";
-                    }
-                }
-                else
-                {
-                    var sep = "";
-                    foreach (var p in func.Arguments)
-                    {
-                        sb.AppendFormat("{0}{1}", sep, p.Name);
-                        sep = ",";
-                    }
-                }
+                              {
+                                  sb.AppendFormat("  {0}(", func.Name);
+                                  if (func is DragonNativeFunction)
+                                  {
+                                      var snf = (DragonNativeFunction)func;
+                                      var sep = "";
+                                      foreach (var p in snf.Method.GetParameters())
+                                      {
+                                          sb.AppendFormat("{0}{1} {2}", sep, p.ParameterType.Name, p.Name);
+                                          sep = ",";
+                                      }
+                                  }
+                                  else
+                                  {
+                                      var sep = "";
+                                      foreach (var p in func.Arguments)
+                                      {
+                                          sb.AppendFormat("{0}{1}", sep, p.Name);
+                                          sep = ",";
+                                      }
+                                  }
 
-                sb.AppendLine(")");
-            });
+                                  sb.AppendLine(")");
+                              });
             return sb.ToString();
         }
     }

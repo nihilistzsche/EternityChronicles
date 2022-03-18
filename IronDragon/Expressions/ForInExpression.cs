@@ -33,8 +33,8 @@ namespace IronDragon.Expressions
         internal ForInExpression(string variableName, Expression enumerator, Expression body)
         {
             VariableName = variableName;
-            Enumerator   = enumerator;
-            Body         = body;
+            Enumerator = enumerator;
+            Body = body;
         }
 
         public string VariableName { get; }
@@ -47,29 +47,29 @@ namespace IronDragon.Expressions
 
         public override Expression Reduce()
         {
-            var                 forInLabel  = Label("<dragon_for_in>");
+            var forInLabel = Label("<dragon_for_in>");
             ParameterExpression forInReturn = null;
-            var                 useReturn   = true;
+            var useReturn = true;
             if (Body.Type == typeof(void))
                 useReturn = false;
             else
                 forInReturn = Variable(Body.Type, "<dragon_for_in_return>");
-            var forInTest       = Variable(typeof(bool), "<dragon_for_in_test>");
-            var forInCurrent    = Variable(Constant(VariableName));
-            var forInCurrentLh  = LeftHandValue(forInCurrent);
+            var forInTest = Variable(typeof(bool), "<dragon_for_in_test>");
+            var forInCurrent = Variable(Constant(VariableName));
+            var forInCurrentLh = LeftHandValue(forInCurrent);
             var forInEnumerator = Variable(typeof(IEnumerator), "<dragon_for_in_enumerator>");
             var realBody = new List<Expression>
-            {
-                Assign(forInEnumerator,
-                Call(Convert(Enumerator, typeof(IEnumerable)),
-                typeof(IEnumerable).GetMethod("GetEnumerator"))),
-                Label(forInLabel),
-                Label(DragonParser.ContinueTarget),
-                Assign(forInTest, Call(forInEnumerator, typeof(IEnumerator).GetMethod("MoveNext")))
-            };
+                           {
+                               Assign(forInEnumerator,
+                                      Call(Convert(Enumerator, typeof(IEnumerable)),
+                                           typeof(IEnumerable).GetMethod("GetEnumerator"))),
+                               Label(forInLabel),
+                               Label(DragonParser.ContinueTarget),
+                               Assign(forInTest, Call(forInEnumerator, typeof(IEnumerator).GetMethod("MoveNext")))
+                           };
             var currentAssign = Assign(forInCurrentLh,
-            Call(forInEnumerator,
-            typeof(IEnumerator).GetMethod("get_Current")));
+                                       Call(forInEnumerator,
+                                            typeof(IEnumerator).GetMethod("get_Current")));
             currentAssign.SetScope(((DragonExpression)Body).Scope);
             realBody.Add(IfThen(forInTest, currentAssign));
             realBody.Add(Label(DragonParser.RetryTarget));
@@ -81,18 +81,18 @@ namespace IronDragon.Expressions
                 realBody.Add(Convert(forInReturn, Body.Type));
 
                 return Block(new[]
-                {
-                    forInTest,
-                    forInEnumerator,
-                    forInReturn
-                }, realBody);
+                             {
+                                 forInTest,
+                                 forInEnumerator,
+                                 forInReturn
+                             }, realBody);
             }
 
             return Block(new[]
-            {
-                forInTest,
-                forInEnumerator
-            }, realBody);
+                         {
+                             forInTest,
+                             forInEnumerator
+                         }, realBody);
         }
 
         public override string ToString()

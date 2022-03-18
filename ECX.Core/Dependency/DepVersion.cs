@@ -38,9 +38,9 @@ namespace ECX.Core.Dependency
         /// <param name="revision">The revision version number.</param>
         public DepVersion(int major, int minor, int build, int revision)
         {
-            Major    = major;
-            Minor    = minor;
-            Build    = build;
+            Major = major;
+            Minor = minor;
+            Build = build;
             Revision = revision;
         }
 
@@ -53,9 +53,9 @@ namespace ECX.Core.Dependency
         /// <param name="build">The build version number.</param>
         public DepVersion(int major, int minor, int build)
         {
-            Major    = major;
-            Minor    = minor;
-            Build    = build;
+            Major = major;
+            Minor = minor;
+            Build = build;
             Revision = -1;
         }
 
@@ -67,9 +67,9 @@ namespace ECX.Core.Dependency
         /// <param name="minor">The minor version number.</param>
         public DepVersion(int major, int minor)
         {
-            Major    = major;
-            Minor    = minor;
-            Build    = -1;
+            Major = major;
+            Minor = minor;
+            Build = -1;
             Revision = -1;
         }
 
@@ -79,9 +79,9 @@ namespace ECX.Core.Dependency
         /// <remarks>None.</remarks>
         public DepVersion()
         {
-            Major    = -1;
-            Minor    = -1;
-            Build    = -1;
+            Major = -1;
+            Minor = -1;
+            Build = -1;
             Revision = -1;
         }
 
@@ -117,7 +117,7 @@ namespace ECX.Core.Dependency
         public static DepVersion VersionParse(string v)
         {
             // Here we go :)
-            var ver    = new DepVersion();
+            var ver = new DepVersion();
             var vparts = v.Split('.');
             ver.Major = int.Parse(vparts[0]);
             ver.Minor = int.Parse(vparts[1]);

@@ -33,44 +33,50 @@ namespace IronDragon.Runtime
     public partial class DragonClass
     {
         public DragonClass(string name, DragonClass parent, List<DragonFunction> classMethods,
-        List<DragonFunction>      instanceMethods)
+                           List<DragonFunction> instanceMethods)
         {
-            Name         = name;
+            Name = name;
             ClassMethods = new Dictionary<string, DragonMethodTable>();
             classMethods.ForEach(func => AddMethod(ClassMethods, func));
             if (!ClassMethods.ContainsKey("new"))
                 AddMethod(ClassMethods, new DragonFunction("new", new List<FunctionArgument>(),
-                DragonExpression.DragonBlock(
-                DragonExpression.Return(new List<FunctionArgument>
-                {
-                    new(null, DragonExpression.Variable(Expression.Constant("self")))
-                }),
-                Expression.Label(DragonParser.ReturnTarget, Expression.Constant(null, typeof(object)))),
-                new DragonScope()));
+                                                           DragonExpression.DragonBlock(
+                                                            DragonExpression.Return(new List<FunctionArgument>
+                                                                {
+                                                                    new(null,
+                                                                        DragonExpression
+                                                                            .Variable(Expression
+                                                                                .Constant("self")))
+                                                                }),
+                                                            Expression.Label(DragonParser.ReturnTarget,
+                                                                             Expression.Constant(null,
+                                                                                 typeof(object)))),
+                                                           new DragonScope()));
             InstanceMethods = new Dictionary<string, DragonMethodTable>();
             instanceMethods.ForEach(func => AddMethod(InstanceMethods, func));
             UndefinedMethods = new List<string>();
-            RemovedMethods   = new List<string>();
-            Context          = new DragonScope();
-            Parent           = parent;
+            RemovedMethods = new List<string>();
+            Context = new DragonScope();
+            Parent = parent;
         }
 
         internal DragonClass()
         {
-            ClassMethods     = new Dictionary<string, DragonMethodTable>();
-            InstanceMethods  = new Dictionary<string, DragonMethodTable>();
+            ClassMethods = new Dictionary<string, DragonMethodTable>();
+            InstanceMethods = new Dictionary<string, DragonMethodTable>();
             UndefinedMethods = new List<string>();
-            RemovedMethods   = new List<string>();
-            Context          = new DragonScope();
+            RemovedMethods = new List<string>();
+            Context = new DragonScope();
         }
 
         public static DragonClass BoxClass(Type type)
         {
             Func<Type, bool> chkDoNotExport = t =>
-            {
-                var a = t.GetCustomAttributes(typeof(DragonDoNotExportAttribute), false).FirstOrDefault();
-                return a != null;
-            };
+                                              {
+                                                  var a = t.GetCustomAttributes(typeof(DragonDoNotExportAttribute),
+                                                                                    false).FirstOrDefault();
+                                                  return a != null;
+                                              };
             if (chkDoNotExport(type)) return null;
 
             if (TypeCache.ContainsKey(type)) return TypeCache[type];
@@ -84,22 +90,25 @@ namespace IronDragon.Runtime
                 .ToList().ForEach(ctor => AddMethod(@class.ClassMethods, new DragonNativeFunction(type, ctor)));
 
             Func<Type, DragonClass> genBaseType = t =>
-            {
-                if (t.BaseType != null)
-                    return TypeCache.ContainsKey(t.BaseType) ? TypeCache[t.BaseType] : BoxClass(t.BaseType);
-                return null;
-            };
+                                                  {
+                                                      if (t.BaseType != null)
+                                                          return TypeCache.ContainsKey(t.BaseType)
+                                                                     ? TypeCache[t.BaseType]
+                                                                     : BoxClass(t.BaseType);
+                                                      return null;
+                                                  };
 
             Func<Type, string> getExportName = t =>
-            {
-                var a = t.GetCustomAttributes(typeof(DragonExportAttribute), false).FirstOrDefault();
-                return a != null ? ((DragonExportAttribute)a).Name : null;
-            };
+                                               {
+                                                   var a = t.GetCustomAttributes(typeof(DragonExportAttribute), false)
+                                                            .FirstOrDefault();
+                                                   return a != null ? ((DragonExportAttribute)a).Name : null;
+                                               };
 
             if (@class is DragonBoxedClass) ((DragonBoxedClass)@class).BoxedType = type;
 
-            @class.Name     = getExportName(type) ?? type.Name;
-            @class.Parent   = genBaseType(type);
+            @class.Name = getExportName(type) ?? type.Name;
+            @class.Parent = genBaseType(type);
             TypeCache[type] = @class;
             return @class;
         }

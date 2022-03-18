@@ -26,8 +26,8 @@ namespace IronDragon.Expressions
     {
         internal SetAssignExpression(Expression left, Expression right, ExpressionType type)
         {
-            Left        = left;
-            Right       = right;
+            Left = left;
+            Right = right;
             SetNodeType = type;
         }
 
@@ -75,7 +75,7 @@ namespace IronDragon.Expressions
         /// <returns>A new expression with the modified children.</returns>
         protected override Expression VisitChildren(ExpressionVisitor visitor)
         {
-            Left  = visitor.Visit(Left);
+            Left = visitor.Visit(Left);
             Right = visitor.Visit(Right);
             return new SetAssignExpression(Left, Right, SetNodeType);
         }

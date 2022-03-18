@@ -29,16 +29,16 @@ namespace IronDragon.Runtime
     {
         public DragonFunction(string name, List<FunctionArgument> arguments, BlockExpression body, DragonScope context)
         {
-            Name      = name;
+            Name = name;
             Arguments = arguments;
-            Body      = body;
-            Context   = context;
+            Body = body;
+            Context = context;
         }
 
         public override string ToString()
         {
             return string.Format("[DragonFunction: Arguments={0}, Name={1}, Body={2}, Context={3}, Scope={4}]",
-            Arguments, Name, Body, Context, Scope);
+                                 Arguments, Name, Body, Context, Scope);
         }
 
         #region Properties

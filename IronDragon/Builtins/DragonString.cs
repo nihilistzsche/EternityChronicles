@@ -34,7 +34,7 @@ namespace IronDragon.Builtins
         public override bool Equals(object obj)
         {
             if (obj is DragonString) return ((DragonString)obj)._internal.ToString() == _internal.ToString();
-            if (obj is string) return (string)obj                                    == _internal.ToString();
+            if (obj is string) return (string)obj == _internal.ToString();
             return false;
         }
 

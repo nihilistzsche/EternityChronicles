@@ -66,14 +66,14 @@ namespace IronDragon.Expressions
         }
 
         public static ConditionalAssignmentExpression ConditionalAssign(LeftHandValueExpression left, Expression right,
-        DragonExpressionType conditionalAssignmentType)
+                                                                        DragonExpressionType conditionalAssignmentType)
         {
             return new ConditionalAssignmentExpression(left, right, conditionalAssignmentType);
         }
 
         public static ParallelAssignmentExpression ParallelAssign(
-        List<ParallelAssignmentExpression.ParallelAssignmentInfo> lvalues,
-        List<ParallelAssignmentExpression.ParallelAssignmentInfo> rvalues)
+            List<ParallelAssignmentExpression.ParallelAssignmentInfo> lvalues,
+            List<ParallelAssignmentExpression.ParallelAssignmentInfo> rvalues)
         {
             return new ParallelAssignmentExpression(lvalues, rvalues);
         }
@@ -228,26 +228,27 @@ namespace IronDragon.Expressions
         }
 
         public static AccessSetExpression AccessSet(Expression container, List<FunctionArgument> args, Expression value,
-        ExpressionType                                         extra)
+                                                    ExpressionType extra)
         {
             return new AccessSetExpression(container, args, value, extra);
         }
 
         public static ConditionalAccessSetExpression ConditionalAccessSet(Expression container,
-        List<FunctionArgument>                                                       args, Expression value,
-        DragonExpressionType                                                         conditionalAssignmentType)
+                                                                          List<FunctionArgument> args, Expression value,
+                                                                          DragonExpressionType
+                                                                              conditionalAssignmentType)
         {
             return new ConditionalAccessSetExpression(container, args, value, conditionalAssignmentType);
         }
 
         public static FunctionDefinitionExpression FunctionDefinition(string name, List<FunctionArgument> args,
-        Expression                                                           body)
+                                                                      Expression body)
         {
             return new FunctionDefinitionExpression(name, args, body);
         }
 
-        public static SingletonDefinitionExpression SingletonDefinition(Expression singleton, string     name,
-        List<FunctionArgument>                                                     args,      Expression body)
+        public static SingletonDefinitionExpression SingletonDefinition(Expression singleton, string name,
+                                                                        List<FunctionArgument> args, Expression body)
         {
             return new SingletonDefinitionExpression(singleton, name, args, body);
         }
@@ -258,7 +259,7 @@ namespace IronDragon.Expressions
         }
 
         public static Expression CallWithPipe(Expression func, List<FunctionArgument> args,
-        DragonExpressionType                             pipeType)
+                                              DragonExpressionType pipeType)
         {
             return new FunctionCallExpression(func, args, pipeType);
         }
@@ -334,7 +335,7 @@ namespace IronDragon.Expressions
         }
 
         public static Expression Begin(Expression tryBlock, List<Expression> rescueBlocks, Expression ensureBlock,
-        Expression                                elseBlock)
+                                       Expression elseBlock)
         {
             return new BeginExpression(tryBlock, rescueBlocks, ensureBlock, elseBlock);
         }

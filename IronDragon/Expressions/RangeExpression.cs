@@ -11,8 +11,8 @@ namespace IronDragon.Expressions
     {
         internal RangeExpression(Expression start, Expression end, bool inclusive = false)
         {
-            Start     = start;
-            End       = end;
+            Start = start;
+            End = end;
             Inclusive = inclusive;
         }
 

@@ -33,10 +33,10 @@ namespace IronDragon.Expressions
         }
 
         internal AccessSetExpression(Expression container, List<FunctionArgument> arguments, Expression value,
-        ExpressionType                          extra)
+                                     ExpressionType extra)
             : base(container, arguments)
         {
-            Value         = value;
+            Value = value;
             ExtraNodeType = extra;
         }
 
@@ -47,7 +47,7 @@ namespace IronDragon.Expressions
         public override Expression Reduce()
         {
             return Operation.AccessSet(Type, Container, Constant(Arguments), Convert(Value, typeof(object)),
-            Constant(ExtraNodeType), Constant(Scope));
+                                       Constant(ExtraNodeType), Constant(Scope));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

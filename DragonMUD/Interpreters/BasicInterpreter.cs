@@ -22,7 +22,7 @@ namespace DragonMUD.Interpreters
                     if ((coordinator["current-workflow-step"] as WorkflowStep).NextStep == null)
                         coordinator["current-workflow"] = null;
                     newState = Dynamic.InvokeConstructor((coordinator["current-workflow-step"] as WorkflowStep)
-                    .StateType);
+                                                         .StateType);
                     coordinator["current-state"] = newState;
                 }
 

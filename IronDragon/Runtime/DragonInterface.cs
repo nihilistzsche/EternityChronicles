@@ -21,7 +21,7 @@ namespace IronDragon.Runtime
     public partial class DragonInterface : DragonClass
     {
         public DragonInterface(string name, DragonInterface parent, List<DragonFunction> classMethods,
-        List<DragonFunction>          instanceMethods) : base(name, parent, classMethods, instanceMethods)
+                               List<DragonFunction> instanceMethods) : base(name, parent, classMethods, instanceMethods)
         {
         }
 

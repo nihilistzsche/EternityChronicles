@@ -32,9 +32,9 @@ namespace IronDragon.Expressions
     {
         internal SwitchExpression(Expression test, Expression @default, List<SwitchCase> cases)
         {
-            Test        = test;
+            Test = test;
             DefaultBody = @default;
-            Cases       = cases;
+            Cases = cases;
         }
 
         public Expression Test { get; }

@@ -20,8 +20,8 @@ namespace CSLog
             if (level != LogLevel.Any) levels.Add(level);
 
             foreach (var listener in levels.Where(ilevel => Listeners.ContainsKey(ilevel))
-                .Select(ilevel => Listeners[ilevel])
-                .SelectMany(listeners => listeners))
+                                           .Select(ilevel => Listeners[ilevel])
+                                           .SelectMany(listeners => listeners))
                 listener.LogMessage(message, level, Name);
         }
 

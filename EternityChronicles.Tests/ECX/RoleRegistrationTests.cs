@@ -87,7 +87,7 @@ namespace EternityChronicles.Tests.ECX
         public void GenericRegister(Assembly asm, Type type)
         {
             di = typeof(RoleRegisterTest<Dummy>).CreateGenericInstance(new[] { type },
-            new[] { asm.CreateInstance(type.ToString()) });
+                                                                       new[] { asm.CreateInstance(type.ToString()) });
         }
 
         public void GenericUnregister(Assembly asm)

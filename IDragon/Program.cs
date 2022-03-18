@@ -12,7 +12,7 @@ namespace IDragon
         public static void Main(string[] args)
         {
             var runtime = Dragon.CreateRuntime();
-            var engine  = runtime.GetEngine("IronDragon");
+            var engine = runtime.GetEngine("IronDragon");
 
             if (args.Any())
             {
@@ -27,7 +27,7 @@ namespace IDragon
 
             if (Console.IsInputRedirected)
             {
-                var stdin  = Console.In.ReadToEnd();
+                var stdin = Console.In.ReadToEnd();
                 var source = engine.CreateScriptSourceFromString(stdin);
                 source.Execute();
                 return;
@@ -41,7 +41,7 @@ namespace IDragon
 
                 var scope = engine.CreateScope();
                 ContextRootScope.MergeIntoScope(scope);
-                var code   = engine.CreateScriptSourceFromString(line);
+                var code = engine.CreateScriptSourceFromString(line);
                 var result = code.Execute(scope);
                 Console.WriteLine(result);
                 ContextRootScope.MergeWithScope(scope);

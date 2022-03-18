@@ -29,9 +29,9 @@ namespace IronDragon.Runtime
         public DragonPartialFunction(DragonFunction function, List<FunctionArgument> args, DragonScope scope)
             : base(function.Name, new List<FunctionArgument>(), null, null)
         {
-            WrappedFunction  = function;
+            WrappedFunction = function;
             PartialArguments = args;
-            WrappedScope     = scope;
+            WrappedScope = scope;
         }
 
         public DragonFunction WrappedFunction { get; set; }

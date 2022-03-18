@@ -38,7 +38,8 @@ namespace IronDragon.Runtime
         {
             var mq =
                 _includedNamespaces.Where(
-                @namespace => Type.GetType(string.Format("{0}.{1}", @namespace, name)) != null);
+                                          @namespace =>
+                                              Type.GetType(string.Format("{0}.{1}", @namespace, name)) != null);
             if (mq.Any()) return Type.GetType(string.Format("{0}.{1}", mq.First(), name));
             return null;
         }

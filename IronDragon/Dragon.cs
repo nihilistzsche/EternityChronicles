@@ -33,7 +33,7 @@ namespace IronDragon
     {
         private static readonly LanguageSetup _DragonSetup =
             new("IronDragon.Runtime.DragonContext,IronDragon,Version=0.5.0.0,Culture=neutral",
-            "IronDragon 0.5", new[] { "IronDragon" }, new[] { ".dragon", ".drg" });
+                "IronDragon 0.5", new[] { "IronDragon" }, new[] { ".dragon", ".drg" });
 
         static Dragon()
         {
@@ -64,7 +64,7 @@ namespace IronDragon
         public static dynamic GetFunctionArgumentGenerator()
         {
             return new DragonNativeFunction(typeof(Dragon),
-            typeof(Dragon).GetMethod("Arg", BindingFlags.Public | BindingFlags.Static));
+                                            typeof(Dragon).GetMethod("Arg", BindingFlags.Public | BindingFlags.Static));
         }
 
         public static dynamic Box(object obj, DragonScope scope = null)

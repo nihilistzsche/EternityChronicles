@@ -11,7 +11,7 @@ namespace IronDragon.Expressions
     {
         internal ModuleDefinitionExpression(string name, List<Expression> contents)
         {
-            Name     = name;
+            Name = name;
             Contents = contents;
         }
 

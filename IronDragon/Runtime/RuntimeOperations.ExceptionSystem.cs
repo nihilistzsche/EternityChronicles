@@ -29,7 +29,7 @@ namespace IronDragon.Runtime
     {
         internal static dynamic Throw(Expression rawObjExpr, object rawScope)
         {
-            var scope  = rawScope as DragonScope ?? new DragonScope();
+            var scope = rawScope as DragonScope ?? new DragonScope();
             var rawObj = CompilerServices.CompileExpression(rawObjExpr, scope);
 
             var obj = rawObj as DragonInstance;
@@ -42,22 +42,22 @@ namespace IronDragon.Runtime
         }
 
         internal static dynamic Begin(object rawTryExpression, List<Expression> rescueBlocksRaw,
-        object                               rawEnsureBlock,   object           rawElseBlock, object rawScope)
+                                      object rawEnsureBlock, object rawElseBlock, object rawScope)
         {
-            var     tryExpression   = (Expression)rawTryExpression;
-            var     ensureBlock     = (Expression)rawEnsureBlock;
-            var     elseBlock       = (Expression)rawElseBlock;
-            var     scope           = (DragonScope)rawScope;
-            dynamic retVal          = null;
-            var     exceptionRaised = false;
-            var     ensureRun       = false;
-            var     rescueBlocks    = new List<RescueExpression>();
+            var tryExpression = (Expression)rawTryExpression;
+            var ensureBlock = (Expression)rawEnsureBlock;
+            var elseBlock = (Expression)rawElseBlock;
+            var scope = (DragonScope)rawScope;
+            dynamic retVal = null;
+            var exceptionRaised = false;
+            var ensureRun = false;
+            var rescueBlocks = new List<RescueExpression>();
             rescueBlocksRaw.ForEach(
-            rawBlock =>
-            {
-                var block = rawBlock as RescueExpression;
-                if (block != null) rescueBlocks.Add(block);
-            });
+                                    rawBlock =>
+                                    {
+                                        var block = rawBlock as RescueExpression;
+                                        if (block != null) rescueBlocks.Add(block);
+                                    });
 
             try
             {
@@ -66,8 +66,8 @@ namespace IronDragon.Runtime
             catch (Exception e)
             {
                 var DragonException = e as DragonSystemException;
-                var exType          = DragonException != null ? DragonException.ExceptionClass.Name : e.GetType().Name;
-                var found           = false;
+                var exType = DragonException != null ? DragonException.ExceptionClass.Name : e.GetType().Name;
+                var found = false;
                 exceptionRaised = true;
                 foreach (var rescueBlock in rescueBlocks)
                 {
@@ -75,7 +75,7 @@ namespace IronDragon.Runtime
                     if (!rescueBlock.IsWildcard)
                         foreach (var type in rescueBlock.ExceptionTypes)
                         {
-                            var obj      = Resolve(type, scope);
+                            var obj = Resolve(type, scope);
                             var instance = obj as DragonInstance;
                             if (instance != null)
                             {
@@ -95,12 +95,12 @@ namespace IronDragon.Runtime
                     var exMatches = rescueBlock.IsWildcard;
                     if (!exMatches)
                         if ((from type in exceptionTypes
-                        select DragonTypeResolver.Resolve(type)
-                        into _exType
-                        where _exType != null
-                        let __exType = DragonTypeResolver.Resolve(exType)
-                        where __exType != null && __exType.IsSubclassOf(_exType) || __exType == _exType
-                        select _exType).Any())
+                             select DragonTypeResolver.Resolve(type)
+                             into _exType
+                             where _exType != null
+                             let __exType = DragonTypeResolver.Resolve(exType)
+                             where __exType != null && __exType.IsSubclassOf(_exType) || __exType == _exType
+                             select _exType).Any())
                             exMatches = true;
                     found = exMatches;
                     if (!found)
@@ -135,8 +135,8 @@ namespace IronDragon.Runtime
             }
             finally
             {
-                if (!exceptionRaised && elseBlock   != null) CompilerServices.CompileExpression(elseBlock,   scope);
-                if (!ensureRun       && ensureBlock != null) CompilerServices.CompileExpression(ensureBlock, scope);
+                if (!exceptionRaised && elseBlock != null) CompilerServices.CompileExpression(elseBlock, scope);
+                if (!ensureRun && ensureBlock != null) CompilerServices.CompileExpression(ensureBlock, scope);
             }
 
             return retVal;

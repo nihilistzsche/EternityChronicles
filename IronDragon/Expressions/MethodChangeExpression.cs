@@ -29,7 +29,7 @@ namespace IronDragon.Expressions
     {
         internal MethodChangeExpression(string varName, bool isRemove)
         {
-            VarName  = varName;
+            VarName = varName;
             IsRemove = isRemove;
         }
 

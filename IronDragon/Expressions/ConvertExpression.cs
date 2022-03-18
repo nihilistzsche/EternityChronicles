@@ -29,7 +29,7 @@ namespace IronDragon.Expressions
     {
         internal ConvertExpression(Expression expr, Type type)
         {
-            Expression  = expr;
+            Expression = expr;
             ConvertType = type;
         }
 
@@ -47,7 +47,7 @@ namespace IronDragon.Expressions
             if (Expression.Type == ConvertType) return Expression;
 
             return Operation.Convert(ConvertType, Expression.Convert(Expression, typeof(object)),
-            Constant(ConvertType));
+                                     Constant(ConvertType));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

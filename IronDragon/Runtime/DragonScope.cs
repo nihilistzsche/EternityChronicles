@@ -38,7 +38,7 @@ namespace IronDragon.Runtime
         {
             var newMap = new T();
             foreach (var src in
-            new List<IDictionary<K, V>> { me }.Concat(others))
+                     new List<IDictionary<K, V>> { me }.Concat(others))
             {
                 // ^-- echk. Not quite there type-system.
                 foreach (var p in src) newMap[p.Key] = p.Value;
@@ -61,11 +61,11 @@ namespace IronDragon.Runtime
 
         public DragonScope(DragonScope parent)
         {
-            Variables   = new Dictionary<string, dynamic>();
-            SymVars     = new Dictionary<Symbol, dynamic>();
+            Variables = new Dictionary<string, dynamic>();
+            SymVars = new Dictionary<Symbol, dynamic>();
             ParentScope = parent;
-            Aliases     = new Dictionary<string, string>();
-            Constants   = new List<string>();
+            Aliases = new Dictionary<string, string>();
+            Constants = new List<string>();
         }
 
         public DragonScope(ScriptScope scope)
@@ -107,9 +107,11 @@ namespace IronDragon.Runtime
             {
                 if (CheckConstant(name))
                     throw new ConstantException(
-                    string.Format("{0} is already defined as a constant in this scope or a parent scope.", name));
-                var val                                  = value;
-                if (val is string) val                   = new DragonString(val);
+                                                string
+                                                    .Format("{0} is already defined as a constant in this scope or a parent scope.",
+                                                            name));
+                var val = value;
+                if (val is string) val = new DragonString(val);
                 if (DragonNumber.IsConvertable(val)) val = new DragonNumber(val);
                 Variables[name] = val;
             }
@@ -120,8 +122,8 @@ namespace IronDragon.Runtime
             get => Resolve(sym);
             set
             {
-                var val                                  = value;
-                if (val is string) val                   = new DragonString(val);
+                var val = value;
+                if (val is string) val = new DragonString(val);
                 if (DragonNumber.IsConvertable(val)) val = new DragonNumber(val);
                 SymVars[sym] = val;
             }
@@ -149,22 +151,23 @@ namespace IronDragon.Runtime
         public void MergeWithScope(ScriptScope scope)
         {
             scope.GetVariableNames().ToList().ForEach(name =>
-            {
-                if (!Variables.ContainsKey(name))
-                {
-                    var val = scope.GetVariable(name);
-                    // Runtime classes we should wrap to get desired effect
-                    if (val is DragonArray || val is DragonDictionary || val is DragonString || val is DragonNumber)
-                        val = Dragon.Box(val);
-                    Variables[name] = val;
-                }
-            });
+                                                      {
+                                                          if (!Variables.ContainsKey(name))
+                                                          {
+                                                              var val = scope.GetVariable(name);
+                                                              // Runtime classes we should wrap to get desired effect
+                                                              if (val is DragonArray || val is DragonDictionary ||
+                                                                  val is DragonString || val is DragonNumber)
+                                                                  val = Dragon.Box(val);
+                                                              Variables[name] = val;
+                                                          }
+                                                      });
         }
 
         public void MergeWithScope(DragonScope other)
         {
             Variables = other.Variables.MergeLeft(Variables);
-            SymVars   = other.SymVars.MergeLeft(SymVars);
+            SymVars = other.SymVars.MergeLeft(SymVars);
         }
 
         public void MergeIntoScope(Scope scope)
@@ -175,7 +178,7 @@ namespace IronDragon.Runtime
                 var val = var.Value;
                 if (val is DragonInstance)
                 {
-                    var so                             = (DragonInstance)val;
+                    var so = (DragonInstance)val;
                     if (so is DragonBoxedInstance) val = ((DragonBoxedInstance)so).BoxedObject;
                 }
 
@@ -190,7 +193,7 @@ namespace IronDragon.Runtime
                 var val = var.Value;
                 if (val is DragonInstance)
                 {
-                    var so                             = (DragonInstance)val;
+                    var so = (DragonInstance)val;
                     if (so is DragonBoxedInstance) val = ((DragonBoxedInstance)so).BoxedObject;
                 }
 
@@ -220,7 +223,7 @@ namespace IronDragon.Runtime
         internal void AddAlias(string from, string to)
         {
             if (GetAlias(to) != null || CheckConstant(to) || GetAlias(from) != null || Resolve(from) == null ||
-            Variables.ContainsKey(to))
+                Variables.ContainsKey(to))
                 return;
             Aliases[to] = from;
             Constants.Add(to);
@@ -308,13 +311,13 @@ namespace IronDragon.Runtime
         public static implicit operator ScriptScope(DragonScope @this)
         {
             var engine = Dragon.CreateRuntime().GetEngine("IronDragon");
-            var scope  = engine.CreateScope();
+            var scope = engine.CreateScope();
 
             foreach (var var in @this.Variables) scope.SetVariable(var.Key, var.Value);
 
             return scope;
         }
-        
+
         public dynamic GetVariable(string varName)
         {
             return DragonScriptCode.Convert(Resolve(varName), this);
@@ -322,10 +325,7 @@ namespace IronDragon.Runtime
 
         public void RemoveVariable(string varName)
         {
-            if (Variables.ContainsKey(varName))
-            {
-                Variables.Remove(varName);
-            }
+            if (Variables.ContainsKey(varName)) Variables.Remove(varName);
         }
     }
 }

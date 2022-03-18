@@ -63,10 +63,11 @@ namespace IronDragon.Runtime
                 if (DragonScopeFound) realArgs.RemoveAt(0);
                 DragonScopeFound = false;
                 var _args = realArgs.ConvertAll(arg => (FunctionArgument)arg);
-                var func  = Value.Resolve(_args);
+                var func = Value.Resolve(_args);
                 if (func == null)
                     return new DynamicMetaObject(Expression.Constant(null),
-                    BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
+                                                 BindingRestrictions
+                                                     .GetExpressionRestriction(Expression.Constant(true)));
                 return func.GetMetaObject(Expression).BindInvoke(binder, args);
             }
         }
