@@ -1389,8 +1389,14 @@ namespace IronDragon.Runtime
 
         private static dynamic Check(object obj)
         {
-            var number = obj as DragonNumber;
-            return number != null ? DragonNumber.Convert(number) : obj;
+            return obj switch
+            {
+                DragonBoxedInstance instance => instance.BoxedObject is DragonNumber number
+                    ? DragonNumber.Convert(number)
+                    : instance,
+                DragonNumber number => DragonNumber.Convert(number),
+                var _               => obj
+            };
         }
 
         private static DragonScope MergeScopes(DragonScope dest, DragonScope src)

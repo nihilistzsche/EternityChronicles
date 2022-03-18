@@ -316,6 +316,7 @@ namespace IronDragon.Parser
                 M(context.if_else_construct(),   o => new IfElseConstructVisitor().VisitIf_else_construct(o)),
                 M(context.begin_construct(),     o => new BeginConstructVisitor().VisitBegin_construct(o)),
                 M(context.sync_construct(),      o => new SyncConstructVisitor().VisitSync_construct(o)),
+                M(context.puts_construct(), o => new PutsConstructVisitor().VisitPuts_construct(o)),
                 M(context.alias(),               o => new AliasVisitor().VisitAlias(o)),
                 M(context.include(),             o => new IncludeVisitor().VisitInclude(o)),
                 M(context.return_expression(),   o => new ReturnExpressionVisitor().VisitReturn_expression(o)),
@@ -1809,6 +1810,14 @@ namespace IronDragon.Parser
             public override Expression VisitSync_construct(Sync_constructContext context)
             {
                 return Sync(S(context.IDENTIFIER()), new BlockVisitor().VisitBlock(context.block()));
+            }
+        }
+
+        private class PutsConstructVisitor : DragonParserBaseVisitor<Expression>
+        {
+            public override Expression VisitPuts_construct(Puts_constructContext context)
+            {
+                return Puts(new ExpressionVisitor().VisitExpression(context.expression()));
             }
         }
     }

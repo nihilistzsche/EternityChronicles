@@ -41,7 +41,7 @@ namespace IronDragon.Expressions
 
         public override Expression Reduce()
         {
-            return Call(null, Method, Value);
+            return Call(null, Method, Call(Value, typeof(object).GetMethod("ToString")));
         }
 
         public override void SetChildrenScopes(DragonScope scope)

@@ -135,6 +135,7 @@
 		'retry'			{ Keyword("RETRY");	    };
 		'loop'			{ Keyword("LOOP");		};
 		'typeof'		{ Keyword("TYPEOF");	};
+		'puts'          { Keyword("PUTS");      };
 
 		# symbols
 		'|>'            { Symbol("FORWARDPIPE"); };

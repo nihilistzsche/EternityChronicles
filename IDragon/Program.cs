@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using IronDragon;
 using IronDragon.Runtime;
 
@@ -6,25 +7,36 @@ namespace IDragon
 {
     internal static class Program
     {
-        private static readonly DragonScope ContextScope = new DragonScope();
+        private static readonly DragonScope ContextRootScope = new DragonScope();
 
         public static void Main(string[] args)
         {
             var runtime = Dragon.CreateRuntime();
             var engine  = runtime.GetEngine("IronDragon");
 
+            if (args.Any())
+            {
+                foreach (var arg in args)
+                {
+                    var source = engine.CreateScriptSourceFromFile(arg);
+                    source.Execute();
+                }
+
+                return;
+            }
+
             while (true)
             {
                 Console.Write("Dragon> ");
                 var line = Console.In.ReadLine();
-                if (line == "exit" || line == "quit") break;
+                if (line != null && (line.StartsWith("exit") || line.StartsWith("quit"))) break;
 
                 var scope = engine.CreateScope();
-                ContextScope.MergeIntoScope(scope);
+                ContextRootScope.MergeIntoScope(scope);
                 var code   = engine.CreateScriptSourceFromString(line);
                 var result = code.Execute(scope);
                 Console.WriteLine(result);
-                ContextScope.MergeWithScope(scope);
+                ContextRootScope.MergeWithScope(scope);
             }
         }
     }
