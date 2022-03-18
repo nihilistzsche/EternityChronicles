@@ -136,7 +136,8 @@
 		'loop'			{ Keyword("LOOP");		};
 		'typeof'		{ Keyword("TYPEOF");	};
 		'puts'          { Keyword("PUTS");      };
-
+        'require'       { Keyword("REQUIRE");   };
+        
 		# symbols
 		'|>'            { Symbol("FORWARDPIPE"); };
 		'<|'            { Symbol("BACKWARDPIPE"); };

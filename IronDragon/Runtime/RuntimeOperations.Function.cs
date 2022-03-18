@@ -247,5 +247,25 @@ namespace IronDragon.Runtime
 
             return val;
         }
+
+        internal static object Require(object rawFile, object rawScope)
+        {
+            var file = rawFile switch
+                       {
+                           DragonString dstring => (string)dstring,
+                           string str => str,
+                           var _ => throw new InvalidOperationException("require requires a string.")
+                       };
+            var scope = (DragonScope)rawScope;
+            var runtime = Dragon.CreateRuntime();
+            var engine = runtime.GetEngine("IronDragon");
+
+            var source = engine.CreateScriptSourceFromFile(file);
+            var _scope = engine.CreateScope();
+            scope.MergeIntoScope(_scope);
+            source.Execute(_scope);
+            scope.MergeWithScope(_scope);
+            return null;
+        }
     }
 }

@@ -125,6 +125,7 @@ tokens {
 	SYNC,
 	REGEX,
 	PUTS,
+	REQUIRE,
 	COMMENT
 }
 
@@ -162,6 +163,7 @@ statement:
 	| begin_construct
 	| sync_construct
 	| puts_construct
+	| require_construct
 	| alias
 	| include
 	| BREAK
@@ -516,3 +518,5 @@ identifiers: IDENTIFIER (COMMA IDENTIFIER)*;
 sync_construct: SYNC LPAREN IDENTIFIER RPAREN block;
 
 puts_construct: PUTS LPAREN? expression RPAREN?;
+
+require_construct: REQUIRE expression;

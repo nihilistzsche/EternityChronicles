@@ -230,5 +230,10 @@ namespace IronDragon.Runtime
         {
             return RuntimeOperations.Op("Range", expectedType, args);
         }
+
+        public static Expression Require(Type expectedType, params Expression[] args)
+        {
+            return RuntimeOperations.Op("Require", expectedType, args);
+        }
     }
 }

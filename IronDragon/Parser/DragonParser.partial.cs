@@ -336,6 +336,8 @@ namespace IronDragon.Parser
                                                 o => new SyncConstructVisitor().VisitSync_construct(o)),
                                               M(context.puts_construct(),
                                                 o => new PutsConstructVisitor().VisitPuts_construct(o)),
+                                              M(context.require_construct(),
+                                                o => new RequireConstructVisitor().VisitRequire_construct(o)),
                                               M(context.alias(), o => new AliasVisitor().VisitAlias(o)),
                                               M(context.include(), o => new IncludeVisitor().VisitInclude(o)),
                                               M(context.return_expression(),
@@ -1885,6 +1887,14 @@ namespace IronDragon.Parser
             public override Expression VisitPuts_construct(Puts_constructContext context)
             {
                 return Puts(new ExpressionVisitor().VisitExpression(context.expression()));
+            }
+        }
+
+        private sealed class RequireConstructVisitor : DragonParserBaseVisitor<Expression>
+        {
+            public override Expression VisitRequire_construct(Require_constructContext context)
+            {
+                return Require(new ExpressionVisitor().VisitExpression(context.expression()));
             }
         }
     }

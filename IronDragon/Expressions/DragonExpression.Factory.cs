@@ -378,5 +378,10 @@ namespace IronDragon.Expressions
         {
             return new RangeExpression(start, end, inclusive);
         }
+
+        public static Expression Require(Expression value)
+        {
+            return new RequireExpression(value);
+        }
     }
 }
