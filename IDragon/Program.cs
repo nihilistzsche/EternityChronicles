@@ -25,6 +25,14 @@ namespace IDragon
                 return;
             }
 
+            if (Console.IsInputRedirected)
+            {
+                var stdin  = Console.In.ReadToEnd();
+                var source = engine.CreateScriptSourceFromString(stdin);
+                source.Execute();
+                return;
+            }
+
             while (true)
             {
                 Console.Write("Dragon> ");
