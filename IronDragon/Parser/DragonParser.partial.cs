@@ -105,11 +105,12 @@ namespace IronDragon.Parser
             return value != null ? Option.Some<object>(func(value)) : Option.None<object>();
         }
 
-        private static Expression ChooseLValue(LvalueContext lvalue, Lvalue_instance_refContext instanceRefLvalue,
-        Lvalue_accessContext                                 accessLvalue)
+        private static Expression ChooseLValue(Lvalue_variableContext variableLvalue,
+        Lvalue_instance_refContext                                    instanceRefLvalue,
+        Lvalue_accessContext                                          accessLvalue)
         {
-            if (lvalue != null)
-                return new LvalueVisitor().VisitLvalue(lvalue);
+            if (variableLvalue != null)
+                return new LvalueVariableVisitor().VisitLvalue_variable(variableLvalue);
             if (instanceRefLvalue != null)
                 return new LvalueInstanceRefVisitor().VisitLvalue_instance_ref(instanceRefLvalue);
             return accessLvalue != null ? new LvalueAccessVisitor().VisitLvalue_access(accessLvalue) : null;
@@ -213,7 +214,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class SyntaxErrorListener : BaseErrorListener
+        private sealed class SyntaxErrorListener : BaseErrorListener
         {
             public static readonly SyntaxErrorListener Instance = new();
 
@@ -229,7 +230,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ProgramVisitor : DragonParserBaseVisitor<Expression[]>
+        private sealed class ProgramVisitor : DragonParserBaseVisitor<Expression[]>
         {
             public override Expression[] VisitProgram(ProgramContext context)
             {
@@ -242,7 +243,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class BlockContentsVisitor : DragonParserBaseVisitor<List<Expression>>
+        private sealed class BlockContentsVisitor : DragonParserBaseVisitor<List<Expression>>
         {
             public override List<Expression> VisitBlock_contents(Block_contentsContext context)
             {
@@ -253,7 +254,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class TopLevelStatementVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class TopLevelStatementVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitTop_level_statement(Top_level_statementContext context)
             {
@@ -265,7 +266,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ConditionalStatementVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ConditionalStatementVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitConditional_statement(Conditional_statementContext context)
             {
@@ -283,7 +284,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class StatementVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class StatementVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitStatement(StatementContext context)
             {
@@ -316,7 +317,7 @@ namespace IronDragon.Parser
                 M(context.if_else_construct(),   o => new IfElseConstructVisitor().VisitIf_else_construct(o)),
                 M(context.begin_construct(),     o => new BeginConstructVisitor().VisitBegin_construct(o)),
                 M(context.sync_construct(),      o => new SyncConstructVisitor().VisitSync_construct(o)),
-                M(context.puts_construct(), o => new PutsConstructVisitor().VisitPuts_construct(o)),
+                M(context.puts_construct(),      o => new PutsConstructVisitor().VisitPuts_construct(o)),
                 M(context.alias(),               o => new AliasVisitor().VisitAlias(o)),
                 M(context.include(),             o => new IncludeVisitor().VisitInclude(o)),
                 M(context.return_expression(),   o => new ReturnExpressionVisitor().VisitReturn_expression(o)),
@@ -326,7 +327,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class BlockVisitor : DragonParserBaseVisitor<BlockExpression>
+        private sealed class BlockVisitor : DragonParserBaseVisitor<BlockExpression>
         {
             public override BlockExpression VisitBlock(BlockContext context)
             {
@@ -335,7 +336,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class SwitchConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class SwitchConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitSwitch_construct(Switch_constructContext context)
             {
@@ -349,7 +350,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class CaseBlockVisitor : DragonParserBaseVisitor<SwitchCase>
+        private sealed class CaseBlockVisitor : DragonParserBaseVisitor<SwitchCase>
         {
             public override SwitchCase VisitCase_block(Case_blockContext context)
             {
@@ -361,7 +362,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class DefaultBlockVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class DefaultBlockVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitDefault_block(Default_blockContext context)
             {
@@ -369,7 +370,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LoopConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LoopConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLoop_construct(Loop_constructContext context)
             {
@@ -377,7 +378,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ForConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ForConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitFor_construct(For_constructContext context)
             {
@@ -391,7 +392,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ForInConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ForInConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitFor_in_construct(For_in_constructContext context)
             {
@@ -403,7 +404,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class UntilConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class UntilConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitUntil_construct(Until_constructContext context)
             {
@@ -414,7 +415,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class DoUntilConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class DoUntilConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitDo_until_construct(Do_until_constructContext context)
             {
@@ -425,7 +426,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class WhileConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class WhileConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitWhile_construct(While_constructContext context)
             {
@@ -436,7 +437,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class DoWhileConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class DoWhileConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitDo_while_construct(Do_while_constructContext context)
             {
@@ -447,7 +448,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class UnlessConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class UnlessConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitUnless_construct(Unless_constructContext context)
             {
@@ -459,7 +460,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class IfElseConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class IfElseConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitIf_else_construct(If_else_constructContext context)
             {
@@ -471,7 +472,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ElsePartVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ElsePartVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitElse_part(Else_partContext context)
             {
@@ -483,7 +484,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ReturnExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ReturnExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitReturn_expression(Return_expressionContext context)
             {
@@ -492,7 +493,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitExpression(ExpressionContext context)
             {
@@ -503,15 +504,17 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AssignmentVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AssignmentVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAssignment(AssignmentContext context)
             {
                 if (context.CONST() != null)
                 {
                     var lvalue = LeftHandValue(new LvalueVisitor().VisitLvalue(context.lvalue()));
-                    var value  = new ExpressionVisitor().VisitExpression(context.expression());
-                    var res    = Assign(lvalue, value);
+                    if (lvalue.Value is not VariableExpression)
+                        throw new InvalidOperationException("const can only be used with variable lvalues.");
+                    var value = new ExpressionVisitor().VisitExpression(context.expression());
+                    var res   = Assign(lvalue, value);
                     res.IsConst = true;
                     return res;
                 }
@@ -539,7 +542,7 @@ namespace IronDragon.Parser
                 M(context.CONDASSIGNA(), o => DragonExpressionType.IfNotNullAssign)
                 );
 
-                var lval = ChooseLValue(context.lvalue(), context.lvalue_instance_ref(), context.lvalue_access());
+                var lval = new LvalueVisitor().VisitLvalue(context.lvalue());
                 var val  = new ExpressionVisitor().VisitExpression(context.expression());
 
                 switch (myType)
@@ -557,11 +560,11 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrefixIncrementVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PrefixIncrementVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPrefix_increment(Prefix_incrementContext context)
             {
-                var lvalue = ChooseLValue(context.lvalue(), context.lvalue_instance_ref(), context.lvalue_access());
+                var lvalue = new LvalueVisitor().VisitLvalue(context.lvalue());
 
                 return (Expression)ChooseNode(
                 M(context.INCREMENT(), o => Assign(LeftHandValue(lvalue), null, ExpressionType.PreIncrementAssign)),
@@ -570,11 +573,11 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PostfixIncrementVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PostfixIncrementVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPostfix_increment(Postfix_incrementContext context)
             {
-                var lvalue = ChooseLValue(context.lvalue(), context.lvalue_instance_ref(), context.lvalue_access());
+                var lvalue = new LvalueVisitor().VisitLvalue(context.lvalue());
 
                 return (Expression)ChooseNode(
                 M(context.INCREMENT(), o => Assign(LeftHandValue(lvalue), null, ExpressionType.PostIncrementAssign)),
@@ -583,7 +586,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ArgVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ArgVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitArg(ArgContext context)
             {
@@ -595,7 +598,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrefixOpVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PrefixOpVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPrefix_op(Prefix_opContext context)
             {
@@ -605,7 +608,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PostfixOpVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PostfixOpVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPostfix_op(Postfix_opContext context)
             {
@@ -615,7 +618,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class OpExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class OpExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitOp_expression(Op_expressionContext context)
             {
@@ -638,7 +641,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PipeOpVisitor : DragonParserBaseVisitor<DragonExpressionType>
+        private sealed class PipeOpVisitor : DragonParserBaseVisitor<DragonExpressionType>
         {
             public override DragonExpressionType VisitPipe_op(Pipe_opContext context)
             {
@@ -704,7 +707,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LogicalOrExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LogicalOrExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLogical_or_expression(Logical_or_expressionContext context)
             {
@@ -723,7 +726,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LogicalXorExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LogicalXorExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLogical_xor_expression(Logical_xor_expressionContext context)
             {
@@ -742,7 +745,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LogicalAndExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LogicalAndExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLogical_and_expression(Logical_and_expressionContext context)
             {
@@ -761,7 +764,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class EqualityOpEqNeqVisitor : DragonParserBaseVisitor<Enum>
+        private sealed class EqualityOpEqNeqVisitor : DragonParserBaseVisitor<Enum>
         {
             public override Enum VisitEquality_op_eq_neq(Equality_op_eq_neqContext context)
             {
@@ -772,7 +775,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class EqualityOpVisitor : DragonParserBaseVisitor<Enum>
+        private sealed class EqualityOpVisitor : DragonParserBaseVisitor<Enum>
         {
             public override Enum VisitEquality_op(Equality_opContext context)
             {
@@ -785,7 +788,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class EqualityExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class EqualityExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitEquality_expression(Equality_expressionContext context)
             {
@@ -832,7 +835,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ComparisonOpVisitor : DragonParserBaseVisitor<ExpressionType>
+        private sealed class ComparisonOpVisitor : DragonParserBaseVisitor<ExpressionType>
         {
             public override ExpressionType VisitComparison_op(Comparison_opContext context)
             {
@@ -845,7 +848,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ComparisonExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ComparisonExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitComparison_expression(Comparison_expressionContext context)
             {
@@ -866,7 +869,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class BitwiseOrOpVisitor : DragonParserBaseVisitor<ExpressionType>
+        private sealed class BitwiseOrOpVisitor : DragonParserBaseVisitor<ExpressionType>
         {
             public override ExpressionType VisitBitwise_or_op(Bitwise_or_opContext context)
             {
@@ -875,7 +878,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class BitwiseOrExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class BitwiseOrExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitBitwise_or_expression(Bitwise_or_expressionContext context)
             {
@@ -896,7 +899,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class BitwiseAndExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class BitwiseAndExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitBitwise_and_expression(Bitwise_and_expressionContext context)
             {
@@ -915,7 +918,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ShiftOpVisitor : DragonParserBaseVisitor<ExpressionType>
+        private sealed class ShiftOpVisitor : DragonParserBaseVisitor<ExpressionType>
         {
             public override ExpressionType VisitShift_op(Shift_opContext context)
             {
@@ -926,7 +929,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ShiftExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ShiftExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitShift_expression(Shift_expressionContext context)
             {
@@ -947,7 +950,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AdditiveOpVisitor : DragonParserBaseVisitor<ExpressionType>
+        private sealed class AdditiveOpVisitor : DragonParserBaseVisitor<ExpressionType>
         {
             public override ExpressionType VisitAdditive_op(Additive_opContext context)
             {
@@ -958,7 +961,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AdditiveExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AdditiveExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAdditive_expression(Additive_expressionContext context)
             {
@@ -996,7 +999,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class MultiplicativeOpVisitor : DragonParserBaseVisitor<ExpressionType>
+        private sealed class MultiplicativeOpVisitor : DragonParserBaseVisitor<ExpressionType>
         {
             public override ExpressionType VisitMultiplicative_op(Multiplicative_opContext context)
             {
@@ -1005,7 +1008,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class MultiplicativeExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class MultiplicativeExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitMultiplicative_expression(Multiplicative_expressionContext context)
             {
@@ -1025,7 +1028,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class UnaryExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class UnaryExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitUnary_expression(Unary_expressionContext context)
             {
@@ -1065,7 +1068,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PowerExpressionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PowerExpressionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPower_expression(Power_expressionContext context)
             {
@@ -1077,7 +1080,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AtomVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AtomVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAtom(AtomContext context)
             {
@@ -1088,7 +1091,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryRightSideParensVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
+        private sealed class PrimaryRightSideParensVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
         {
             public override List<FunctionArgument> VisitPrimary_right_side_parens(
             Primary_right_side_parensContext context)
@@ -1103,7 +1106,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryRightSideAccessVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
+        private sealed class PrimaryRightSideAccessVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
         {
             public override List<FunctionArgument> VisitPrimary_right_side_access(
             Primary_right_side_accessContext context)
@@ -1112,7 +1115,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryRightSideYieldBlockVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class PrimaryRightSideYieldBlockVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitPrimary_right_side_yield_block(
             Primary_right_side_yield_blockContext context)
@@ -1123,7 +1126,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryRightSideParensAccessVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PrimaryRightSideParensAccessVisitor : DragonParserBaseVisitor<Expression>
         {
             internal Expression FunctionLValue { private get; set; }
 
@@ -1151,7 +1154,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryFunctionCallVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PrimaryFunctionCallVisitor : DragonParserBaseVisitor<Expression>
         {
             internal Expression FunctionLValue { private get; set; }
 
@@ -1184,13 +1187,12 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryLeftSideVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PrimaryLeftSideVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPrimary_left_side(Primary_left_sideContext context)
             {
                 return (Expression)ChooseNode(
-                M(context.literal(),             o => new LiteralVisitor().VisitLiteral(o)),
-                M(context.lvalue_instance_ref(), o => new LvalueInstanceRefVisitor().VisitLvalue_instance_ref(o)),
+                M(context.literal(), o => new LiteralVisitor().VisitLiteral(o)),
                 M(context.lvalue_method_change(),
                 o => new LvalueMethodChangeVisitor().VisitLvalue_method_change(o)),
                 M(context.lvalue(),             o => new LvalueVisitor().VisitLvalue(o)),
@@ -1203,7 +1205,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PrimaryVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PrimaryVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPrimary(PrimaryContext context)
             {
@@ -1216,7 +1218,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class HashVisitor : DragonParserBaseVisitor<CreateDictionaryExpression>
+        private sealed class HashVisitor : DragonParserBaseVisitor<CreateDictionaryExpression>
         {
             public override CreateDictionaryExpression VisitHash(HashContext context)
             {
@@ -1240,7 +1242,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class SingleHashKeyVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class SingleHashKeyVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitSingle_hash_key(Single_hash_keyContext context)
             {
@@ -1252,7 +1254,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class HashKeyVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class HashKeyVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitHash_key(Hash_keyContext context)
             {
@@ -1260,7 +1262,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ArrayVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ArrayVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitArray(ArrayContext context)
             {
@@ -1272,7 +1274,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LiteralVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LiteralVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLiteral(LiteralContext context)
             {
@@ -1291,7 +1293,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class SymbolVisitor : DragonParserBaseVisitor<Symbol>
+        private sealed class SymbolVisitor : DragonParserBaseVisitor<Symbol>
         {
             public override Symbol VisitSymbol(SymbolContext context)
             {
@@ -1306,15 +1308,23 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LvalueVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LvalueVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLvalue(LvalueContext context)
+            {
+                return ChooseLValue(context.lvalue_variable(), context.lvalue_instance_ref(), context.lvalue_access());
+            }
+        }
+
+        private sealed class LvalueVariableVisitor : DragonParserBaseVisitor<Expression>
+        {
+            public override Expression VisitLvalue_variable(Lvalue_variableContext context)
             {
                 return new VariableVisitor().VisitVariable(context.variable());
             }
         }
 
-        private class LvalueInstanceRefOptVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LvalueInstanceRefOptVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLvalue_instance_ref_opt(Lvalue_instance_ref_optContext context)
             {
@@ -1325,7 +1335,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LvalueInstanceRefVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LvalueInstanceRefVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLvalue_instance_ref(Lvalue_instance_refContext context)
             {
@@ -1337,7 +1347,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LvalueMethodChangeVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LvalueMethodChangeVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLvalue_method_change(Lvalue_method_changeContext context)
             {
@@ -1351,7 +1361,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class LvalueAccessVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class LvalueAccessVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitLvalue_access(Lvalue_accessContext context)
             {
@@ -1363,7 +1373,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class VariableVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class VariableVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitVariable(VariableContext context)
             {
@@ -1376,7 +1386,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class CallArgsVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
+        private sealed class CallArgsVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
         {
             public override List<FunctionArgument> VisitCall_args(Call_argsContext context)
             {
@@ -1388,7 +1398,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class CallArgSingleHashVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class CallArgSingleHashVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitCall_arg_single_hash(Call_arg_single_hashContext context)
             {
@@ -1400,7 +1410,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class CallArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class CallArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitCall_arg(Call_argContext context)
             {
@@ -1414,7 +1424,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class FirstArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class FirstArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitFirst_arg(First_argContext context)
             {
@@ -1429,7 +1439,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class FirstVarArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class FirstVarArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitFirst_var_arg(First_var_argContext context)
             {
@@ -1437,7 +1447,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class FirstBlockArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class FirstBlockArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitFirst_block_arg(First_block_argContext context)
             {
@@ -1445,7 +1455,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class EndVarArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class EndVarArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitEnd_var_arg(End_var_argContext context)
             {
@@ -1453,7 +1463,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class EndBlockArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class EndBlockArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitEnd_block_arg(End_block_argContext context)
             {
@@ -1461,7 +1471,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class NextArgVisitor : DragonParserBaseVisitor<FunctionArgument>
+        private sealed class NextArgVisitor : DragonParserBaseVisitor<FunctionArgument>
         {
             public override FunctionArgument VisitNext_arg(Next_argContext context)
             {
@@ -1477,7 +1487,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class DefinitionArgumentListNoParenVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
+        private sealed class DefinitionArgumentListNoParenVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
         {
             public override List<FunctionArgument> VisitDefinition_argument_list_no_paren(
             Definition_argument_list_no_parenContext context)
@@ -1510,7 +1520,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class DefinitionArgumentListVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
+        private sealed class DefinitionArgumentListVisitor : DragonParserBaseVisitor<List<FunctionArgument>>
         {
             public override List<FunctionArgument> VisitDefinition_argument_list(
             Definition_argument_listContext context)
@@ -1522,7 +1532,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class FunctionNameVisitor : DragonParserBaseVisitor<string>
+        private sealed class FunctionNameVisitor : DragonParserBaseVisitor<string>
         {
             public override string VisitFunction_name(Function_nameContext context)
             {
@@ -1543,7 +1553,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class FunctionDefinitionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class FunctionDefinitionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitFunction_definition(Function_definitionContext context)
             {
@@ -1554,21 +1564,23 @@ namespace IronDragon.Parser
                     var args = new DefinitionArgumentListVisitor().VisitDefinition_argument_list(
                     context.definition_argument_list());
                     if (context.lvalue() != null)
-                        return SingletonDefinition(new LvalueVisitor().VisitLvalue(context.lvalue()),
+                        return SingletonDefinition(
+                        new LvalueVisitor().VisitLvalue(context.lvalue()),
                         name, args, block);
 
                     return FunctionDefinition(name, args, block);
                 }
 
                 if (context.lvalue() != null)
-                    return SingletonDefinition(new LvalueVisitor().VisitLvalue(context.lvalue()), name,
-                    null,                                                                         block);
+                    return SingletonDefinition(
+                    new LvalueVisitor().VisitLvalue(context.lvalue()), name,
+                    null,--                                                      block);
 
                 return FunctionDefinition(name, new List<FunctionArgument>(), block);
             }
         }
 
-        private class AnonymousFunctionVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AnonymousFunctionVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAnonymous_function(Anonymous_functionContext context)
             {
@@ -1582,7 +1594,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class YieldBlockVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class YieldBlockVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitYield_block(Yield_blockContext context)
             {
@@ -1596,7 +1608,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class DoYieldBlockVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class DoYieldBlockVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitDo_yield_block(Do_yield_blockContext context)
             {
@@ -1610,7 +1622,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ParallelAssignLeftVisitor : DragonParserBaseVisitor<List<ParallelAssignmentInfo>>
+        private sealed class ParallelAssignLeftVisitor : DragonParserBaseVisitor<List<ParallelAssignmentInfo>>
         {
             public override List<ParallelAssignmentInfo> VisitParallel_assign_left(Parallel_assign_leftContext context)
             {
@@ -1631,7 +1643,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ParallelAssignLeftItemVisitor : DragonParserBaseVisitor<ParallelAssignmentInfo>
+        private sealed class ParallelAssignLeftItemVisitor : DragonParserBaseVisitor<ParallelAssignmentInfo>
         {
             public override ParallelAssignmentInfo VisitParallel_assign_left_item(
             Parallel_assign_left_itemContext context)
@@ -1651,7 +1663,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ParallelAssignRightSideItemVisitor : DragonParserBaseVisitor<ParallelAssignmentInfo>
+        private sealed class ParallelAssignRightSideItemVisitor : DragonParserBaseVisitor<ParallelAssignmentInfo>
         {
             public override ParallelAssignmentInfo VisitParallel_assign_right_item(
             Parallel_assign_right_itemContext context)
@@ -1670,7 +1682,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ParallelAssignRightVisitor : DragonParserBaseVisitor<List<ParallelAssignmentInfo>>
+        private sealed class ParallelAssignRightVisitor : DragonParserBaseVisitor<List<ParallelAssignmentInfo>>
         {
             public override List<ParallelAssignmentInfo> VisitParallel_assign_right(
             Parallel_assign_rightContext context)
@@ -1683,7 +1695,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AliasVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AliasVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAlias(AliasContext context)
             {
@@ -1693,7 +1705,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AliasPartVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AliasPartVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAlias_part(Alias_partContext context)
             {
@@ -1701,7 +1713,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class IncludeVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class IncludeVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitInclude(IncludeContext context)
             {
@@ -1709,7 +1721,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ClassDeclarationVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ClassDeclarationVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitClass_declaration(Class_declarationContext context)
             {
@@ -1726,7 +1738,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class AnonymousClassDeclarationVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class AnonymousClassDeclarationVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitAnonymous_class_declaration(Anonymous_class_declarationContext context)
             {
@@ -1736,7 +1748,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class ModuleDeclarationVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class ModuleDeclarationVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitModule_declaration(Module_declarationContext context)
             {
@@ -1746,7 +1758,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class BeginConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class BeginConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitBegin_construct(Begin_constructContext context)
             {
@@ -1764,7 +1776,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class RescueBlockVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class RescueBlockVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitRescue_block(Rescue_blockContext context)
             {
@@ -1781,7 +1793,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class RescueElseBlockVisitor : DragonParserBaseVisitor<BlockExpression>
+        private sealed class RescueElseBlockVisitor : DragonParserBaseVisitor<BlockExpression>
         {
             public override BlockExpression VisitRescue_else_block(Rescue_else_blockContext context)
             {
@@ -1789,7 +1801,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class RescueEnsureBlockVisitor : DragonParserBaseVisitor<BlockExpression>
+        private sealed class RescueEnsureBlockVisitor : DragonParserBaseVisitor<BlockExpression>
         {
             public override BlockExpression VisitRescue_ensure_block(Rescue_ensure_blockContext context)
             {
@@ -1797,7 +1809,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class IdentifiersVisitor : DragonParserBaseVisitor<List<string>>
+        private sealed class IdentifiersVisitor : DragonParserBaseVisitor<List<string>>
         {
             public override List<string> VisitIdentifiers(IdentifiersContext context)
             {
@@ -1805,7 +1817,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class SyncConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class SyncConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitSync_construct(Sync_constructContext context)
             {
@@ -1813,7 +1825,7 @@ namespace IronDragon.Parser
             }
         }
 
-        private class PutsConstructVisitor : DragonParserBaseVisitor<Expression>
+        private sealed class PutsConstructVisitor : DragonParserBaseVisitor<Expression>
         {
             public override Expression VisitPuts_construct(Puts_constructContext context)
             {

@@ -57,15 +57,14 @@ namespace IronDragon.Expressions
         {
             var rl = Left.Reduce();
 
-            if (rl is VariableExpression)
-                return Operation.Assign(Right.Type, Constant(rl), Convert(Right, typeof(object)),
-                Constant(ExtraNodeType), Constant(IsConst), Constant(Scope));
+
             if (rl is AccessExpression)
                 return
                     Convert(
                     AccessSet((rl as AccessExpression).Container, (rl as AccessExpression).Arguments,
                     Right,                                        ExtraNodeType), Type);
-            return Right;
+            return Operation.Assign(Right.Type, Constant(rl), Convert(Right, typeof(object)),
+            Constant(ExtraNodeType), Constant(IsConst), Constant(Scope));
         }
 
         public override string ToString()

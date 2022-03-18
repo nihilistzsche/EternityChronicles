@@ -212,21 +212,17 @@ return_expression: RETURN call_args?;
 expression: assignment | arg;
 
 prefix_increment: (INCREMENT | DECREMENT) (
-		lvalue_access
-		| lvalue_instance_ref
-		| lvalue
+		lvalue
 	);
 
-postfix_increment: (lvalue_access | lvalue_instance_ref | lvalue) (
+postfix_increment: lvalue (
 		INCREMENT
 		| DECREMENT
 	);
 
 assignment:
 	<assoc = right> (SET | CONST)? (
-		lvalue_access
-		| lvalue_instance_ref
-		| lvalue
+		lvalue
 	) (
 		ASSIGN
 		| ADDASSIGN
@@ -349,9 +345,8 @@ primary_function_call: primary_right_side_parens_access+ primary_right_side_yiel
 
 primary_left_side:
 	literal
-	| lvalue_instance_ref
-	| lvalue_method_change
 	| lvalue
+	| lvalue_method_change
 	| array
 	| hash
 	| anonymous_function
@@ -383,7 +378,9 @@ literal:
 
 symbol: COLON IDENTIFIER | COLON STRING;
 
-lvalue: variable;
+lvalue: lvalue_access | lvalue_instance_ref | lvalue_variable;
+
+lvalue_variable: variable;
 
 lvalue_instance_ref_opt: function_name | CLASS;
 
