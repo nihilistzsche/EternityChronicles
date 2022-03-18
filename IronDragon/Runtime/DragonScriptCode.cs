@@ -143,26 +143,5 @@ namespace IronDragon.Runtime
 
             return res;
         }
-
-        internal object Run(DragonScope scope)
-        {
-            var body = (BlockExpression)Body;
-
-            body.SetScope(scope);
-
-            body.SetChildrenScopes(body.Scope);
-
-            var block = CompilerServices.CreateLambdaForExpression(Expression.Block(body));
-
-            var res = block();
-
-            if (res is Symbol)
-            {
-                var symval = new BlockExpression(new List<Expression> { new VariableExpression(res) }, body.Scope);
-                res = CompilerServices.CreateLambdaForExpression(symval)();
-            }
-
-            return res;
-        }
     }
 }
