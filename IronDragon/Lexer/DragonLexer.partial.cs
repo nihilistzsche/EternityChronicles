@@ -115,9 +115,9 @@ namespace IronDragon.Lexer
             var ls = _lineIndexes.Where(k => k.Value > ts).Select(k => k.Key).FirstOrDefault();
             var le = _lineIndexes.Where(k => k.Value > te).Select(k => k.Key).FirstOrDefault();
 
-            var start = new SourceLocation(Queue.NumTokens, ls + 1, ts - _lineIndexes[ls] + 1);
+            var start = new SourceLocation(Queue.NumTokens, ls + 1, Math.Max(ts - _lineIndexes[ls] + 1, 1));
 
-            var end = new SourceLocation(Queue.NumTokens, le + 1, te - _lineIndexes[le] + 1);
+            var end = new SourceLocation(Queue.NumTokens, le + 1, Math.Max(te - _lineIndexes[le] + 1, 1));
             return new SourceSpan(start, end);
         }
     }
