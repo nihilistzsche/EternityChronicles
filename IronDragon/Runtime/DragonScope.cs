@@ -59,26 +59,24 @@ namespace IronDragon.Runtime
 
         public readonly int ScopeId = scope_id++;
 
-        public DragonScope(DragonScope parent)
+        public DragonScope(DragonScope parent = null)
         {
             Variables = new Dictionary<string, dynamic>();
             SymVars = new Dictionary<Symbol, dynamic>();
-            ParentScope = parent;
             Aliases = new Dictionary<string, string>();
             Constants = new List<string>();
+            if (parent != null)
+                // ReSharper disable once VirtualMemberCallInConstructor
+                ParentScope = parent;
         }
 
         public DragonScope(ScriptScope scope)
-            : this((DragonScope)null)
+            : this()
         {
             MergeWithScope(scope);
         }
 
-        public DragonScope() : this((DragonScope)null)
-        {
-        }
-
-        internal DragonScope(List<string> constants) : this((DragonScope)null)
+        internal DragonScope(List<string> constants) : this()
         {
             Constants = constants;
         }
@@ -152,15 +150,12 @@ namespace IronDragon.Runtime
         {
             scope.GetVariableNames().ToList().ForEach(name =>
                                                       {
-                                                          if (!Variables.ContainsKey(name))
-                                                          {
-                                                              var val = scope.GetVariable(name);
-                                                              // Runtime classes we should wrap to get desired effect
-                                                              if (val is DragonArray || val is DragonDictionary ||
-                                                                  val is DragonString || val is DragonNumber)
-                                                                  val = Dragon.Box(val);
-                                                              Variables[name] = val;
-                                                          }
+                                                          var val = scope.GetVariable(name);
+                                                          // Runtime classes we should wrap to get desired effect
+                                                          if (val is DragonArray || val is DragonDictionary ||
+                                                              val is DragonString || val is DragonNumber)
+                                                              val = Dragon.Box(val);
+                                                          Variables[name] = val;
                                                       });
         }
 
