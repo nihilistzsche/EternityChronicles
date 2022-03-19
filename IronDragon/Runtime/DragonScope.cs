@@ -53,11 +53,11 @@ namespace IronDragon.Runtime
     /// </summary>
     public class DragonScope
     {
-        public static readonly Dictionary<string, Symbol> Symbols = new();
+        internal static readonly Dictionary<string, Symbol> Symbols = new();
 
-        private static int scope_id;
+        private static int _staticScopeId;
 
-        public readonly int ScopeId = scope_id++;
+        private readonly int _scopeId = _staticScopeId++;
 
         public DragonScope(DragonScope parent = null)
         {
@@ -66,7 +66,6 @@ namespace IronDragon.Runtime
             Aliases = new Dictionary<string, string>();
             Constants = new List<string>();
             if (parent != null)
-                // ReSharper disable once VirtualMemberCallInConstructor
                 ParentScope = parent;
         }
 
@@ -81,14 +80,7 @@ namespace IronDragon.Runtime
             Constants = constants;
         }
 
-        internal DragonScope RootScope
-        {
-            get
-            {
-                if (ParentScope == null) return this;
-                return ParentScope.RootScope;
-            }
-        }
+        internal DragonScope RootScope => ParentScope == null ? this : ParentScope.RootScope;
 
         internal List<string> Constants { get; }
 
@@ -171,11 +163,7 @@ namespace IronDragon.Runtime
             foreach (var var in Variables)
             {
                 var val = var.Value;
-                if (val is DragonInstance)
-                {
-                    var so = (DragonInstance)val;
-                    if (so is DragonBoxedInstance) val = ((DragonBoxedInstance)so).BoxedObject;
-                }
+                if (val is DragonBoxedInstance bo) val = bo.BoxedObject;
 
                 scope.Storage[var.Key] = val;
             }
@@ -186,11 +174,7 @@ namespace IronDragon.Runtime
             foreach (var var in Variables)
             {
                 var val = var.Value;
-                if (val is DragonInstance)
-                {
-                    var so = (DragonInstance)val;
-                    if (so is DragonBoxedInstance) val = ((DragonBoxedInstance)so).BoxedObject;
-                }
+                if (val is DragonBoxedInstance bo) val = bo.BoxedObject;
 
                 scope.SetVariable(var.Key, val);
             }
@@ -265,7 +249,7 @@ namespace IronDragon.Runtime
         {
 #if DEBUG
             if (!wasParent) Console.WriteLine("---BEGIN---");
-            Console.WriteLine("{0}Scope {1}", WasParentString(wasParent, depth), ScopeId);
+            Console.WriteLine("{0}Scope {1}", WasParentString(wasParent, depth), _scopeId);
             foreach (var p in Variables)
                 Console.WriteLine("{0}{1} => {2}", WasParentString(wasParent, depth + 1), p.Key, p.Value);
             if (ParentScope != null)
@@ -293,7 +277,7 @@ namespace IronDragon.Runtime
 
         public override string ToString()
         {
-            return string.Format("[Scope {0}]", ScopeId);
+            return string.Format("[Scope {0}]", _scopeId);
         }
 
         public static implicit operator Scope(DragonScope @this)
