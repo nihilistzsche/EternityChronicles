@@ -42,17 +42,10 @@ namespace IDragon
                 var scope = engine.CreateScope();
                 ContextRootScope.MergeIntoScope(scope);
                 var code = engine.CreateScriptSourceFromString(line);
-                try
-                {
-                    var result = code.Execute(scope);
-                    if (result != null) Console.WriteLine(result);
+                var result = code.Execute(scope);
+                if (result != null) Console.WriteLine(result);
 
-                    ContextRootScope.MergeWithScope(scope);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                ContextRootScope.MergeWithScope(scope);
             }
         }
     }
