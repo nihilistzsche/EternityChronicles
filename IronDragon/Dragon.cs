@@ -112,6 +112,11 @@ namespace IronDragon
         {
             return DragonClass.BoxClass(type);
         }
+
+        public static void SetCurrentDirectory(string currentDir)
+        {
+            RuntimeOperations.CurrentDir = currentDir;
+        }
     }
 
     public static class DragonExtensions

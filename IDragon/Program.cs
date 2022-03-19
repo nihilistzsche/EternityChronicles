@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using IronDragon;
 using IronDragon.Runtime;
+using static System.IO.Path;
 
 namespace IDragon
 {
@@ -18,11 +19,22 @@ namespace IDragon
             {
                 foreach (var arg in args)
                 {
+                    if (arg.Contains(DirectorySeparatorChar))
+                    {
+                        var parts = arg.Split(DirectorySeparatorChar);
+                        Dragon.SetCurrentDirectory(string.Join(DirectorySeparatorChar.ToString(),
+                                                               parts.Take(parts.Length - 1)));
+                    }
+                    else
+                    {
+                        Dragon.SetCurrentDirectory(null);
+                    }
+
                     var source = engine.CreateScriptSourceFromFile(arg);
                     source.Execute();
-                }
 
-                return;
+                    return;
+                }
             }
 
             if (Console.IsInputRedirected)

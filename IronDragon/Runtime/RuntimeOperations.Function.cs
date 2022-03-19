@@ -3,11 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using IronDragon.Builtins;
 using IronDragon.Expressions;
+using static System.IO.Path;
 using BlockExpression = IronDragon.Expressions.BlockExpression;
 
 // <copyright file="RuntimeOperations.Function.cs" Company="Michael Tindal">
@@ -37,6 +39,8 @@ namespace IronDragon.Runtime
     /// </summary>
     public static partial class RuntimeOperations
     {
+        internal static string CurrentDir;
+
         internal static dynamic Define(object rawName, object rawArguments, object rawBody, object rawScope)
         {
             var scope = (DragonScope)rawScope;
@@ -259,12 +263,22 @@ namespace IronDragon.Runtime
             var scope = (DragonScope)rawScope;
             var runtime = Dragon.CreateRuntime();
             var engine = runtime.GetEngine("IronDragon");
+            var weSetCurrentDir = false;
+            if (file.Contains(DirectorySeparatorChar))
+            {
+                var parts = file.Split(DirectorySeparatorChar);
+                CurrentDir = string.Join(DirectorySeparatorChar.ToString(), parts.Take(parts.Length - 1));
+                weSetCurrentDir = true;
+            }
+
+            if (!File.Exists(file) && CurrentDir != null) file = CurrentDir + DirectorySeparatorChar + file;
 
             var source = engine.CreateScriptSourceFromFile(file);
-            var _scope = engine.CreateScope();
-            scope.MergeIntoScope(_scope);
-            source.Execute(_scope);
-            scope.MergeWithScope(_scope);
+            var scriptScope = engine.CreateScope();
+            scope.MergeIntoScope(scriptScope);
+            source.Execute(scriptScope);
+            scope.MergeWithScope(scriptScope);
+            if (weSetCurrentDir) CurrentDir = null;
             return null;
         }
     }
