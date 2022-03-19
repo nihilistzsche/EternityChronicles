@@ -45,7 +45,8 @@ namespace IDragon
                 try
                 {
                     var result = code.Execute(scope);
-                    Console.WriteLine(result);
+                    if (result != null) Console.WriteLine(result);
+
                     ContextRootScope.MergeWithScope(scope);
                 }
                 catch (Exception e)
