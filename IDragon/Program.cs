@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using CommandLine;
 using IronDragon;
 using IronDragon.Runtime;
@@ -11,13 +10,13 @@ namespace IDragon
 {
     internal static class Program
     {
-        private static readonly DragonScope ContextRootScope = new DragonScope();
+        private static readonly DragonScope ContextRootScope = new();
 
         private static void ParseOptions(Options o)
         {
             if (o.Version)
             {
-                Console.WriteLine("IDragon -- The IrongDragon Interactive Interpreter.");
+                Console.WriteLine("IDragon -- The IronDragon Interactive Interpreter.");
                 Console.WriteLine("Component versions:");
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToList();
                 var idragonAssembly = assemblies.First(x => x.Name == "IDragon");
@@ -28,12 +27,24 @@ namespace IDragon
                 Console.WriteLine($"IronDragon: Version {irondragonAssembly.Version}");
                 Console.WriteLine(" ");
                 Console.WriteLine("Other loaded assemblies:");
-                foreach (var asmName in assemblies)
-                {
-                    Console.WriteLine($"{asmName.Name} Version: {asmName.Version}");
-                }
+                foreach (var asmName in assemblies) Console.WriteLine($"{asmName.Name} Version: {asmName.Version}");
 
                 return;
+            }
+
+            if (o.Help)
+            {
+                Console.WriteLine("IDragon.exe usage information:");
+                Console.WriteLine(" ");
+                Console.WriteLine(" -v | --version: Shows the version information and exits.");
+                Console.WriteLine(" -h | --help: Shows this help information and exits.");
+                Console.WriteLine(" ");
+                Console.WriteLine(" [file1.dragon] [file2.dragon] ... [fileN.dragon]: Execute the given script files with the IronDragon engine.");
+                Console.WriteLine(" ");
+                Console.WriteLine(" ");
+                Console.WriteLine("Without any arguments, IDragon.exe opens into an interactive shell.");
+                Console.WriteLine(" ");
+                Console.WriteLine("If standard input is redirected, for example by piping in data, the piped data is loaded as a script and executed.");
             }
 
             var runtime = Dragon.CreateRuntime();
@@ -75,7 +86,13 @@ namespace IDragon
 
             if (args.Any())
             {
-                Parser.Default.ParseArguments<Options>(args).WithParsed(ParseOptions);
+                new Parser(config =>
+                           {
+                               config.HelpWriter = null;
+                               config.AutoHelp = false;
+                               config.AutoVersion = false;
+                               config.EnableDashDash = true;
+                           }).ParseArguments<Options>(args).WithParsed(ParseOptions);
                 return;
             }
 
@@ -98,14 +115,18 @@ namespace IDragon
         // ReSharper disable once ClassNeverInstantiated.Local
         private sealed class Options
         {
-            public Options(bool version, IEnumerable<string> fileNames)
+            public Options(bool version, bool help, IEnumerable<string> fileNames)
             {
                 Version = version;
+                Help = help;
                 FileNames = fileNames;
             }
 
             [Option('v', "version", Required = false, HelpText = "Shows the version info and exits.")]
             public bool Version { get; }
+
+            [Option('h', "help", Required = false, HelpText = "Shows the help information")]
+            public bool Help { get; }
 
             [Value(0, Required = false, MetaName = "Input files",
                    HelpText = "[file1.dragon] [file2.dragon] ... [fileN.dragon]")]
