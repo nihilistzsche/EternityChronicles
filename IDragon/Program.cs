@@ -75,14 +75,21 @@ namespace IDragon
             }
         }
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private sealed class Options
         {
+            public Options(bool version, IEnumerable<string> fileNames)
+            {
+                Version = version;
+                FileNames = fileNames;
+            }
+
             [Option('v', "version", Required = false, HelpText = "Shows the version info and exits.")]
-            public bool Version { get; set; }
+            public bool Version { get; }
 
             [Value(0, Required = false, MetaName = "Input files",
                    HelpText = "[file1.dragon] [file2.dragon] ... [fileN.dragon]")]
-            public IEnumerable<string> FileNames { get; set; }
+            public IEnumerable<string> FileNames { get; }
         }
     }
 }
