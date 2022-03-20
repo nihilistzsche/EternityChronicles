@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CommandLine;
 using IronDragon;
 using IronDragon.Runtime;
@@ -14,7 +15,26 @@ namespace IDragon
 
         private static void ParseOptions(Options o)
         {
-            if (o.Version) Console.WriteLine("IDragon 0.9: Interactive IronDragon interpreter.");
+            if (o.Version)
+            {
+                Console.WriteLine("IDragon -- The IrongDragon Interactive Interpreter.");
+                Console.WriteLine("Component versions:");
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToList();
+                var idragonAssembly = assemblies.First(x => x.Name == "IDragon");
+                var irondragonAssembly = assemblies.First(x => x.Name == "IronDragon");
+                assemblies.Remove(idragonAssembly);
+                assemblies.Remove(irondragonAssembly);
+                Console.WriteLine($"IDragon: Version {idragonAssembly.Version}");
+                Console.WriteLine($"IronDragon: Version {irondragonAssembly.Version}");
+                Console.WriteLine(" ");
+                Console.WriteLine("Other loaded assemblies:");
+                foreach (var asmName in assemblies)
+                {
+                    Console.WriteLine($"{asmName.Name} Version: {asmName.Version}");
+                }
+
+                return;
+            }
 
             var runtime = Dragon.CreateRuntime();
             var engine = runtime.GetEngine("IronDragon");
