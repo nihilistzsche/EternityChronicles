@@ -1,4 +1,4 @@
-// ECXModuleDLLTask.cs
+// ECXModuleDLLTask.cs in EternityChronicles/ECMSBuildTasks
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

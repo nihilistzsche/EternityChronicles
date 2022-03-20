@@ -1,4 +1,4 @@
-﻿// ExtensibleDataLoader.cs
+﻿// ExtensibleDataLoader.cs in EternityChronicles/XDL
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

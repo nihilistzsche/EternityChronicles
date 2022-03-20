@@ -1,4 +1,4 @@
-// DragonTokenQueue.cs
+// DragonTokenQueue.cs in EternityChronicles/IronDragon
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

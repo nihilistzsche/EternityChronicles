@@ -1,4 +1,4 @@
-// ModuleDependencyAttribute.cs
+// ModuleDependencyAttribute.cs in EternityChronicles/ECX.Core.Module
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

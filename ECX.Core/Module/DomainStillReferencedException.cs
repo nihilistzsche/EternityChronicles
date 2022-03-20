@@ -1,4 +1,4 @@
-// DomainStillReferencedException.cs
+// DomainStillReferencedException.cs in EternityChronicles/ECX.Core
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

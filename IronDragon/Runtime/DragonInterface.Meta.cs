@@ -1,4 +1,4 @@
-// DragonInterface.Meta.cs
+// DragonInterface.Meta.cs in EternityChronicles/IronDragon
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

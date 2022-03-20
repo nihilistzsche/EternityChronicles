@@ -1,4 +1,4 @@
-// MDKMaster.cs
+// MDKMaster.cs in EternityChronicles/MDK.Master
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 

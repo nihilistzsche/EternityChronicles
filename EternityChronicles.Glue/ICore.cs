@@ -1,4 +1,4 @@
-// ICore.cs
+// ICore.cs in EternityChronicles/EternityChronicles.Glue
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 
