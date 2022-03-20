@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.CodeAnalysis.BuildTasks;
@@ -22,7 +21,7 @@ namespace ECMSBuildTasks
 
         public string WorkingDirectory { get; set; }
 
-        public ITaskItem[] Sources { get; set; }
+        [Required] public ITaskItem[] Sources { get; set; }
 
         public ITaskItem[] Includes { get; set; }
 
@@ -47,58 +46,55 @@ namespace ECMSBuildTasks
                 return false;
             }
 
-            var retValue = true;
-            Parallel.ForEach(Sources, taskItem =>
-                                      {
-                                          if (!File.Exists(taskItem.ToString()))
-                                          {
-                                              Log.LogError($"Missing source file {taskItem}.");
-                                              if (retValue) retValue = false;
+            foreach (var taskItem in Sources)
+            {
+                if (!File.Exists(taskItem.ToString()))
+                {
+                    Log.LogError($"Missing source file {taskItem}.");
 
-                                              return;
-                                          }
+                    return false;
+                }
 
-                                          var outputFileName =
-                                              OutputName ?? Path.GetFileName(taskItem.ToString())
-                                                                .Replace(".cs", ".dll");
+                var outputFileName =
+                    OutputName ?? Path.GetFileName(taskItem.ToString())
+                                      .Replace(".cs", ".dll");
 
-                                          var cscTask = new Csc
-                                                        {
-                                                            ToolPath = ToolPath,
-                                                            ToolExe = ToolName,
-                                                            TargetType = "library",
-                                                            AdditionalLibPaths = new[] { LinkDir },
-                                                            OutputAssembly = new TaskItem(outputFileName),
-                                                            Sources = Sources,
-                                                            BuildEngine = BuildEngine
-                                                        };
-                                          var references = new List<ITaskItem>
-                                                           {
-                                                               new TaskItem("ECX.Core.dll"),
-                                                               new TaskItem("ECX.Core.Module.dll"),
-                                                               new TaskItem("EternityChronicles.Tests.dll")
-                                                           };
-                                          if (Includes != null) references.AddRange(Includes);
+                var cscTask = new Csc
+                              {
+                                  ToolPath = ToolPath,
+                                  ToolExe = ToolName,
+                                  TargetType = "library",
+                                  AdditionalLibPaths = new[] { LinkDir },
+                                  OutputAssembly = new TaskItem(outputFileName),
+                                  Sources = Sources,
+                                  BuildEngine = BuildEngine
+                              };
+                var references = new List<ITaskItem>
+                                 {
+                                     new TaskItem("ECX.Core.dll"),
+                                     new TaskItem("ECX.Core.Module.dll"),
+                                     new TaskItem("EternityChronicles.Tests.dll")
+                                 };
+                if (Includes != null) references.AddRange(Includes);
 
-                                          cscTask.References = references.ToArray();
-                                          Log.LogMessage(MessageImportance.High, $"{taskItem} => {outputFileName}");
-                                          var result = cscTask.Execute();
-                                          if (!result)
-                                          {
-                                              Log.LogError($"Error while compiling source file {taskItem}.");
-                                              if (retValue) retValue = false;
+                cscTask.References = references.ToArray();
+                Log.LogMessage(MessageImportance.High, $"{taskItem} => {outputFileName}");
+                var result = cscTask.Execute();
+                if (!result)
+                {
+                    Log.LogError($"Error while compiling source file {taskItem}.");
 
-                                              return;
-                                          }
+                    return false;
+                }
 
-                                          if (OutputDir == null) return;
-                                          var dest = $"{OutputDir}{Path.DirectorySeparatorChar}{outputFileName}";
-                                          if (File.Exists(dest)) File.Delete(dest);
+                if (OutputDir == null) break;
+                var dest = $"{OutputDir}{Path.DirectorySeparatorChar}{outputFileName}";
+                if (File.Exists(dest)) File.Delete(dest);
 
-                                          File.Move(outputFileName, dest);
-                                      });
+                File.Move(outputFileName, dest);
+            }
 
-            return retValue;
+            return true;
         }
     }
 }
