@@ -2,9 +2,9 @@
 // INmRr2.cs
 //
 // Author:
-//     Michael Tindal <mj.tindal@icloud.com>
+//     Michael Tindal <nihilistzsche@gmail.com>
 //
-// Copyright (C) 2005-2013 Michael Tindal and the individuals listed on
+// Copyright (C) 2005-2022 Michael Tindal and the individuals listed on
 // the ChangeLog entries.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
