@@ -34,7 +34,7 @@ namespace IDragon
             {
                 Console.WriteLine("IDragon -- The IronDragon Interactive Interpreter.");
                 Console.WriteLine("Component versions:");
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToList();
+                var assemblies = (from x in AppDomain.CurrentDomain.GetAssemblies() select x.GetName()).ToList();
                 var idragonAssembly = assemblies.First(x => x.Name == "IDragon");
                 var irondragonAssembly = assemblies.First(x => x.Name == "IronDragon");
                 assemblies.Remove(idragonAssembly);
@@ -66,11 +66,11 @@ namespace IDragon
             var runtime = Dragon.CreateRuntime();
             var engine = runtime.GetEngine("IronDragon");
 
-            foreach (var arg in o.FileNames)
+            foreach (var filename in o.FileNames)
             {
-                if (arg.Contains(DirectorySeparatorChar))
+                if (filename.Contains(DirectorySeparatorChar))
                 {
-                    var parts = arg.Split(DirectorySeparatorChar);
+                    var parts = filename.Split(DirectorySeparatorChar);
                     Dragon.SetCurrentDirectory(string.Join(DirectorySeparatorChar.ToString(),
                                                            parts.Take(parts.Length - 1)));
                 }
@@ -79,7 +79,7 @@ namespace IDragon
                     Dragon.SetCurrentDirectory(null);
                 }
 
-                var source = engine.CreateScriptSourceFromFile(arg);
+                var source = engine.CreateScriptSourceFromFile(filename);
                 var scope = engine.CreateScope();
                 ContextRootScope.MergeIntoScope(scope);
                 source.Execute(scope);
