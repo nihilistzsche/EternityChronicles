@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Theraot.Collections;
 
 namespace IronDragon.Runtime
 {
@@ -27,8 +28,12 @@ namespace IronDragon.Runtime
         static DragonTypeResolver()
         {
             _includedNamespaces.Add(""); // So you can specify the namespace yourself
-            _includedNamespaces.Add("System");
+            var namespaces = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetTypes()).Flatten()
+                                      .Select(t => t.Namespace).Distinct();
+            _includedNamespaces.AddRange(namespaces);
         }
+
+        public static List<string> IncludedNamespaces => _includedNamespaces;
 
         public static void Include(string @namespace)
         {
@@ -41,8 +46,7 @@ namespace IronDragon.Runtime
                 _includedNamespaces.Where(
                                           @namespace =>
                                               Type.GetType(string.Format("{0}.{1}", @namespace, name)) != null);
-            if (mq.Any()) return Type.GetType(string.Format("{0}.{1}", mq.First(), name));
-            return null;
+            return mq.Any() ? Type.GetType($"{mq.First()}.{name}") : null;
         }
     }
 }
