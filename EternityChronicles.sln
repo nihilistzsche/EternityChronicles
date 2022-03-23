@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronDragon", "IronDragon\IronDragon.csproj", "{D61300E0-D2F5-453C-BB99-91C441E8397B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{C47DBBF5-9029-4A94-A6ED-902F3A815FC0}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDragon", "IDragon\IDragon.csproj", "{B70799E1-F245-4336-BE71-12F8D7CBB5C6}"
 EndProject
