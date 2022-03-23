@@ -2,17 +2,18 @@
 // 
 // Copyright (C) 2022 Michael Tindal (nihilistzsche AT gmail DOT com)
 // 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//    http://www.apache.org/licenses/LICENSE-2.0
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
@@ -522,8 +523,8 @@ namespace IronDragon.Runtime
                         {
                             var nArg = myArgs[jx] as FunctionArgument;
                             var val = CompilerServices.CompileExpression(nArg.Value, scope);
-                            if (nArg.Name != null && nArg.Name == "__yieldBlock" ||
-                                jx + 1 == myArgs.Count && (lastIsFunc || hasYieldCall))
+                            if ((nArg.Name != null && nArg.Name == "__yieldBlock") ||
+                                (jx + 1 == myArgs.Count && (lastIsFunc || hasYieldCall)))
                             {
                                 var oldxArg = xArg;
                                 if (lastIsFunc)
@@ -652,7 +653,7 @@ namespace IronDragon.Runtime
                 var first = true;
                 args.ToList().ForEach(arg =>
                                       {
-                                          if (first && arg.Value != null || !first) realArgs.Add(DMO(Arg(arg.Value)));
+                                          if ((first && arg.Value != null) || !first) realArgs.Add(DMO(Arg(arg.Value)));
                                           first = false;
                                       });
 
@@ -705,7 +706,7 @@ namespace IronDragon.Runtime
                 if (isInstance)
                 {
                     if (obj.UndefinedMethods.Contains(name) || @class.UndefinedMethods.Contains(name)) return null;
-                    if (!comingFromObjectRemove && obj.RemovedMethods.Contains(name) ||
+                    if ((!comingFromObjectRemove && obj.RemovedMethods.Contains(name)) ||
                         @class.RemovedMethods.Contains(name))
                         return SearchForFunction(@class.Parent, name, obj, args, true, exactMatch, true);
                     if (obj.SingletonMethods.ContainsKey(name)) return obj.SingletonMethods[name];
@@ -988,8 +989,8 @@ namespace IronDragon.Runtime
                         {
                             var nArg = myArgs[jx] as FunctionArgument;
                             var val = CompilerServices.CompileExpression(nArg.Value, scope);
-                            if (nArg.Name != null && nArg.Name == "__yieldBlock" ||
-                                jx + 1 == myArgs.Count && (lastIsFunc || hasYieldCall))
+                            if ((nArg.Name != null && nArg.Name == "__yieldBlock") ||
+                                (jx + 1 == myArgs.Count && (lastIsFunc || hasYieldCall)))
                             {
                                 var oldxArg = xArg;
                                 xArg = lastIsFunc ? function.Arguments.Last() : new FunctionArgument("__yieldBlock");
