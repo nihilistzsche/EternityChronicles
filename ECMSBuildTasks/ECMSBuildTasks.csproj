@@ -62,7 +62,7 @@
             <Version>3.9.0-5.21120.8</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.Net.Compilers.Toolset">
-            <Version>4.2.0-1.final</Version>
+            <Version>4.2.0-2.final</Version>
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
