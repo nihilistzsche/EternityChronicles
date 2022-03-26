@@ -17,7 +17,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Windows.Markup;
+using System.Xml.Serialization;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.CodeAnalysis.BuildTasks;
@@ -33,9 +41,19 @@ namespace ECMSBuildTasks
 
         protected override string ToolName => "csc.exe";
 
+        private static string CompilerVersion => "4.2.1-final";
+        
         protected new string ToolPath =>
-            $"{HomePath}/.nuget/packages/microsoft.net.compilers.toolset/4.2.0-1.final/tasks/net472";
+            $"{HomePath}/.nuget/packages/microsoft.net.compilers.toolset/{CompilerVersion}/tasks/net472";
 
+        private string CachePath => $"{HomePath}/.cache/ecxmoduledllcache";
+
+        [Serializable]
+        public class TaskCache
+        {
+            public List<byte[]> FileCaches { get; } = new();
+        }
+        
         public string WorkingDirectory { get; set; }
 
         [Required] public ITaskItem[] Sources { get; set; }
@@ -53,6 +71,57 @@ namespace ECMSBuildTasks
             return Path.Combine(ToolPath, ToolName ?? "csc");
         }
 
+        public byte[] CalcSHA512ForTaskItem(ITaskItem taskItem)
+        {
+            var filename = File.Exists(taskItem.ItemSpec) ? taskItem.ItemSpec : $"{LinkDir}{Path.DirectorySeparatorChar}{taskItem.ItemSpec}";
+            if (!File.Exists(filename))
+            {
+                return new byte[] { };
+            }
+            var file = File.ReadAllText(filename);
+            var byteArray = Encoding.UTF8.GetBytes(file);
+            var sha512 = new SHA512Managed();
+            return sha512.ComputeHash(byteArray);
+        }
+
+        public bool CheckCompilationNecessary(TaskCache cache, ITaskItem taskItem, Csc compiler)
+        {
+            var needsCompilation = false;
+            var validCache = cache.FileCaches.Count > 1;
+            var oldHash = validCache ? cache.FileCaches[0] : new byte[] {};
+            var hash = CalcSHA512ForTaskItem(taskItem);
+            if (hash != oldHash)
+            {
+                if (validCache)
+                    cache.FileCaches[0] = hash;
+                else
+                    cache.FileCaches.Add(hash);
+
+                needsCompilation = true;
+            }
+
+            Debug.Assert(compiler.References != null, "compiler.References != null");
+            var i = 1;
+            foreach (var reference in compiler.References)
+            {
+                var refOldHash = validCache ? cache.FileCaches[i++] : new byte[] {};
+                var refHash = CalcSHA512ForTaskItem(reference);
+                if (refHash == refOldHash) continue;
+                if (!validCache)
+                {
+                    cache.FileCaches.Add(refHash);
+                }
+                else
+                {
+                    cache.FileCaches[i-1] = refHash;
+                }
+
+                needsCompilation = true;
+            }
+
+            return needsCompilation;
+        }
+        
         public override bool Execute()
         {
             Directory.SetCurrentDirectory(WorkingDirectory ?? Directory.GetCurrentDirectory());
@@ -95,6 +164,30 @@ namespace ECMSBuildTasks
                 if (Includes != null) references.AddRange(Includes);
 
                 cscTask.References = references.ToArray();
+                if (!Directory.Exists(CachePath))
+                {
+                    Directory.CreateDirectory(CachePath);
+                }
+
+                TaskCache cacheObj = null;
+                var cacheName =
+                    $"{CachePath}{Path.DirectorySeparatorChar}.{taskItem.ItemSpec.Substring(taskItem.ItemSpec.LastIndexOf(Path.DirectorySeparatorChar) + 1)}.cache";
+                if (File.Exists(cacheName))
+                {
+                    cacheObj =
+                        (new XmlSerializer(typeof(TaskCache))
+                                .Deserialize(new FileStream(cacheName, FileMode.Open))) as
+                        TaskCache;
+                    
+                }
+
+                cacheObj = cacheObj ?? new TaskCache();
+                if (!CheckCompilationNecessary(cacheObj, taskItem, cscTask))
+                {
+                    Log.LogMessage("Compilation for {taskItem} is unnecessary, skipping.");
+                    return true;
+                }
+                
                 Log.LogMessage(MessageImportance.High, $"{taskItem} => {outputFileName}");
                 var result = cscTask.Execute();
                 if (!result)
@@ -109,6 +202,14 @@ namespace ECMSBuildTasks
                 if (File.Exists(dest)) File.Delete(dest);
 
                 File.Move(outputFileName, dest);
+                if (File.Exists(cacheName))
+                {
+                    File.Delete(cacheName);
+                }
+
+                Log.LogMessage("Serializing?");
+                new XmlSerializer(typeof(TaskCache))
+                    .Serialize(new FileStream(cacheName, FileMode.Create), cacheObj);
             }
 
             return true;
