@@ -43,10 +43,12 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - test
 
-build-job:       # This job runs in the build stage, which runs first.
+build-job-linux:       # This job runs in the build stage, which runs first.
   artifacts:
     paths:
       - "*/bin"
+  tags:
+      - linux
   stage: build
   script:
     - echo "Compiling the code..."
@@ -54,9 +56,34 @@ build-job:       # This job runs in the build stage, which runs first.
     - msbuild EternityChronicles.sln -m -property:Configuration=Release
     - echo "Compile complete."
 
-unit-test-job:   # This job runs in the test stage.
+unit-test-job-linux:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
+  tags:
+    - linux
   script:
     - echo "Running unit tests..."
     - nunit3-console EternityChronicles.Tests/bin/Release/EternityChronicles.Tests.dll
     - echo "Unit Testing complete."
+
+build-job-windows:       # This job runs in the build stage, which runs first.
+  artifacts:
+    paths:
+      - "*/bin"
+  tags:
+      - windows10
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - nuget.exe restore EternityChronicles.sln
+    - msbuild.exe EternityChronicles.sln -m -property:Configuration=Release
+    - echo "Compile complete."
+
+unit-test-job-windows:   # This job runs in the test stage.
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  tags:
+    - windows10
+  script:
+    - echo "Running unit tests..."
+    - nunit3-console.exe EternityChronicles.Tests/bin/Release/EternityChronicles.Tests.dll
+    - echo "Unit Testing complete."
+
