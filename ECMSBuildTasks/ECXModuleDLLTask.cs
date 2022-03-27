@@ -32,7 +32,7 @@ using Microsoft.CodeAnalysis.BuildTasks;
 
 namespace ECMSBuildTasks
 {
-    public class ECXModuleDLLTask : ToolTask
+    public partial class ECXModuleDLLTask : ToolTask
     {
         private static readonly string HomePath = Environment.OSVersion.Platform == PlatformID.Unix ||
                                                   Environment.OSVersion.Platform == PlatformID.MacOSX
@@ -41,8 +41,6 @@ namespace ECMSBuildTasks
 
         protected override string ToolName => "csc.exe";
 
-        private static string CompilerVersion => "4.2.1-final";
-        
         protected new string ToolPath =>
             $"{HomePath}/.nuget/packages/microsoft.net.compilers.toolset/{CompilerVersion}/tasks/net472";
 

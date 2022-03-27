@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
+		hooks\upd_compiler_version.sh = hooks\upd_compiler_version.sh
+        hooks\upd_compiler_version.ps1 = hooks\upd_compiler_version.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDragon", "IDragon\IDragon.csproj", "{B70799E1-F245-4336-BE71-12F8D7CBB5C6}"

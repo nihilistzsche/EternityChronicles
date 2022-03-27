@@ -32,8 +32,11 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="../hooks/upd_compiler_version.sh ."/>
+    <Target Name="PreBuild_unix" BeforeTargets="PreBuildEvent" Condition=" '$(OS)' != 'Windows_NT' ">
+        <Exec Command="../hooks/upd_compiler_version.sh" />
+    </Target>
+    <Target Name="PreBuild_win" BeforeTargets="PreBuildEvent" Condition=" '${OS)' == 'Windows_NT' ">
+        <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File ../hooks/upd_compiler_version.ps1" />
     </Target>
     <ItemGroup>
         <Reference Include="System" />
@@ -43,6 +46,9 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ECXModuleDLLTask.cs" />
+        <Compile Include="ECXModuleDLLTask.Generated.cs">
+          <DependentUpon>ECXModuleDLLTask.cs</DependentUpon>
+        </Compile>
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
