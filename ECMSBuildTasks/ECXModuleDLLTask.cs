@@ -34,10 +34,7 @@ namespace ECMSBuildTasks
 {
     public partial class ECXModuleDLLTask : ToolTask
     {
-        private static readonly string HomePath = Environment.OSVersion.Platform == PlatformID.Unix ||
-                                                  Environment.OSVersion.Platform == PlatformID.MacOSX
-                                                      ? Environment.GetEnvironmentVariable("HOME")
-                                                      : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+        private static readonly string HomePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile); 
 
         protected override string ToolName => "csc.exe";
 
