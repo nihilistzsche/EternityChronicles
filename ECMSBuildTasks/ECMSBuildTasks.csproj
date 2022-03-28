@@ -35,7 +35,7 @@
     <Target Name="PreBuild_unix" BeforeTargets="PreBuildEvent" Condition=" '$(OS)' != 'Windows_NT' ">
         <Exec Command="../hooks/upd_compiler_version.sh" />
     </Target>
-    <Target Name="PreBuild_win" BeforeTargets="PreBuildEvent" Condition=" '${OS)' == 'Windows_NT' ">
+    <Target Name="PreBuild_win" BeforeTargets="PreBuildEvent" Condition=" '$(OS)' == 'Windows_NT' ">
         <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File ../hooks/upd_compiler_version.ps1" />
     </Target>
     <ItemGroup>
