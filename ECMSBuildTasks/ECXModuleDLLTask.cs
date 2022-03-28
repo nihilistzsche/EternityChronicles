@@ -42,9 +42,9 @@ namespace ECMSBuildTasks
         protected override string ToolName => "csc.exe";
 
         protected new string ToolPath =>
-            $"{HomePath}/.nuget/packages/microsoft.net.compilers.toolset/{CompilerVersion}/tasks/net472";
+            $"{HomePath}{Path.DirectorySeparatorChar}.nuget{Path.DirectorySeparatorChar}packages{Path.DirectorySeparatorChar}microsoft.net.compilers.toolset{Path.DirectorySeparatorChar}{CompilerVersion}{Path.DirectorySeparatorChar}tasks{Path.DirectorySeparatorChar}net472";
 
-        private string CachePath => $"{HomePath}/.cache/ecxmoduledllcache";
+        private string CachePath => $"{HomePath}{Path.DirectorySeparatorChar}.cache{Path.DirectorySeparatorChar}ecxmoduledllcache";
 
         [Serializable]
         public class TaskCache
@@ -66,7 +66,7 @@ namespace ECMSBuildTasks
 
         protected override string GenerateFullPathToTool()
         {
-            return Path.Combine(ToolPath, ToolName ?? "csc");
+            return $"{ToolPath}{Path.DirectorySeparatorChar}{ToolName ?? "csc"}";
         }
 
         public byte[] CalcSHA512ForTaskItem(ITaskItem taskItem)
