@@ -6,3 +6,4 @@ $version=..\Extern\xidel.exe ECMSBuildTasks.csproj -s -e '//PackageReference[@In
   }
 }
 "@ | Out-File -FilePath ECXModuleDLLTask.Generated.cs
+exit 0
