@@ -30,6 +30,9 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
+    <PropertyGroup>
+        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    </PropertyGroup>
     <ItemGroup>
         <Reference Include="IronRuby">
             <HintPath>..\Extern\IronRuby.dll</HintPath>

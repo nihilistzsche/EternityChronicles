@@ -32,6 +32,9 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
+    <PropertyGroup>
+        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    </PropertyGroup>
     <Target Name="PreBuild_unix" BeforeTargets="PreBuildEvent" Condition=" '$(OS)' != 'Windows_NT' ">
         <Exec Command="../hooks/upd_compiler_version.sh" />
     </Target>
@@ -41,7 +44,6 @@
     <ItemGroup>
         <Reference Include="System" />
         <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>

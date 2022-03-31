@@ -33,6 +33,9 @@
         <ConsolePause>False</ConsolePause>
         <SignAssembly>True</SignAssembly>
     </PropertyGroup>
+    <PropertyGroup>
+        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    </PropertyGroup>
     <ItemGroup>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>

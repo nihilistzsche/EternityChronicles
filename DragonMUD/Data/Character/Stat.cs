@@ -259,9 +259,7 @@ namespace DragonMUD.Data.Character
         public static Stat LoadFromTemplateWithData(string data, StatLoadType loadType)
         {
             var doc = new XDocument(data);
-            if (doc != null)
-                return LoadFromTemplateUsingXMLDocument(doc, loadType);
-            return null;
+            return doc.Root != null ? LoadFromTemplateUsingXMLDocument(doc, loadType) : null;
         }
 
         public XElement SaveToXML()
