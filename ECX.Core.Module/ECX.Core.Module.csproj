@@ -76,7 +76,7 @@
             <Version>6.0.2-mauipre.1.22102.15</Version>
         </PackageReference>
         <PackageReference Include="System.Security.Permissions">
-            <Version>7.0.0-preview.3.22175.4</Version>
+            <Version>7.0.0-preview.4.22229.4</Version>
         </PackageReference>
         <PackageReference Include="System.Security.Principal.Windows">
             <Version>6.0.0-preview.5.21301.5</Version>
