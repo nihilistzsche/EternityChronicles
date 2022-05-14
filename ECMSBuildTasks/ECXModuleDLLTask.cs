@@ -59,6 +59,42 @@ namespace ECMSBuildTasks
             return $"{ToolPath}{Path.DirectorySeparatorChar}{ToolName ?? "csc"}";
         }
 
+        private async Task CompileAsync(ITaskItem taskItem)
+        {
+            await Task.Run(() =>
+                           {
+                               if (!File.Exists(taskItem.ToString()))
+                               {
+                                   Log.LogError($"Missing source file {taskItem}.");
+
+                                   return;
+                               }
+
+                               var outputFileName = OutputName ?? Path.GetFileName(taskItem.ToString())
+                                                                      .Replace(".cs", ".dll");
+                               var fullOutputFileName = $"{OutputDir}{Path.DirectorySeparatorChar}{outputFileName}";
+
+                               var cscTask = new Csc
+                                             {
+                                                 ToolPath = ToolPath,
+                                                 ToolExe = ToolName,
+                                                 TargetType = "library",
+                                                 AdditionalLibPaths = new[] { LinkDir },
+                                                 OutputAssembly = new TaskItem(fullOutputFileName),
+                                                 Sources = Sources,
+                                                 BuildEngine = BuildEngine
+                                             };
+                               var references = new List<ITaskItem> { new TaskItem("ECX.Core.dll"), new TaskItem("ECX.Core.Module.dll"), new TaskItem("EternityChronicles.Tests.dll") };
+                               if (Includes != null) references.AddRange(Includes);
+
+                               cscTask.References = references.ToArray();
+                               Log.LogMessage(MessageImportance.High, $"{taskItem} => {fullOutputFileName}");
+                               var result = cscTask.Execute();
+                               if (result) return;
+                               Log.LogError($"Error while compiling source file {taskItem}.");
+                           });
+        }
+        
         public override bool Execute()
         {
             Directory.SetCurrentDirectory(WorkingDirectory ?? Directory.GetCurrentDirectory());
@@ -69,38 +105,7 @@ namespace ECMSBuildTasks
                 return false;
             }
 
-            Task.WaitAll(Sources.Select(taskItem => Task.Run(() =>
-                                                             {
-                                                                 if (!File.Exists(taskItem.ToString()))
-                                                                 {
-                                                                     Log.LogError($"Missing source file {taskItem}.");
-
-                                                                     return;
-                                                                 }
-
-                                                                 var outputFileName = OutputName ?? Path.GetFileName(taskItem.ToString())
-                                                                                                        .Replace(".cs", ".dll");
-                                                                 var fullOutputFileName = $"{OutputDir}{Path.DirectorySeparatorChar}{outputFileName}";
-
-                                                                 var cscTask = new Csc
-                                                                               {
-                                                                                   ToolPath = ToolPath,
-                                                                                   ToolExe = ToolName,
-                                                                                   TargetType = "library",
-                                                                                   AdditionalLibPaths = new[] { LinkDir },
-                                                                                   OutputAssembly = new TaskItem(fullOutputFileName),
-                                                                                   Sources = Sources,
-                                                                                   BuildEngine = BuildEngine
-                                                                               };
-                                                                 var references = new List<ITaskItem> { new TaskItem("ECX.Core.dll"), new TaskItem("ECX.Core.Module.dll"), new TaskItem("EternityChronicles.Tests.dll") };
-                                                                 if (Includes != null) references.AddRange(Includes);
-
-                                                                 cscTask.References = references.ToArray();
-                                                                 Log.LogMessage(MessageImportance.High, $"{taskItem} => {fullOutputFileName}");
-                                                                 var result = cscTask.Execute();
-                                                                 if (result) return;
-                                                                 Log.LogError($"Error while compiling source file {taskItem}.");
-                                                             })).ToArray());
+            Task.WhenAll(Sources.Select(CompileAsync));
             return true;
         }
     }
