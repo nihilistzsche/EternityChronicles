@@ -59,54 +59,51 @@ namespace ECMSBuildTasks
             return $"{ToolPath}{Path.DirectorySeparatorChar}{ToolName ?? "csc"}";
         }
 
-        private async Task CompileAsync(ITaskItem taskItem)
+        private bool Compile(ITaskItem taskItem)
         {
-            await Task.Run(() =>
-                           {
-                               if (!File.Exists(taskItem.ToString()))
-                               {
-                                   Log.LogError($"Missing source file {taskItem}.");
+            if (!File.Exists(taskItem.ToString()))
+            {
+                Log.LogError($"Missing source file {taskItem}.");
 
-                                   return;
-                               }
+                return false;
+            }
 
-                               var outputFileName = OutputName ?? Path.GetFileName(taskItem.ToString())
-                                                                      .Replace(".cs", ".dll");
-                               var fullOutputFileName = $"{OutputDir}{Path.DirectorySeparatorChar}{outputFileName}";
+            var outputFileName = OutputName ?? Path.GetFileName(taskItem.ToString())
+                                                   .Replace(".cs", ".dll");
+            var fullOutputFileName = $"{OutputDir}{Path.DirectorySeparatorChar}{outputFileName}";
 
-                               var cscTask = new Csc
-                                             {
-                                                 ToolPath = ToolPath,
-                                                 ToolExe = ToolName,
-                                                 TargetType = "library",
-                                                 AdditionalLibPaths = new[] { LinkDir },
-                                                 OutputAssembly = new TaskItem(fullOutputFileName),
-                                                 Sources = Sources,
-                                                 BuildEngine = BuildEngine
-                                             };
-                               var references = new List<ITaskItem> { new TaskItem("ECX.Core.dll"), new TaskItem("ECX.Core.Module.dll"), new TaskItem("EternityChronicles.Tests.dll") };
-                               if (Includes != null) references.AddRange(Includes);
+            var cscTask = new Csc
+                          {
+                              ToolPath = ToolPath,
+                              ToolExe = ToolName,
+                              TargetType = "library",
+                              AdditionalLibPaths = new[] { LinkDir },
+                              OutputAssembly = new TaskItem(fullOutputFileName),
+                              Sources = Sources,
+                              BuildEngine = BuildEngine
+                          };
+            var references = new List<ITaskItem>
+                             {
+                                 new TaskItem("ECX.Core.dll"), new TaskItem("ECX.Core.Module.dll"),
+                                 new TaskItem("EternityChronicles.Tests.dll")
+                             };
+            if (Includes != null) references.AddRange(Includes);
 
-                               cscTask.References = references.ToArray();
-                               Log.LogMessage(MessageImportance.High, $"{taskItem} => {fullOutputFileName}");
-                               var result = cscTask.Execute();
-                               if (result) return;
-                               Log.LogError($"Error while compiling source file {taskItem}.");
-                           });
+            cscTask.References = references.ToArray();
+            Log.LogMessage(MessageImportance.High, $"{taskItem} => {fullOutputFileName}");
+            var result = cscTask.Execute();
+            if (result) return true;
+            Log.LogError($"Error while compiling source file {taskItem}.");
+            return false;
         }
-        
+
         public override bool Execute()
         {
             Directory.SetCurrentDirectory(WorkingDirectory ?? Directory.GetCurrentDirectory());
 
-            if (Sources == null)
-            {
-                Log.LogError("No input sources given.");
-                return false;
-            }
-
-            Task.WhenAll(Sources.Select(CompileAsync));
-            return true;
+            if (Sources != null) return Sources.Select(Compile).All(x => x);
+            Log.LogError("No input sources given.");
+            return false;
         }
     }
 }
