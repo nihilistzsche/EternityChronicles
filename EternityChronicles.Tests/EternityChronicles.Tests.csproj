@@ -167,40 +167,40 @@
         <MakeDir Directories="$(TargetDir)\data\ecx-ul"/>
         <MakeDir Directories="$(TargetDir)\data\ecx-ur"/>
     </Target>
-    <Target Name="ECXCr" Inputs="@(ECXCr)" Outputs="@(ECXCr-&gt;$(TargetDir)\data\ecx-cr\%(filename).dll)">
+    <Target Name="ECXCr" Inputs="@(ECXCr)" Outputs="@(ECXCr->'$(TargetDir)\data\ecx-cr\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXCr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-cr"/>
     </Target>
-    <Target Name="ECXDr" Inputs="@(ECXDr)" Outputs="@(ECXDr-&gt;$(TargetDir)\data\ecx-dr\%(filename).dll)">
+    <Target Name="ECXDr" Inputs="@(ECXDr)" Outputs="@(ECXDr->'$(TargetDir)\data\ecx-dr\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXDr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-dr"/>
     </Target>
-    <Target Name="ECXLd" Inputs="@(ECXLd)" Outputs="@(ECXLd-&gt;$(TargetDir)\data\ecx-ld\%(filename).dll)">
+    <Target Name="ECXLd" Inputs="@(ECXLd)" Outputs="@(ECXLd->'$(TargetDir)\data\ecx-ld\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXLd)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld"/>
     </Target>
-    <Target Name="ECXLda" Inputs="@(ECXLda)" Outputs="@(ECXLda-&gt;$(TargetDir)\data\ecx-ld-2\%(filename).dll)">
+    <Target Name="ECXLda" Inputs="@(ECXLda)" Outputs="@(ECXLda->'$(TargetDir)\data\ecx-ld-2\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXLda)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld-2"/>
     </Target>
-    <Target Name="ECXLdb" Inputs="@(ECXLdb)" Outputs="@(ECXLdb-&gt;$(TargetDir)\data\ecx-ld-3\%(filename).dll)">
+    <Target Name="ECXLdb" Inputs="@(ECXLdb)" Outputs="@(ECXLdb->'$(TargetDir)\data\ecx-ld-3\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXLdb)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ld-3"/>
     </Target>
-    <Target Name="ECXRc" Inputs="@(ECXRc)" Outputs="@(ECXRc-&gt;$(TargetDir)\data\ecx-rc\%(filename).dll)">
+    <Target Name="ECXRc" Inputs="@(ECXRc)" Outputs="@(ECXRc->'$(TargetDir)\data\ecx-rc\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXRc)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rc"/>
     </Target>
-    <Target Name="ECXRra" Inputs="@(ECXRra)" Outputs="@(ECXRra-&gt;$(TargetDir)\data\ecx-rr\%(filename).dll)">
+    <Target Name="ECXRra" Inputs="@(ECXRra)" Outputs="@(ECXRra->'$(TargetDir)\data\ecx-rr\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXRra)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rr"/>
     </Target>
-    <Target Name="ECXRrx" Inputs="@(ECXRrx)" Outputs="@(ECXRrx-&gt;$(TargetDir)\data\ecx-rr\ecx-iecxrr2.dll)">
+    <Target Name="ECXRrx" Inputs="@(ECXRrx)" Outputs="@(ECXRrx->'$(TargetDir)\data\ecx-rr\ecx-iecxrr2.dll')">
         <ECXModuleDLLTask Sources="@(ECXRrx)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rr" OutputName="ecx-iecxrr2.dll"/>
     </Target>
-    <Target Name="ECXRrb" DependsOnTargets="ECXRrx" Inputs="@(ECXRrb)" Outputs="@(ECXRrb-&gt;$(TargetDir)\data\ecx-rr\%(filename).dll)">
+    <Target Name="ECXRrb" DependsOnTargets="ECXRrx" Inputs="@(ECXRrb)" Outputs="@(ECXRrb->'$(TargetDir)\data\ecx-rr\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXRrb)" LinkDir="$(TargetDir)" Includes="$(TargetDir)\data\ecx-rr\ecx-iecxrr2.dll" OutputDir="$(TargetDir)\data\ecx-rr"/>
     </Target>
-    <Target Name="ECXRs" Inputs="@(ECXRs)" Outputs="@(ECXRs-&gt;$(TargetDir)\data\ecx-rs\%(filename).dll)">
+    <Target Name="ECXRs" Inputs="@(ECXRs)" Outputs="@(ECXRs->'$(TargetDir)\data\ecx-rs\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXRs)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-rs"/>
     </Target>
-    <Target Name="ECXUl" Inputs="@(ECXUl)" Outputs="@(ECXUl-&gt;$(TargetDir)\data\ecx-ul\%(filename).dll)">
+    <Target Name="ECXUl" Inputs="@(ECXUl)" Outputs="@(ECXUl->'$(TargetDir)\data\ecx-ul\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXUl)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ul"/>
     </Target>
-    <Target Name="ECXUr" Inputs="@(ECXUr)" Outputs="@(ECXUr-&gt;$(TargetDir)\data\ecx-ur\%(filename).dll)">
+    <Target Name="ECXUr" Inputs="@(ECXUr)" Outputs="@(ECXUr->'$(TargetDir)\data\ecx-ur\%(Filename).dll')">
         <ECXModuleDLLTask Sources="@(ECXUr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ur"/>
     </Target>
     <Target Name="BeforeClean">
