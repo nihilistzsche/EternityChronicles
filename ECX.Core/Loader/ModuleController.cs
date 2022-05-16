@@ -391,6 +391,7 @@ namespace ECX.Core.Loader
                 }
             }
 
+            ret.Sort();
             return ret;
         }
 
