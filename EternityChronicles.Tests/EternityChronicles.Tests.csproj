@@ -203,6 +203,9 @@
     <Target Name="ECXUr" Inputs="@(ECXUr)" Outputs="@(ECXUr-&gt;$(TargetDir)\data\ecx-ur\%(filename).dll)">
         <ECXModuleDLLTask Sources="@(ECXUr)" LinkDir="$(TargetDir)" OutputDir="$(TargetDir)\data\ecx-ur"/>
     </Target>
+    <Target Name="BeforeClean">
+        <RemoveDir Directories="$(TargetDir)\data" />
+    </Target>
     <PropertyGroup>
         <MakeModuleDirPropertyGroup>
             MakeModuleDirs
