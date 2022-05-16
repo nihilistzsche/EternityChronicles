@@ -25,8 +25,8 @@ namespace EternityChronicles.Glue
     {
         int Main(bool softReboot, Tuple<SocketInformation, List<SocketInformation>> sockets, params string[] args);
 
-        Tuple<SocketInformation, List<SocketInformation>> DuplicateSockets(int processID);
+        Tuple<SocketInformation, List<SocketInformation>> DuplicateSockets(int processId);
 
-        int GetProcessID();
+        int GetProcessId();
     }
 }

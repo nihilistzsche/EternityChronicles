@@ -118,7 +118,7 @@ namespace ECX.Core.Dependency.Resolver
             // we need (and, or, xor) we can't really make a decision at this point.  When we go through
             // the children, they simply go through this process to until we reach a bottom node, which would
             // be one of the "single" operators.  They are dealt with in the second part of this function.
-            if (_op == DepOps.And || _op == DepOps.Opt || _op == DepOps.Or || _op == DepOps.Xor)
+            if (_op is DepOps.And or DepOps.Opt or DepOps.Or or DepOps.Xor)
             {
                 // This is our list of results for the children nodes.
                 var _results = new List<bool>();
@@ -380,7 +380,7 @@ namespace ECX.Core.Dependency.Resolver
         /// <remarks>None.</remarks>
         /// <param name="_op">The operator to convert to a string.</param>
         /// <returns>A string value that matches the operator in the <see href="depstring.html">dependency operator table</see>.</returns>
-        protected string OpToString(DepOps op)
+        protected static string OpToString(DepOps op)
         {
             return op switch
                    {

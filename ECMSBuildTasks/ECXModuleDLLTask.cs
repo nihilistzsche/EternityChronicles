@@ -95,11 +95,7 @@ namespace ECMSBuildTasks
                                       if (Includes != null) references.AddRange(Includes);
 
                                       cscTask.References = references.ToArray();
-                                      Log.LogMessage(MessageImportance.High, $"{taskItem} => {fullOutputFileName}");
-                                      var result = cscTask.Execute();
-                                      if (result) return true;
-                                      Log.LogError($"Error while compiling source file {taskItem}.");
-                                      return false;
+                                      return cscTask.Execute();
                                   });
         }
 

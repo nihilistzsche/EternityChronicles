@@ -66,7 +66,7 @@ namespace EternityChronicles.Core
             return new Tuple<SocketInformation, List<SocketInformation>>(serverSocket, clientSockets);
         }
 
-        public int GetProcessID()
+        public int GetProcessId()
         {
             return Process.GetCurrentProcess().Id;
         }

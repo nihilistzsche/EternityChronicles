@@ -37,7 +37,7 @@ namespace EternityChronicles
 
             Controller.RegisterNewRole("Core", typeof(ICore),
                                        (asm, basetype) => { Core = (ICore)asm.CreateInstance(basetype.ToString()); },
-                                       asm => { });
+                                       asm => { Core = null; });
 
             Controller.LoadModule("EternityChronicles.Core");
 
@@ -52,9 +52,7 @@ namespace EternityChronicles
 
         private static void SoftReboot(ref Tuple<SocketInformation, List<SocketInformation>> sockets)
         {
-            sockets = Core.DuplicateSockets(Process.GetCurrentProcess().Id);
-
-            Core = null;
+            sockets = Core.DuplicateSockets(Core.GetProcessId());
 
             Controller.UnloadModule("EternityChronicles.Core");
 
