@@ -27,6 +27,9 @@ using Task = System.Threading.Tasks.Task;
 
 namespace ECMSBuildTasks
 {
+    // ReSharper disable once PartialTypeWithSinglePart
+    // ReSharper disable once InconsistentNaming
+    // ReSharper disable once UnusedType.Global
     public partial class ECXModuleDLLTask : ToolTask
     {
         private static readonly string HomePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile); 
