@@ -47,21 +47,21 @@ namespace MDK.Master
         }
     }
 
-    public class MDKMaster
+    public class MdkMaster
     {
-        public MDKMaster(string dbName)
+        public MdkMaster(string dbName)
         {
-            DBName = dbName;
-            Databases = new Dictionary<Type, IMDKDatabase>();
+            DbName = dbName;
+            Databases = new Dictionary<Type, IMdkDatabase>();
         }
 
         public MongoClient Client { get; set; }
 
         public Process Process { get; set; }
 
-        public Dictionary<Type, IMDKDatabase> Databases { get; }
+        public Dictionary<Type, IMdkDatabase> Databases { get; }
 
-        public string DBName { get; }
+        public string DbName { get; }
 
         public void StartServer(string dataDir)
         {
@@ -88,20 +88,20 @@ namespace MDK.Master
             foreach (var type in mdkTypes)
             {
                 Databases.Add(type,
-                              (IMDKDatabase)typeof(MDKDatabase<>).CreateGenericInstance(
+                              (IMdkDatabase)typeof(MdkDatabase<>).CreateGenericInstance(
                                new[] { type }, new object[] { this }));
             }
         }
 
-        public List<T> Load<T>() where T : IMDKDataSchema, new()
+        public List<T> Load<T>() where T : IMdkDataSchema, new()
         {
-            var db = Databases[typeof(T)] as MDKDatabase<T>;
+            var db = Databases[typeof(T)] as MdkDatabase<T>;
             return db?.Load();
         }
 
-        public void Save<T>(List<T> objects) where T : IMDKDataSchema, new()
+        public void Save<T>(List<T> objects) where T : IMdkDataSchema, new()
         {
-            var db = Databases[typeof(T)] as MDKDatabase<T>;
+            var db = Databases[typeof(T)] as MdkDatabase<T>;
             db?.Save(objects);
         }
     }

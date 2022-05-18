@@ -27,23 +27,23 @@ namespace EternityChronicles.Tests.IronDragon
 {
     public class SVTestClass
     {
-        protected int a;
-        protected int b;
+        protected int A;
+        protected int B;
 
-        public SVTestClass(int _a, int _b)
+        public SVTestClass(int a, int b)
         {
-            a = _a;
-            b = _b;
+            A = a;
+            B = b;
         }
 
-        public int add(int c)
+        public int Add(int c)
         {
-            return a + b + c;
+            return A + B + c;
         }
 
-        public int mult()
+        public int Mult()
         {
-            return a * b;
+            return A * B;
         }
 
         [DragonExport("==")]
@@ -53,12 +53,12 @@ namespace EternityChronicles.Tests.IronDragon
 
             if (obj is not SVTestClass @class) return false;
 
-            return a == @class.a && b == @class.b;
+            return A == @class.A && B == @class.B;
         }
 
         public override int GetHashCode()
         {
-            return (a & b) ^ ((a | b) & (0xFA ^ ((a | b) & (a ^ b))));
+            return (A & B) ^ ((A | B) & (0xFA ^ ((A | B) & (A ^ B))));
         }
     }
 
@@ -67,11 +67,11 @@ namespace EternityChronicles.Tests.IronDragon
     {
         private class NativeHelper
         {
-            internal readonly int _fieldTest;
+            internal readonly int FieldTest;
 
             public NativeHelper(int ft)
             {
-                _fieldTest = ft;
+                FieldTest = ft;
             }
         }
 
@@ -110,7 +110,7 @@ namespace EternityChronicles.Tests.IronDragon
             defscope.SetVariable("ft", ft);
             defsource.Execute(defscope);
             var ftx = Dragon.Box(ft);
-            Assert.That(ftx._fieldTest + ftx.x, Is.EqualTo(37));
+            Assert.That(ftx.FieldTest + ftx.x, Is.EqualTo(37));
         }
 
         [Test]
@@ -209,8 +209,8 @@ namespace EternityChronicles.Tests.IronDragon
             defsource.Execute(defscope);
 
             var ftx = Dragon.Box(ft);
-            ftx._fieldTest = ftx.x + 10;
-            Assert.That(ft._fieldTest, Is.EqualTo(25));
+            ftx.FieldTest = ftx.x + 10;
+            Assert.That(ft.FieldTest, Is.EqualTo(25));
         }
 
         [Test]
@@ -219,8 +219,8 @@ namespace EternityChronicles.Tests.IronDragon
             var ft = new NativeHelper(0);
             var ftx = Dragon.Box(ft);
             ftx.x = 15;
-            ftx._fieldTest = ftx.x + 10;
-            Assert.AreEqual(25, ft._fieldTest);
+            ftx.FieldTest = ftx.x + 10;
+            Assert.AreEqual(25, ft.FieldTest);
         }
 
         [Test]
@@ -291,7 +291,7 @@ namespace EternityChronicles.Tests.IronDragon
             var engine = GetRuntime().GetEngine("IronDragon");
             var source =
                 engine.CreateScriptSourceFromString(
-                                                    "class sv_subclass_cs < SVTestClass { }; x = sv_subclass_cs(15,10); x.mult();");
+                                                    "class sv_subclass_cs < SVTestClass { }; x = sv_subclass_cs(15,10); x.Mult();");
             var scope = engine.CreateScope();
             scope.SetVariable("SVTestClass", Dragon.Box(typeof(SVTestClass)));
             Assert.That(source.Execute(scope), Is.EqualTo(150));
@@ -303,7 +303,7 @@ namespace EternityChronicles.Tests.IronDragon
             var engine = GetRuntime().GetEngine("IronDragon");
             var source =
                 engine.CreateScriptSourceFromString(
-                                                    "class sv_subclass_cs2 < SVTestClass { def new() { @a = 17; @b = 20; }; }; x = sv_subclass_cs2(); x.mult();");
+                                                    "class sv_subclass_cs2 < SVTestClass { def new() { @A = 17; @B = 20; }; }; x = sv_subclass_cs2(); x.Mult();");
             var scope = engine.CreateScope();
             scope.SetVariable("SVTestClass", Dragon.Box(typeof(SVTestClass)));
             Assert.That(source.Execute(scope), Is.EqualTo(340));
@@ -392,7 +392,7 @@ namespace EternityChronicles.Tests.IronDragon
             defscope.SetVariable("ft", ft);
             defsource.Execute(defscope);
             var ftx = Dragon.Box(ft);
-            Assert.That(ft._fieldTest + ftx.x, Is.EqualTo(37));
+            Assert.That(ft.FieldTest + ftx.x, Is.EqualTo(37));
         }
 
         [Test]
@@ -417,9 +417,9 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var x = new SVTestClass(10, 20);
 
-            var _x = Dragon.Box(x);
+            var dx = Dragon.Box(x);
 
-            var add = _x.add();
+            var add = dx.Add();
 
             Assert.That((int)add(10), Is.EqualTo(40));
         }

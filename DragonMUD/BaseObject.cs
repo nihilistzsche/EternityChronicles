@@ -33,7 +33,7 @@ namespace DragonMUD
 
         private readonly Dictionary<string, int> _mFlags;
 
-        private readonly DragonMUDProperties _mProperties;
+        private readonly DragonMudProperties _mProperties;
 
         private int _mCurrentBitPower;
 
@@ -48,7 +48,7 @@ namespace DragonMUD
             _mFlags = new Dictionary<string, int>();
             _mFlagReasons = new Dictionary<string, string>();
             _mCurrentBitPower = 0;
-            _mProperties = new DragonMUDProperties();
+            _mProperties = new DragonMudProperties();
         }
 
         public dynamic this[string propertyPath]
@@ -111,7 +111,7 @@ namespace DragonMUD
         }
     }
 
-    public static class DragonMUDHelper
+    public static class DragonMudHelper
     {
         public static bool SoftRebootCheck(ConnectionCoordinator coordinator)
         {

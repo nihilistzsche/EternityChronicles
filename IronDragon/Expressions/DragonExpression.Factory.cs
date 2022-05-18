@@ -359,14 +359,14 @@ namespace IronDragon.Expressions
             return new ObjectMethodChangeExpression(lvalue, varName, isRemove);
         }
 
-        public static Expression SwitchOp(Expression test, Expression pairs)
+        public static Expression SwitchOp(Expression test, Expression rawPairs)
         {
-            var _pairs = (CreateDictionaryExpression)pairs;
+            var pairs = (CreateDictionaryExpression)rawPairs;
 
-            var _kvpList = _pairs.Values;
+            var kvpList = pairs.Values;
 
             var caseBlocks =
-                (from KeyValuePairExpression _kvp in _kvpList select SwitchCase(Block(_kvp.Value), _kvp.Key)).ToList();
+                (from KeyValuePairExpression kvp in kvpList select SwitchCase(Block(kvp.Value), kvp.Key)).ToList();
 
             var @default = Block(Default(caseBlocks.First().Body.Type));
 

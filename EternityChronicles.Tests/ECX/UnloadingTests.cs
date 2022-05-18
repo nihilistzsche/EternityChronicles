@@ -36,30 +36,30 @@ namespace EternityChronicles.Tests.ECX
         [Test]
         public void TestUnloading()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ul");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ul");
 
-            _mc.LoadModule("ecx-ul-01");
+            mc.LoadModule("ecx-ul-01");
 
-            _mc.UnloadModule("ecx-ul-01");
+            mc.UnloadModule("ecx-ul-01");
 
-            Assert.IsFalse(_mc.IsLoaded("ecx-ul-01"));
+            Assert.IsFalse(mc.IsLoaded("ecx-ul-01"));
         }
 
         // ecx-ul-02 - Unloading with ref count > 1
         [Test]
         public void TestDomainStillReferencedUnloading()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ul");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ul");
 
-            _mc.LoadModule("ecx-ul-02");
+            mc.LoadModule("ecx-ul-02");
 
-            _mc.LoadModule("ecx-ul-02");
+            mc.LoadModule("ecx-ul-02");
 
-            Assert.Throws<DomainStillReferencedException>(() => { _mc.UnloadModule("ecx-ul-02"); });
+            Assert.Throws<DomainStillReferencedException>(() => { mc.UnloadModule("ecx-ul-02"); });
         }
     }
 }

@@ -82,18 +82,18 @@ namespace IronDragon.Runtime
         }
 
         // Dragon -> .net
-        internal static void SyncInstanceVariablesFrom(DragonInstance DragonObject, object obj)
+        internal static void SyncInstanceVariablesFrom(DragonInstance dragonObject, object obj)
         {
             var fields =
                 obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
-            DragonObject.InstanceVariables.Variables.Keys.ToList().ForEach(key =>
+            dragonObject.InstanceVariables.Variables.Keys.ToList().ForEach(key =>
                                                                            {
                                                                                var fq = fields
                                                                                    .Where(field => field.Name == key)
                                                                                    .ToList();
                                                                                if (!fq.Any()) return;
                                                                                var val =
-                                                                                   DragonObject.InstanceVariables[key];
+                                                                                   dragonObject.InstanceVariables[key];
                                                                                if (val is DragonNumber)
                                                                                    val = DragonNumber.Convert(val);
                                                                                fq.First().SetValue(obj, val);
@@ -101,11 +101,11 @@ namespace IronDragon.Runtime
         }
 
         // .net -> Dragon
-        internal static void SyncInstanceVariablesTo(DragonInstance DragonObject, object obj)
+        internal static void SyncInstanceVariablesTo(DragonInstance dragonObject, object obj)
         {
             var fields =
                 obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
-            fields.ForEach(field => DragonObject.InstanceVariables[field.Name] = field.GetValue(obj));
+            fields.ForEach(field => dragonObject.InstanceVariables[field.Name] = field.GetValue(obj));
         }
     }
 }

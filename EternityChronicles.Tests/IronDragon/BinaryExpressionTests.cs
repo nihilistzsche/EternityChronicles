@@ -210,8 +210,8 @@ namespace EternityChronicles.Tests.IronDragon
         [Test]
         public void TestIntegrationRuby()
         {
-            var Dragonengine = GetRuntime().GetEngine("IronDragon");
-            var Dragonsource = Dragonengine.CreateScriptSourceFromString("x + 2;");
+            var dragonengine = GetRuntime().GetEngine("IronDragon");
+            var dragonsource = dragonengine.CreateScriptSourceFromString("x + 2;");
 
             var rubyengine = GetRuntime().GetEngine("IronRuby");
             var rubysource =
@@ -220,9 +220,9 @@ namespace EternityChronicles.Tests.IronDragon
 
             var x = rubysource.Execute(rubyengine.CreateScope());
 
-            var Dragonscope = Dragonengine.CreateScope();
-            Dragonscope.SetVariable("x", x);
-            Assert.That(Dragonsource.Execute(Dragonscope), Is.EqualTo(7));
+            var dragonscope = dragonengine.CreateScope();
+            dragonscope.SetVariable("x", x);
+            Assert.That(dragonsource.Execute(dragonscope), Is.EqualTo(7));
         }
 
         [Test]

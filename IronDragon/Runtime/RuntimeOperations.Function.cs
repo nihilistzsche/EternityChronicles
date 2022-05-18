@@ -213,9 +213,9 @@ namespace IronDragon.Runtime
         }
 
 
-        private static bool HasParent(DragonInstance DragonObject, Type type)
+        private static bool HasParent(DragonInstance dragonObject, Type type)
         {
-            var @class = DragonObject.Class;
+            var @class = dragonObject.Class;
             do
             {
                 if (@class is DragonBoxedClass && ((DragonBoxedClass)@class).BoxedType == type)
@@ -239,10 +239,10 @@ namespace IronDragon.Runtime
             var arguments = new List<object>();
             args.ForEach(arg =>
                          {
-                             var _val = CompilerServices.CompileExpression(arg.Value, scope);
-                             if (_val is DragonString) _val = (string)_val;
-                             if (_val is DragonNumber) _val = DragonNumber.Convert((DragonNumber)_val);
-                             arguments.Add(_val);
+                             var val = CompilerServices.CompileExpression(arg.Value, scope);
+                             if (val is DragonString) val = (string)val;
+                             if (val is DragonNumber) val = DragonNumber.Convert((DragonNumber)val);
+                             arguments.Add(val);
                          });
 
             while (arguments.Count < minfo.GetParameters().Count()) arguments.Add(null);

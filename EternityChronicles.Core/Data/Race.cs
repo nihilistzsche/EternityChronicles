@@ -26,7 +26,7 @@ using DMRace = DragonMUD.Data.Race;
 
 namespace EternityChronicles.Core.Data
 {
-    public class Race : DMRace, IDataSchema<Race>, IMDKDataSchema
+    public class Race : DMRace, IDataSchema<Race>, IMdkDataSchema
     {
         public static bool ForcedBootstrap => File.Exists("forcedracebootstrap");
 
@@ -62,7 +62,7 @@ namespace EternityChronicles.Core.Data
             return null;
         }
 
-        [BsonId] public ObjectId ID { get; set; }
+        [BsonId] public ObjectId Id { get; set; }
 
         public string CollectionName => "Races";
     }

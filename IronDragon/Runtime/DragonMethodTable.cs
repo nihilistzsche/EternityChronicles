@@ -81,16 +81,16 @@ namespace IronDragon.Runtime
                               .Where(f => CheckForMatch(f as DragonNativeFunction, args));
                 if (fq.Any())
                 {
-                    var _fq = fq.Where(f => CheckForNameMatch(f, args));
-                    if (_fq.Any()) return _fq.First();
+                    var gq = fq.Where(f => CheckForNameMatch(f, args));
+                    if (gq.Any()) return gq.First();
                     return fq.First();
                 }
 
                 rq = Functions.Where(f => CheckForMatch(f, args));
                 if (rq.Any())
                 {
-                    var _rq = rq.Where(f => CheckForNameMatch(f, args));
-                    if (_rq.Any()) return _rq.First();
+                    var sq = rq.Where(f => CheckForNameMatch(f, args));
+                    if (sq.Any()) return sq.First();
                     return rq.First();
                 }
 
@@ -101,16 +101,16 @@ namespace IronDragon.Runtime
                           .Where(f => CheckForMatch(f as DragonNativeFunction, args));
             if (fq.Any())
             {
-                var _fq = fq.Where(f => CheckForNameMatch(f, args));
-                if (_fq.Any()) return _fq.First();
+                var gq = fq.Where(f => CheckForNameMatch(f, args));
+                if (gq.Any()) return gq.First();
                 return fq.First();
             }
 
             rq = Functions.Where(f => CheckForMatch(f, args));
             if (rq.Any())
             {
-                var _rq = rq.Where(f => CheckForNameMatch(f, args));
-                if (_rq.Any()) return _rq.First();
+                var sq = rq.Where(f => CheckForNameMatch(f, args));
+                if (sq.Any()) return sq.First();
                 return rq.First();
             }
 

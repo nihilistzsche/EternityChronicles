@@ -55,23 +55,23 @@ namespace DragonMUD.StateMachine.Workflows
             Steps[T.Name] = new WorkflowStep(T);
         }
 
-        public void SetNextStep(Type T, Type K)
+        public void SetNextStep(Type T, Type k)
         {
-            if (!CheckState(T) || !CheckState(K))
+            if (!CheckState(T) || !CheckState(k))
                 return;
 
             if (!Steps.ContainsKey(T.Name)) return;
 
             var step = Steps[T.Name];
 
-            if (!Steps.ContainsKey(K.Name)) AddStep(K);
+            if (!Steps.ContainsKey(k.Name)) AddStep(k);
 
-            step.NextStep = Steps[K.Name];
+            step.NextStep = Steps[k.Name];
         }
 
-        public void InsertStepBefore(Type T, Type K)
+        public void InsertStepBefore(Type T, Type k)
         {
-            if (!CheckState(T) || !CheckState(K))
+            if (!CheckState(T) || !CheckState(k))
                 return;
 
             if (!Steps.ContainsKey(T.Name))
@@ -80,17 +80,17 @@ namespace DragonMUD.StateMachine.Workflows
             var step = Steps[T.Name];
             var oldBeforeStep = (from xstep in Steps.Values where xstep.NextStep == step select xstep).FirstOrDefault();
 
-            if (!Steps.ContainsKey(K.Name))
-                AddStep(K);
+            if (!Steps.ContainsKey(k.Name))
+                AddStep(k);
 
-            var newStep = Steps[K.Name];
+            var newStep = Steps[k.Name];
             newStep.NextStep = step;
             if (oldBeforeStep != null) oldBeforeStep.NextStep = newStep;
         }
 
-        public void InsertStepAfter(Type T, Type K)
+        public void InsertStepAfter(Type T, Type k)
         {
-            if (!CheckState(T) || !CheckState(K))
+            if (!CheckState(T) || !CheckState(k))
                 return;
 
             if (!Steps.ContainsKey(T.Name))
@@ -98,10 +98,10 @@ namespace DragonMUD.StateMachine.Workflows
 
             var step = Steps[T.Name];
 
-            if (!Steps.ContainsKey(K.Name))
-                AddStep(K);
+            if (!Steps.ContainsKey(k.Name))
+                AddStep(k);
 
-            var newStep = Steps[K.Name];
+            var newStep = Steps[k.Name];
             newStep.NextStep = step.NextStep;
             step.NextStep = newStep;
         }

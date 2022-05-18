@@ -30,7 +30,7 @@ namespace IronDragon
     /// </summary>
     public static class Dragon
     {
-        private static readonly LanguageSetup _DragonSetup =
+        private static readonly LanguageSetup DragonSetup =
             new("IronDragon.Runtime.DragonContext,IronDragon,Version=0.5.0.0,Culture=neutral",
                 "IronDragon 0.5", new[] { "IronDragon" }, new[] { ".dragon", ".drg" });
 
@@ -85,12 +85,12 @@ namespace IronDragon
 
         public static ScriptRuntime CreateRuntime()
         {
-            return CreateRuntime(_DragonSetup);
+            return CreateRuntime(DragonSetup);
         }
 
         public static LanguageSetup CreateDragonSetup()
         {
-            return _DragonSetup;
+            return DragonSetup;
         }
 
         public static dynamic Execute(string source, DragonScope scope)

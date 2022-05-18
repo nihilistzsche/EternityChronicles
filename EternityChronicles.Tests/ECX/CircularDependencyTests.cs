@@ -35,31 +35,31 @@ namespace EternityChronicles.Tests.ECX
         [Test]
         public void TestCircularDependencyAonBonA()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
 
-            Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-01a"); });
+            Assert.Throws<CircularDependencyException>(() => { mc.LoadModule("ecx-cr-01a"); });
         }
 
         [Test]
         public void TestCircularDependencyAonBonConA()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
 
-            Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-02a"); });
+            Assert.Throws<CircularDependencyException>(() => { mc.LoadModule("ecx-cr-02a"); });
         }
 
         [Test]
         public void TestCircularDependencyOnSelf()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-cr");
 
-            Assert.Throws<CircularDependencyException>(() => { _mc.LoadModule("ecx-cr-03a"); });
+            Assert.Throws<CircularDependencyException>(() => { mc.LoadModule("ecx-cr-03a"); });
         }
     }
 }

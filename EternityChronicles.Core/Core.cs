@@ -43,7 +43,7 @@ namespace EternityChronicles.Core
         private readonly List<IGameLoopObject> _gameLoopObjects = new();
         private ModuleController _controller;
 
-        private MDKMaster _dbMaster;
+        private MdkMaster _dbMaster;
 
         private int _port = 7000;
 
@@ -51,15 +51,15 @@ namespace EternityChronicles.Core
 
         private VariableManager _varManager;
 
-        public Tuple<SocketInformation, List<SocketInformation>> DuplicateSockets(int processID)
+        public Tuple<SocketInformation, List<SocketInformation>> DuplicateSockets(int processId)
         {
-            var serverSocket = _server.Socket.DuplicateAndClose(processID);
+            var serverSocket = _server.Socket.DuplicateAndClose(processId);
 
             var clientSockets = new List<SocketInformation>();
 
             foreach (var client in _server.ConnectionPool.Connections)
             {
-                var clientSocket = client.Socket.DuplicateAndClose(processID);
+                var clientSocket = client.Socket.DuplicateAndClose(processId);
                 clientSockets.Add(clientSocket);
             }
 
@@ -187,7 +187,7 @@ namespace EternityChronicles.Core
 
             if (greeting != null) _server.ConnectionPool.Greeting = greeting.Text;
 
-            _dbMaster = new MDKMaster("EternityChronicles");
+            _dbMaster = new MdkMaster("EternityChronicles");
             _dbMaster.StartServer("/var/ec/db");
             _dbMaster.InitializeData();
 
@@ -199,7 +199,7 @@ namespace EternityChronicles.Core
                 Log.LogMessage("sys", LogLevel.Info, "Races were not found in the db, loading the bootstrap file.");
                 races = ExtensibleDataLoader<Race>.LoadFile("lib/bootstrap/races.xml", new Race());
                 if (Race.ForcedBootstrap)
-                    _dbMaster.Client.GetDatabase(_dbMaster.DBName).DropCollection(new Race().CollectionName);
+                    _dbMaster.Client.GetDatabase(_dbMaster.DbName).DropCollection(new Race().CollectionName);
                 else
                     _dbMaster.Save(races);
 

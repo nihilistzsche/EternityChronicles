@@ -144,12 +144,12 @@ namespace DragonMUD.Data.Character
             return LoadFromTemplateWithData(template.ReadToEnd(), loadType);
         }
 
-        public static Stat LoadFromTemplateUsingXMLDocument(XDocument doc)
+        public static Stat LoadFromTemplateUsingXmlDocument(XDocument doc)
         {
-            return LoadFromTemplateUsingXMLDocument(doc, StatLoadType.Default);
+            return LoadFromTemplateUsingXmlDocument(doc, StatLoadType.Default);
         }
 
-        public static Stat LoadFromTemplateUsingXMLDocument(XDocument doc, StatLoadType loadType)
+        public static Stat LoadFromTemplateUsingXmlDocument(XDocument doc, StatLoadType loadType)
         {
             return LoadFromTemplateWithRootElement(doc.Root, loadType);
         }
@@ -203,23 +203,23 @@ namespace DragonMUD.Data.Character
                 if (abbrAttribute != null)
                     statAbbr = abbrAttribute.Value;
 
-                var _statvalue = 0;
+                var statvalue = 0;
 
                 var valueAttribute = elem.Attribute(attributeToLookFor);
                 if (valueAttribute != null)
-                    _statvalue = int.Parse(valueAttribute.Value);
+                    statvalue = int.Parse(valueAttribute.Value);
 
                 var stat = new Stat(statName, statAbbr, 0);
                 if (loadType == StatLoadType.Allocation)
                 {
-                    stat.Allocatable = _statvalue;
+                    stat.Allocatable = statvalue;
                     var changeableAttribute = elem.Attribute("changeable");
                     if (changeableAttribute != null)
                         stat.Changeable = bool.Parse(changeableAttribute.Value);
                 }
                 else
                 {
-                    stat.Value = _statvalue;
+                    stat.Value = statvalue;
                 }
 
                 return stat;
@@ -259,10 +259,10 @@ namespace DragonMUD.Data.Character
         public static Stat LoadFromTemplateWithData(string data, StatLoadType loadType)
         {
             var doc = new XDocument(data);
-            return doc.Root != null ? LoadFromTemplateUsingXMLDocument(doc, loadType) : null;
+            return doc.Root != null ? LoadFromTemplateUsingXmlDocument(doc, loadType) : null;
         }
 
-        public XElement SaveToXML()
+        public XElement SaveToXml()
         {
             var mainName = HasChildren ? "statcollection" : "stat";
             var mainElement = new XElement(mainName);
@@ -271,7 +271,7 @@ namespace DragonMUD.Data.Character
             var valueAttribute = new XAttribute("value", Value);
             mainElement.Add(nameAttribute, abbreviationAttribute, valueAttribute);
             if (!HasChildren) return mainElement;
-            foreach (var child in Children) mainElement.Add(child.SaveToXML());
+            foreach (var child in Children) mainElement.Add(child.SaveToXml());
 
             return mainElement;
         }

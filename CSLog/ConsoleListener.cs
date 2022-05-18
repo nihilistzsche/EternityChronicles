@@ -31,7 +31,7 @@ namespace CSLog
 
         public void LogMessage(string message, LogLevel level, string channelName)
         {
-            var stream = level == LogLevel.Fatal || level == LogLevel.Critical
+            var stream = level is LogLevel.Fatal or LogLevel.Critical
                              ? Console.OpenStandardError()
                              : Console.OpenStandardOutput();
 

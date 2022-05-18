@@ -26,7 +26,7 @@ namespace IronDragon.Runtime
     {
         public DragonInstance(DragonClass @class)
         {
-            _class = @class;
+            Class = @class;
             SingletonMethods = new Dictionary<string, DragonFunction>();
             UndefinedMethods = new List<string>();
             RemovedMethods = new List<string>();
@@ -40,9 +40,7 @@ namespace IronDragon.Runtime
         }
 
         #region Properties
-
-        internal DragonClass _class;
-
+        
         public Dictionary<string, DragonFunction> SingletonMethods { get; }
 
         public DragonScope InstanceVariables { get; }
@@ -51,7 +49,7 @@ namespace IronDragon.Runtime
 
         public List<string> RemovedMethods { get; }
 
-        public DragonClass Class => _class;
+        public DragonClass Class { get; internal set; }
 
         internal object BackingObject { get; set; }
 

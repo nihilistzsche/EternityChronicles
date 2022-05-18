@@ -45,12 +45,12 @@ namespace IronDragon.Runtime
                 if (name.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    name = name.Substring(2);
+                    name = name[2..];
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    name = name.Substring(1);
+                    name = name[1..];
                 }
             }
 
@@ -58,18 +58,17 @@ namespace IronDragon.Runtime
             {
                 if (name.StartsWith("@@"))
                 {
-                    var _val = Resolve("self", scope);
-                    if (!(_val is DragonInstance)) // native object?
-                        _val = Dragon.Box((object)_val, scope);
-                    var @class = ((DragonInstance)_val).Class;
+                    var rval = Resolve("self", scope);
+                    if (!(rval is DragonInstance)) // native object?
+                        rval = Dragon.Box((object)rval, scope);
+                    var @class = ((DragonInstance)rval).Class;
                     return
                         CompilerServices.CompileExpression(
                                                            DragonExpression
                                                                .Variable(DragonExpression
                                                                              .InstanceRef(Expression.Constant(@class),
                                                                                  Expression
-                                                                                     .Constant(name
-                                                                                         .Substring(2)))),
+                                                                                     .Constant(name[2..]))),
                                                            scope);
                 }
 
@@ -78,7 +77,7 @@ namespace IronDragon.Runtime
                                                        DragonExpression.Variable(
                                                         DragonExpression
                                                             .InstanceRef(DragonExpression.Variable(Expression.Constant("self")),
-                                                                         Expression.Constant(name.Substring(1)))),
+                                                                         Expression.Constant(name[1..]))),
                                                        scope);
             }
 
@@ -144,7 +143,7 @@ namespace IronDragon.Runtime
                 {
                     var gmArgs = new List<Expression>();
                     gmArgs.Add(Expression.Constant(lval, typeof(object)));
-                    if (type == E.PreIncrementAssign || type == E.PreDecrementAssign)
+                    if (type is E.PreIncrementAssign or E.PreDecrementAssign)
                     {
                         var val = Resolve(CompilerServices.CompileExpression(iref, scope), scope);
                         Assign(var, 1, type == E.PreIncrementAssign ? E.AddAssign : E.SubtractAssign, false, rawScope);
@@ -192,7 +191,7 @@ namespace IronDragon.Runtime
 
                 if (incDecMap.Contains(type))
                 {
-                    if (type == E.PreIncrementAssign || type == E.PreDecrementAssign)
+                    if (type is E.PreIncrementAssign or E.PreDecrementAssign)
                     {
                         var val = ResolveSymbol(sym, scope);
                         Assign(var, 1, type == E.PreIncrementAssign ? E.AddAssign : E.SubtractAssign, false, rawScope);
@@ -215,12 +214,12 @@ namespace IronDragon.Runtime
                 if (name.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    name = name.Substring(2);
+                    name = name[2..];
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    name = name.Substring(1);
+                    name = name[1..];
                 }
 
                 scopeSet = true;
@@ -235,7 +234,7 @@ namespace IronDragon.Runtime
                         DragonExpression.Variable(
                                                   DragonExpression
                                                       .InstanceRef(DragonExpression.Variable(Expression.Constant("self")),
-                                                                   Expression.Constant(name.Substring(1))));
+                                                                   Expression.Constant(name[1..])));
                     if (map.ContainsKey(type))
                         value =
                             CompilerServices.CreateLambdaForExpression(
@@ -248,7 +247,7 @@ namespace IronDragon.Runtime
                 }
 
                 found = true;
-                name = name.Substring(1);
+                name = name[1..];
             }
 
             if (name == "self")
@@ -287,7 +286,7 @@ namespace IronDragon.Runtime
 
             if (incDecMap.Contains(type))
             {
-                if (type == E.PostIncrementAssign || type == E.PostDecrementAssign)
+                if (type is E.PostIncrementAssign or E.PostDecrementAssign)
                 {
                     var val = Resolve(name, scope);
                     Assign(var, 1, type == E.PostIncrementAssign ? E.AddAssign : E.SubtractAssign, false, rawScope);
@@ -354,9 +353,9 @@ namespace IronDragon.Runtime
             var k = 0;
             var result = new DragonArray();
 
-            foreach (var _lvalue in leftHandValues)
+            foreach (var llvalue in leftHandValues)
             {
-                var lvalue = _lvalue.Value;
+                var lvalue = llvalue.Value;
                 if (i >= rvalues.Count) break;
                 k++;
                 if (lvalue is List<ParallelAssignmentExpression.ParallelAssignmentInfo>)
@@ -371,7 +370,7 @@ namespace IronDragon.Runtime
                                                   }
                                               }, scope));
                 }
-                else if (_lvalue.IsWildcard)
+                else if (llvalue.IsWildcard)
                 {
                     var mvalues = new DragonArray();
                     for (var j = i; j < rvalues.Count; j++) mvalues.Add(rvalues[j]);
@@ -424,12 +423,12 @@ namespace IronDragon.Runtime
                 if (from.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    from = from.Substring(2);
+                    from = from[2..];
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    from = from.Substring(1);
+                    from = from[1..];
                 }
             }
 
@@ -438,12 +437,12 @@ namespace IronDragon.Runtime
                 if (to.StartsWith("$$"))
                 {
                     scope = Dragon.Globals;
-                    to = to.Substring(2);
+                    to = to[2..];
                 }
                 else
                 {
                     scope = scope.RootScope;
-                    to = to.Substring(1);
+                    to = to[1..];
                 }
             }
 

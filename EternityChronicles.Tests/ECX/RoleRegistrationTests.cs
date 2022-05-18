@@ -59,29 +59,29 @@ namespace EternityChronicles.Tests.ECX
             Directory.SetCurrentDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName);
         }
 
-        protected IECXTestRole1 i;
+        protected IECXTestRole1 I;
 
-        protected ModuleController controller;
+        protected ModuleController Controller;
 
-        protected dynamic di;
+        protected dynamic Di;
 
-        public void RegisterIECXTestRole1(Assembly asm, Type type)
+        public void RegisterIecxTestRole1(Assembly asm, Type type)
         {
-            i = (IECXTestRole1)asm.CreateInstance(type.ToString());
+            I = (IECXTestRole1)asm.CreateInstance(type.ToString());
         }
 
-        public string CallIECXTestRole1()
+        public string CallIecxTestRole1()
         {
-            return i.WriteMyself();
+            return I.WriteMyself();
         }
 
-        public void UnregisterIECXTestRole1(Assembly asm)
+        public void UnregisterIecxTestRole1(Assembly asm)
         {
         }
 
         public void GenericRegister(Assembly asm, Type type)
         {
-            di = typeof(RoleRegisterTest<Dummy>).CreateGenericInstance(new[] { type },
+            Di = typeof(RoleRegisterTest<Dummy>).CreateGenericInstance(new[] { type },
                                                                        new[] { asm.CreateInstance(type.ToString()) });
         }
 
@@ -92,61 +92,61 @@ namespace EternityChronicles.Tests.ECX
         [Test]
         public void TestAppRegisteredRole()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rr");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rr");
 
-            controller = _mc;
+            Controller = mc;
 
-            _mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), RegisterIECXTestRole1, UnregisterIECXTestRole1);
+            mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), RegisterIecxTestRole1, UnregisterIecxTestRole1);
 
-            _mc.LoadModule("ecx-rr-01a");
+            mc.LoadModule("ecx-rr-01a");
 
-            Assert.AreEqual("I am an instantiated ecx_rr_01a, go me!", CallIECXTestRole1());
+            Assert.AreEqual("I am an instantiated ecx_rr_01a, go me!", CallIecxTestRole1());
         }
 
         [Test]
         public void TestModuleRegisteredRole()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rr");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rr");
 
-            _mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), RegisterIECXTestRole1, UnregisterIECXTestRole1);
+            mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), RegisterIecxTestRole1, UnregisterIecxTestRole1);
 
-            _mc.LoadModule("ecx-rr-02a");
+            mc.LoadModule("ecx-rr-02a");
 
-            Assert.AreEqual("Module initiated role!", CallIECXTestRole1());
+            Assert.AreEqual("Module initiated role!", CallIecxTestRole1());
         }
 
         [Test]
         public void TestGenericRole()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rr");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rr");
 
-            _mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), GenericRegister, GenericUnregister);
+            mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), GenericRegister, GenericUnregister);
 
-            _mc.LoadModule("ecx-rr-01a");
+            mc.LoadModule("ecx-rr-01a");
 
-            Assert.AreEqual("I am an instantiated ecx_rr_01a, go me!", di.GetMessage());
+            Assert.AreEqual("I am an instantiated ecx_rr_01a, go me!", Di.GetMessage());
         }
 
         [Test]
         public void TestSearchForModule()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rs");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-rs");
 
-            _mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), RegisterIECXTestRole1, UnregisterIECXTestRole1);
+            mc.RegisterNewRole("IECXTestRole1", typeof(IECXTestRole1), RegisterIecxTestRole1, UnregisterIecxTestRole1);
 
-            var m = _mc.SearchForModulesForRole("IECXTestRole1");
+            var m = mc.SearchForModulesForRole("IECXTestRole1");
 
             Assert.AreEqual(new List<string> { "ecx-rs-01a", "ecx-rs-01c" }, m);
 
-            foreach (var _m in m) Assert.AreEqual(false, _mc.IsLoaded(_m));
+            foreach (var n in m) Assert.AreEqual(false, mc.IsLoaded(n));
         }
     }
 }

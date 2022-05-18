@@ -19,9 +19,9 @@ using MongoDB.Bson;
 
 namespace MDK.Master
 {
-    public interface IMDKDataSchema
+    public interface IMdkDataSchema
     {
-        ObjectId ID { get; set; }
+        ObjectId Id { get; set; }
 
         string CollectionName { get; }
     }

@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace DragonMUD.Utility
 {
-    public class DragonMUDProperties
+    public class DragonMudProperties
     {
         public readonly Dictionary<string, dynamic> Properties = new();
 
@@ -68,9 +68,9 @@ namespace DragonMUD.Utility
             }
         }
 
-        private DragonMUDProperties GetPropertyDictFromName(string name)
+        private DragonMudProperties GetPropertyDictFromName(string name)
         {
-            return Properties[name] as DragonMUDProperties ?? new DragonMUDProperties();
+            return Properties[name] as DragonMudProperties ?? new DragonMudProperties();
         }
     }
 }

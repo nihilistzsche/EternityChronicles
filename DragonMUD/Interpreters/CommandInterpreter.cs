@@ -70,15 +70,15 @@ namespace DragonMUD.Interpreters
 
             var info = new CommandInfo
                        {
-                           name = commandAttribute.Name,
-                           method = method,
-                           flags = commandAttribute.Flags,
-                           help =
+                           Name = commandAttribute.Name,
+                           Method = method,
+                           Flags = commandAttribute.Flags,
+                           Help =
                            {
                                ["short"] = commandAttribute.ShortHelp,
                                ["long"] = commandAttribute.LongHelp
                            },
-                           owner = logic
+                           Owner = logic
                        };
 
             RegisteredCommands.Add(commandAttribute.Name, info);
@@ -116,10 +116,10 @@ namespace DragonMUD.Interpreters
         private bool ValidateInput(CommandInfo command, ConnectionCoordinator coordinator, bool onlyFlagsAndLevel,
                                    string[] parts)
         {
-            var numArgs = command.method.GetParameters().Length;
+            var numArgs = command.Method.GetParameters().Length;
             if (!onlyFlagsAndLevel)
             {
-                var numOpt = (from p in command.method.GetParameters() where p.HasDefaultValue select p).Count();
+                var numOpt = (from p in command.Method.GetParameters() where p.HasDefaultValue select p).Count();
                 if (parts.Length < numArgs - numOpt)
                 {
                     coordinator.SendMessage($"#{numArgs} arguments expected, #{parts.Length} gotten.");
@@ -127,7 +127,7 @@ namespace DragonMUD.Interpreters
                 }
             }
 
-            var failedFlags = (from flag in command.flags
+            var failedFlags = (from flag in command.Flags
                                where !coordinator.IsFlagSet(flag) || !coordinator["current-character"]
                                          ?.IsFlagSet(flag)
                                select flag).Any();
@@ -160,7 +160,7 @@ namespace DragonMUD.Interpreters
 
             if (parts.Length > 1 && parts[1] == "-help" && ValidateInput(info, coordinator, true, parts))
             {
-                if (info.help["short"] == null || info.help["short"] == string.Empty)
+                if (info.Help["short"] == null || info.Help["short"] == string.Empty)
                 {
                     coordinator.SendMessage("Help not available for command.");
                     if (Logic != null && Logic.IsRepeating())
@@ -168,7 +168,7 @@ namespace DragonMUD.Interpreters
                     return;
                 }
 
-                coordinator.SendMessage(info.help["short"]);
+                coordinator.SendMessage(info.Help["short"]);
                 return;
             }
 
@@ -179,15 +179,15 @@ namespace DragonMUD.Interpreters
             }
 
             var xargs = new List<object>(parts) { [0] = coordinator };
-            if (xargs.Count() > info.method.GetParameters().Length)
+            if (xargs.Count() > info.Method.GetParameters().Length)
             {
-                var zargs = xargs.Skip(info.method.GetParameters().Length)
-                                 .Take(xargs.Count() - info.method.GetParameters().Length);
-                xargs = xargs.Take(info.method.GetParameters().Length).ToList();
+                var zargs = xargs.Skip(info.Method.GetParameters().Length)
+                                 .Take(xargs.Count() - info.Method.GetParameters().Length);
+                xargs = xargs.Take(info.Method.GetParameters().Length).ToList();
                 xargs.Add(string.Join(" ", zargs));
             }
 
-            Dynamic.InvokeMember(info.owner, info.method.Name, xargs);
+            Dynamic.InvokeMember(info.Owner, info.Method.Name, xargs);
         }
 
         [Command("help", "", 1, "", "Displays long help for the given command.")]
@@ -206,17 +206,17 @@ namespace DragonMUD.Interpreters
                 return;
             }
 
-            if (info.help["long"] == null || info.help["long"] == string.Empty)
+            if (info.Help["long"] == null || info.Help["long"] == string.Empty)
             {
-                if (info.help["short"] != null && info.help["short"] != string.Empty)
-                    coordinator.SendMessage(info.help["short"]);
+                if (info.Help["short"] != null && info.Help["short"] != string.Empty)
+                    coordinator.SendMessage(info.Help["short"]);
                 else
                     coordinator.SendMessage("Help unavailable for command.");
             }
             else
             {
                 using var fs =
-                    new FileStream($"$(BundleDir)/lib/help/#{info.help["long"]}".ReplaceAllVariables(), FileMode.Open,
+                    new FileStream($"$(BundleDir)/lib/help/#{info.Help["long"]}".ReplaceAllVariables(), FileMode.Open,
                                    FileAccess.Read);
                 var bytes = new byte[fs.Length];
                 fs.Read(bytes, 0, (int)fs.Length);
@@ -230,21 +230,21 @@ namespace DragonMUD.Interpreters
             var info = FindCommand(command);
             coordinator.SendMessage(info == null
                                         ? "No command found."
-                                        : $"Command #{info.name}, Optional Arguments: #{(from p in info.method.GetParameters() where p.HasDefaultValue select p).Count()}, Flags Required: #{string.Join("", "", info.flags)}");
+                                        : $"Command #{info.Name}, Optional Arguments: #{(from p in info.Method.GetParameters() where p.HasDefaultValue select p).Count()}, Flags Required: #{string.Join("", "", info.Flags)}");
         }
 
         public class CommandInfo
         {
-            public List<string> flags;
+            public List<string> Flags;
 
-            public Dictionary<string, string> help;
+            public Dictionary<string, string> Help;
 
-            public MethodInfo method;
+            public MethodInfo Method;
 
-            public int minLevel;
-            public string name;
+            public int MinLevel;
+            public string Name;
 
-            public dynamic owner;
+            public dynamic Owner;
         }
     }
 }

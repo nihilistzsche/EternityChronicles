@@ -94,18 +94,18 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <ECXCr Include="ECX\src\*-cr-*.cs"/>
-        <ECXDr Include="ECX\src\*-dr-*.cs"/>
-        <ECXLd Include="ECX\src\*-ld-*.cs" Exclude="ECX\src\ecx-ld-04.cs;ECX\src\ecx-ld-05.cs"/>
-        <ECXLda Include="ECX\src\ecx-ld-04.cs"/>
-        <ECXLdb Include="ECX\src\ecx-ld-05.cs"/>
-        <ECXRc Include="ECX\src\*-rc-*.cs"/>
-        <ECXRs Include="ECX\src\*-rs-*.cs"/>
-        <ECXUl Include="ECX\src\*-ul-*.cs"/>
-        <ECXUr Include="ECX\src\*-ur-*.cs"/>
-        <ECXRra Include="ECX\src\*-rr-01*.cs"/>
-        <ECXRrb Include="ECX\src\*-rr-02*.cs"/>
-        <ECXRrx Include="ECX\src\IECXTestRole2.cs"/>
+        <ECXCr Include="ECX\ECXTestDLLSources\ecx-cr\*.cs"/>
+        <ECXDr Include="ECX\ECXTestDLLSources\ecx-dr\*.cs"/>
+        <ECXLd Include="ECX\ECXTestDLLSources\ecx-ld\*.cs"/>
+        <ECXLda Include="ECX\ECXTestDLLSources\ecx-ld-2\*.cs"/>
+        <ECXLdb Include="ECX\ECXTestDLLSources\ecx-ld-3\*.cs"/>
+        <ECXRc Include="ECX\ECXTestDLLSources\ecx-rc\*.cs"/>
+        <ECXRs Include="ECX\ECXTestDLLSources\ecx-rs\*.cs"/>
+        <ECXUl Include="ECX\ECXTestDLLSources\ecx-ul\*.cs"/>
+        <ECXUr Include="ECX\ECXTestDLLSources\ecx-ur\*.cs"/>
+        <ECXRra Include="ECX\ECXTestDLLSources\ecx-rra\*.cs"/>
+        <ECXRrb Include="ECX\ECXTestDLLSources\ecx-rrb\*.cs"/>
+        <ECXRrx Include="ECX\ECXTestDLLSources\ecx-rrx\*.cs"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Antlr3.Runtime">

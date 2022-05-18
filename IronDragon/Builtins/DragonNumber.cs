@@ -27,7 +27,7 @@ namespace IronDragon.Builtins
     [DragonExport("Number")]
     public class DragonNumber
     {
-        private static readonly List<Type> _numberTypes = new()
+        private static readonly List<Type> NumberTypes = new()
                                                           {
                                                               typeof(bool),
                                                               typeof(byte),
@@ -45,53 +45,53 @@ namespace IronDragon.Builtins
 
         public DragonNumber()
         {
-            _internal = default(int);
-            _myType = typeof(int);
+            Internal = default(int);
+            MyType = typeof(int);
         }
 
         public DragonNumber(object val)
         {
-            _internal = val;
-            _myType = val.GetType();
+            Internal = val;
+            MyType = val.GetType();
         }
 
-        private object _internal { get; }
+        private object Internal { get; }
 
-        private Type _myType { get; }
+        private Type MyType { get; }
 
         public override int GetHashCode()
         {
-            return _internal.GetHashCode();
+            return Internal.GetHashCode();
         }
 
         public override string ToString()
         {
-            return _internal.ToString();
+            return Internal.ToString();
         }
 
         public override bool Equals(object obj)
         {
             if (obj is DragonNumber)
-                return RuntimeOperations.Convert(((DragonNumber)obj)._internal, _myType) ==
-                       RuntimeOperations.Convert(_internal, _myType);
-            if (_numberTypes.Contains(obj.GetType()))
-                return RuntimeOperations.Convert(obj, _myType) == RuntimeOperations.Convert(_internal, _myType);
+                return RuntimeOperations.Convert(((DragonNumber)obj).Internal, MyType) ==
+                       RuntimeOperations.Convert(Internal, MyType);
+            if (NumberTypes.Contains(obj.GetType()))
+                return RuntimeOperations.Convert(obj, MyType) == RuntimeOperations.Convert(Internal, MyType);
             return false;
         }
 
         public static bool IsConvertable(object o)
         {
-            return o != null && _numberTypes.Contains(o.GetType());
+            return o != null && NumberTypes.Contains(o.GetType());
         }
 
         public static dynamic Convert(DragonNumber number)
         {
-            return RuntimeOperations.Convert(number._internal, number._myType);
+            return RuntimeOperations.Convert(number.Internal, number.MyType);
         }
 
         public static implicit operator bool(DragonNumber n)
         {
-            return (bool)n._internal;
+            return (bool)n.Internal;
         }
 
         public static implicit operator DragonNumber(bool n)
@@ -101,7 +101,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator byte(DragonNumber n)
         {
-            return (byte)n._internal;
+            return (byte)n.Internal;
         }
 
         public static implicit operator DragonNumber(byte n)
@@ -111,7 +111,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator sbyte(DragonNumber n)
         {
-            return (sbyte)n._internal;
+            return (sbyte)n.Internal;
         }
 
         public static implicit operator DragonNumber(sbyte n)
@@ -121,7 +121,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator short(DragonNumber n)
         {
-            return (short)n._internal;
+            return (short)n.Internal;
         }
 
         public static implicit operator DragonNumber(short n)
@@ -131,7 +131,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator ushort(DragonNumber n)
         {
-            return (ushort)n._internal;
+            return (ushort)n.Internal;
         }
 
         public static implicit operator DragonNumber(ushort n)
@@ -141,7 +141,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator int(DragonNumber n)
         {
-            return (int)n._internal;
+            return (int)n.Internal;
         }
 
         public static implicit operator DragonNumber(int n)
@@ -151,7 +151,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator uint(DragonNumber n)
         {
-            return (uint)n._internal;
+            return (uint)n.Internal;
         }
 
         public static implicit operator DragonNumber(uint n)
@@ -161,7 +161,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator long(DragonNumber n)
         {
-            return (long)n._internal;
+            return (long)n.Internal;
         }
 
         public static implicit operator DragonNumber(long n)
@@ -171,7 +171,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator ulong(DragonNumber n)
         {
-            return (ulong)n._internal;
+            return (ulong)n.Internal;
         }
 
         public static implicit operator DragonNumber(ulong n)
@@ -181,7 +181,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator float(DragonNumber n)
         {
-            return (float)n._internal;
+            return (float)n.Internal;
         }
 
         public static implicit operator DragonNumber(float n)
@@ -191,7 +191,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator double(DragonNumber n)
         {
-            return (double)n._internal;
+            return (double)n.Internal;
         }
 
         public static implicit operator DragonNumber(double n)
@@ -201,7 +201,7 @@ namespace IronDragon.Builtins
 
         public static implicit operator decimal(DragonNumber n)
         {
-            return (decimal)n._internal;
+            return (decimal)n.Internal;
         }
 
         public static implicit operator DragonNumber(decimal n)

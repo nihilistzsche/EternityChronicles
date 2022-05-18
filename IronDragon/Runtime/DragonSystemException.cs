@@ -28,17 +28,17 @@ namespace IronDragon.Runtime
             var klass = obj.Class;
 
             var exceptionFound = false;
-            var _class = obj.Class;
+            var @class = obj.Class;
             do
             {
-                if (_class.Name.Equals("Exception"))
+                if (@class.Name.Equals("Exception"))
                 {
                     exceptionFound = true;
                     break;
                 }
 
-                _class = _class.Parent;
-            } while (!exceptionFound && _class != null);
+                @class = @class.Parent;
+            } while (!exceptionFound && @class != null);
 
             if (exceptionFound)
             {

@@ -30,7 +30,7 @@ namespace EternityChronicles.Tests.IronDragon
     /// </summary>
     public class FunctionConstraint : Constraint
     {
-        private object actual;
+        private object _actual;
 
         internal FunctionConstraint(DragonFunction expected)
         {
@@ -48,28 +48,28 @@ namespace EternityChronicles.Tests.IronDragon
 
         private ConstraintResult Check()
         {
-            var real = (DragonFunction)actual;
+            var real = (DragonFunction)_actual;
             var success = false;
             try
             {
                 Assert.That(real.Name, Is.EqualTo(Expected.Name));
                 Assert.That(real.Arguments, Is.EqualTo(Expected.Arguments));
-                Assert.That(real.Body.ToString().Substring(0, Expected.Body.ToString().Length).Replace("; {", "; }"),
+                Assert.That(real.Body.ToString()[..Expected.Body.ToString().Length].Replace("; {", "; }"),
                             Is.EqualTo(Expected.Body.ToString()));
                 success = true;
             }
             catch (AssertionException)
             {
-                Description = $"Expected {actual}, but got {Expected} instead";
+                Description = $"Expected {_actual}, but got {Expected} instead";
                 success = false;
             }
 
-            return new ConstraintResult(this, actual, success);
+            return new ConstraintResult(this, _actual, success);
         }
 
         public override ConstraintResult ApplyTo<TActual>(TActual actual)
         {
-            this.actual = actual;
+            this._actual = actual;
             if (actual is not DragonFunction)
             {
                 Description = $"Expected DragonFunction, but got {actual.GetType()} instead";

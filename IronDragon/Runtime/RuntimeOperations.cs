@@ -34,7 +34,7 @@ namespace IronDragon.Runtime
     {
         public static string Capitalize(this string @this)
         {
-            return string.Format("{0}{1}", @this.ToUpper().Substring(0, 1), @this.Substring(1));
+            return string.Format("{0}{1}", @this.ToUpper()[..1], @this[1..]);
         }
     }
 
@@ -58,13 +58,13 @@ namespace IronDragon.Runtime
         }
 
 
-        private static dynamic Binary(object left, object right, E type, object _scope)
+        private static dynamic Binary(object left, object right, E type, object scope)
         {
             var args = new List<Expression>();
             args.Add(Expression.Constant(left, typeof(object)));
             args.Add(Expression.Constant(right, typeof(object)));
 
-            return Dynamic(typeof(object), new InteropBinder.Binary((DragonScope)_scope, type),
+            return Dynamic(typeof(object), new InteropBinder.Binary((DragonScope)scope, type),
                            args);
         }
 
@@ -73,7 +73,7 @@ namespace IronDragon.Runtime
             return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
         }
 
-        private static DynamicMetaObject DMO(dynamic val)
+        private static DynamicMetaObject Dmo(dynamic val)
         {
             return DynamicMetaObject.Create(val, Expression.Constant(val));
         }
@@ -88,44 +88,44 @@ namespace IronDragon.Runtime
             return args;
         }
 
-        private static dynamic Compare(object left, object right, object rawScope)
+        private static dynamic Compare(object rawLeft, object rawRight, object rawScope)
         {
             var scope = (DragonScope)rawScope;
 
-            var DragonName = "<=>";
-            var clrName = InteropBinder.ToClrOperatorName(DragonName);
+            var dragonName = "<=>";
+            var clrName = InteropBinder.ToClrOperatorName(dragonName);
 
-            if (left is DragonInstance)
+            if (rawLeft is DragonInstance)
             {
-                var lo = (DragonInstance)left;
-                var dmo = lo.GetMetaObject(Expression.Constant(left));
-                if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, DragonName, lo, L(Arg(right)), true) != null)
-                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(DragonName, new CallInfo(1), scope),
-                                                _DMO(DMO(scope), DMO(Arg(right))));
-                if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, clrName, lo, L(Arg(right)), true) != null)
+                var lo = (DragonInstance)rawLeft;
+                var dmo = lo.GetMetaObject(Expression.Constant(rawLeft));
+                if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, dragonName, lo, L(Arg(rawRight)), true) != null)
+                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(dragonName, new CallInfo(1), scope),
+                                                _DMO(Dmo(scope), Dmo(Arg(rawRight))));
+                if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, clrName, lo, L(Arg(rawRight)), true) != null)
                     return dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
-                                                _DMO(DMO(scope), DMO(Arg(right))));
+                                                _DMO(Dmo(scope), Dmo(Arg(rawRight))));
             }
 
-            var Value = Dragon.Box(left);
-            if (Value.Class != null)
+            var value = Dragon.Box(rawLeft);
+            if (value.Class != null)
             {
-                var _dmo = Value.GetMetaObject(Expression.Constant(Value));
-                if (InteropBinder.InvokeMember.SearchForFunction(Value.Class, DragonName, Value, L(Arg(right)), true) !=
+                var dmo = value.GetMetaObject(Expression.Constant(value));
+                if (InteropBinder.InvokeMember.SearchForFunction(value.Class, dragonName, value, L(Arg(rawRight)), true) !=
                     null)
-                    return _dmo.BindInvokeMember(new InteropBinder.InvokeMember(DragonName, new CallInfo(1), scope),
-                                                 _DMO(DMO(scope), DMO(Arg(right))));
-                if (InteropBinder.InvokeMember.SearchForFunction(Value.Class, clrName, Value, L(Arg(right)), true) !=
+                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(dragonName, new CallInfo(1), scope),
+                                                 _DMO(Dmo(scope), Dmo(Arg(rawRight))));
+                if (InteropBinder.InvokeMember.SearchForFunction(value.Class, clrName, value, L(Arg(rawRight)), true) !=
                     null)
-                    return _dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
-                                                 _DMO(DMO(scope), DMO(Arg(right))));
+                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
+                                                 _DMO(Dmo(scope), Dmo(Arg(rawRight))));
             }
 
-            dynamic _left = left;
-            dynamic _right = right;
-            if (_left < _right) return -1;
+            dynamic left = rawLeft;
+            dynamic right = rawRight;
+            if (left < right) return -1;
 
-            if (_left > _right) return 1;
+            if (left > right) return 1;
 
             return 0;
         }
@@ -138,56 +138,56 @@ namespace IronDragon.Runtime
             var left = CompilerServices.CompileExpression((Expression)rawLeft, scope);
             var right = CompilerServices.CompileExpression((Expression)rawRight, scope);
 
-            var DragonName = "=~";
-            var clrName = InteropBinder.ToClrOperatorName(DragonName);
+            var dragonName = "=~";
+            var clrName = InteropBinder.ToClrOperatorName(dragonName);
 
             if (left is DragonInstance)
             {
                 var lo = (DragonInstance)left;
                 DynamicMetaObject dmo = lo.GetMetaObject(Expression.Constant(left));
-                if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, DragonName, lo, L(Arg(right)), true) != null)
+                if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, dragonName, lo, L(Arg(right)), true) != null)
                 {
                     if (dragonBinaryNodeType == DragonExpressionType.NotMatch)
-                        return !dmo.BindInvokeMember(new InteropBinder.InvokeMember(DragonName, new CallInfo(1), scope),
-                                                     _DMO(DMO(scope), DMO(Arg(right))));
-                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(DragonName, new CallInfo(1), scope),
-                                                _DMO(DMO(scope), DMO(Arg(right))));
+                        return !dmo.BindInvokeMember(new InteropBinder.InvokeMember(dragonName, new CallInfo(1), scope),
+                                                     _DMO(Dmo(scope), Dmo(Arg(right))));
+                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(dragonName, new CallInfo(1), scope),
+                                                _DMO(Dmo(scope), Dmo(Arg(right))));
                 }
 
                 if (InteropBinder.InvokeMember.SearchForFunction(lo.Class, clrName, lo, L(Arg(right)), true) != null)
                 {
                     if (dragonBinaryNodeType == DragonExpressionType.NotMatch)
                         return !dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
-                                                     _DMO(DMO(scope), DMO(Arg(right))));
+                                                     _DMO(Dmo(scope), Dmo(Arg(right))));
                     return dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
-                                                _DMO(DMO(scope), DMO(Arg(right))));
+                                                _DMO(Dmo(scope), Dmo(Arg(right))));
                 }
             }
 
-            var Value = Dragon.Box(left);
-            if (Value.Class != null)
+            var value = Dragon.Box(left);
+            if (value.Class != null)
             {
-                var _dmo = Value.GetMetaObject(Expression.Constant(Value));
-                if (InteropBinder.InvokeMember.SearchForFunction(Value.Class, DragonName, Value, L(Arg(right)), true) !=
+                var dmo = value.GetMetaObject(Expression.Constant(value));
+                if (InteropBinder.InvokeMember.SearchForFunction(value.Class, dragonName, value, L(Arg(right)), true) !=
                     null)
                 {
                     if (dragonBinaryNodeType == DragonExpressionType.NotMatch)
-                        return !_dmo.BindInvokeMember(
-                                                      new InteropBinder.InvokeMember(DragonName, new CallInfo(1),
+                        return !dmo.BindInvokeMember(
+                                                      new InteropBinder.InvokeMember(dragonName, new CallInfo(1),
                                                           scope),
-                                                      _DMO(DMO(scope), DMO(Arg(right))));
-                    return _dmo.BindInvokeMember(new InteropBinder.InvokeMember(DragonName, new CallInfo(1), scope),
-                                                 _DMO(DMO(scope), DMO(Arg(right))));
+                                                      _DMO(Dmo(scope), Dmo(Arg(right))));
+                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(dragonName, new CallInfo(1), scope),
+                                                 _DMO(Dmo(scope), Dmo(Arg(right))));
                 }
 
-                if (InteropBinder.InvokeMember.SearchForFunction(Value.Class, clrName, Value, L(Arg(right)), true) !=
+                if (InteropBinder.InvokeMember.SearchForFunction(value.Class, clrName, value, L(Arg(right)), true) !=
                     null)
                 {
                     if (dragonBinaryNodeType == DragonExpressionType.NotMatch)
-                        return !_dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
-                                                      _DMO(DMO(scope), DMO(Arg(right))));
-                    return _dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
-                                                 _DMO(DMO(scope), DMO(Arg(right))));
+                        return !dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
+                                                      _DMO(Dmo(scope), Dmo(Arg(right))));
+                    return dmo.BindInvokeMember(new InteropBinder.InvokeMember(clrName, new CallInfo(1), scope),
+                                                 _DMO(Dmo(scope), Dmo(Arg(right))));
                 }
             }
 
@@ -207,12 +207,12 @@ namespace IronDragon.Runtime
             return dragonBinaryNodeType == DragonExpressionType.Match;
         }
 
-        private static dynamic Unary(object expr, E type, object _scope)
+        private static dynamic Unary(object expr, E type, object scope)
         {
             var args = new List<Expression>();
             args.Add(Expression.Constant(expr, typeof(object)));
 
-            return Dynamic(typeof(object), new InteropBinder.Unary((DragonScope)_scope, type), args);
+            return Dynamic(typeof(object), new InteropBinder.Unary((DragonScope)scope, type), args);
         }
 
         private static dynamic Dynamic(Type returnType, CallSiteBinder binder, IEnumerable<Expression> args)
@@ -239,8 +239,8 @@ namespace IronDragon.Runtime
             if (value is bool) return (bool)value;
             if (numberTypes.Contains(value.GetType()))
             {
-                dynamic _value = value;
-                return _value != 0;
+                dynamic dynvalue = value;
+                return dynvalue != 0;
             }
 
             return value != null;

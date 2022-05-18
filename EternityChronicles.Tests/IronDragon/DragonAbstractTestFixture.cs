@@ -52,12 +52,12 @@ namespace EternityChronicles.Tests.IronDragon
             return source.Execute(engine.CreateScope());
         }
 
-        public static Symbol XS(string name)
+        public static Symbol Xs(string name)
         {
             return Symbol.NewSymbol(name);
         }
 
-        public static DragonDictionary SD(Dictionary<object, object> dict)
+        public static DragonDictionary Sd(Dictionary<object, object> dict)
         {
             return new DragonDictionary(dict);
         }

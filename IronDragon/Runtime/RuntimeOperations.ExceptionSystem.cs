@@ -64,8 +64,8 @@ namespace IronDragon.Runtime
             }
             catch (Exception e)
             {
-                var DragonException = e as DragonSystemException;
-                var exType = DragonException != null ? DragonException.ExceptionClass.Name : e.GetType().Name;
+                var dragonException = e as DragonSystemException;
+                var exType = dragonException != null ? dragonException.ExceptionClass.Name : e.GetType().Name;
                 var found = false;
                 exceptionRaised = true;
                 foreach (var rescueBlock in rescueBlocks)
@@ -95,11 +95,11 @@ namespace IronDragon.Runtime
                     if (!exMatches)
                         if ((from type in exceptionTypes
                              select DragonTypeResolver.Resolve(type)
-                             into _exType
-                             where _exType != null
-                             let __exType = DragonTypeResolver.Resolve(exType)
-                             where (__exType != null && __exType.IsSubclassOf(_exType)) || __exType == _exType
-                             select _exType).Any())
+                             into fxType
+                             where fxType != null
+                             let gxType = DragonTypeResolver.Resolve(fxType.Name)
+                             where (gxType != null && gxType.IsSubclassOf(fxType)) || gxType == fxType
+                             select fxType).Any())
                             exMatches = true;
                     found = exMatches;
                     if (!found)

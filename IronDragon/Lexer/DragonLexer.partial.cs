@@ -75,7 +75,7 @@ namespace IronDragon.Lexer
         public void Hex()
         {
             var text = CreateString();
-            Queue.AddToken("INTEGER", text, int.Parse(text.Substring(2), NumberStyles.HexNumber),
+            Queue.AddToken("INTEGER", text, int.Parse(text[2..], NumberStyles.HexNumber),
                            DragonTokenCategory.Number);
         }
 

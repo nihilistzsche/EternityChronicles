@@ -95,7 +95,7 @@ namespace IronDragon.Runtime
             return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
         }
 
-        private static DynamicMetaObject DMO(dynamic val)
+        private static DynamicMetaObject Dmo(dynamic val)
         {
             return Create(val, System.Linq.Expressions.Expression.Constant(val));
         }
@@ -115,18 +115,18 @@ namespace IronDragon.Runtime
             if (Value is DragonInstance)
             {
                 // Check to see which method we should try to call
-                var DragonName = InteropBinder.MapExpressionType(binder.Operation);
+                var dragonName = InteropBinder.MapExpressionType(binder.Operation);
 
-                if (DragonName == null) return InteropBinder.Unary.Bind(binder, this);
+                if (dragonName == null) return InteropBinder.Unary.Bind(binder, this);
 
                 if (
-                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, DragonName,
+                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, dragonName,
                                                                  (DragonInstance)Value, L(), true) != null)
                     return
                         InteropBinder.InvokeMember.Bind(
-                                                        new InteropBinder.InvokeMember(DragonName, new CallInfo(0),
-                                                            Scope), this, _DMO(DMO(Scope)));
-                var clrName = InteropBinder.ToClrOperatorName(DragonName);
+                                                        new InteropBinder.InvokeMember(dragonName, new CallInfo(0),
+                                                            Scope), this, _DMO(Dmo(Scope)));
+                var clrName = InteropBinder.ToClrOperatorName(dragonName);
                 if (
                     InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, clrName,
                                                                  (DragonInstance)Value, L(), true) != null)
@@ -143,19 +143,19 @@ namespace IronDragon.Runtime
         {
             if (Value is DragonInstance)
             {
-                var DragonName = InteropBinder.MapExpressionType(binder.Operation);
-                if (DragonName == null) return InteropBinder.Binary.Bind(binder, this, arg);
+                var dragonName = InteropBinder.MapExpressionType(binder.Operation);
+                if (dragonName == null) return InteropBinder.Binary.Bind(binder, this, arg);
 
                 if (
-                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, DragonName,
+                    InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, dragonName,
                                                                  (DragonInstance)Value, L(Arg(arg.Value)), true) !=
                     null)
                     return
                         InteropBinder.InvokeMember.Bind(
-                                                        new InteropBinder.InvokeMember(DragonName, new CallInfo(0),
+                                                        new InteropBinder.InvokeMember(dragonName, new CallInfo(0),
                                                             Scope), this,
-                                                        _DMO(DMO(Scope), DMO(Arg(arg.Value))));
-                var clrName = InteropBinder.ToClrOperatorName(DragonName);
+                                                        _DMO(Dmo(Scope), Dmo(Arg(arg.Value))));
+                var clrName = InteropBinder.ToClrOperatorName(dragonName);
                 if (
                     InteropBinder.InvokeMember.SearchForFunction(((DragonInstance)Value).Class, clrName,
                                                                  (DragonInstance)Value, L(Arg(arg.Value)), true) !=
@@ -164,7 +164,7 @@ namespace IronDragon.Runtime
                         InteropBinder.InvokeMember.Bind(
                                                         new InteropBinder.InvokeMember(clrName, new CallInfo(0), Scope),
                                                         this,
-                                                        _DMO(DMO(Scope), DMO(Arg(arg.Value))));
+                                                        _DMO(Dmo(Scope), Dmo(Arg(arg.Value))));
                 return InteropBinder.Binary.Bind(binder, this, arg);
             }
 

@@ -35,80 +35,80 @@ namespace EternityChronicles.Tests.ECX
         [Test]
         public void TestLoadingSingleDir()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
-            _mc.LoadModule("ecx-ld-01");
+            mc.LoadModule("ecx-ld-01");
 
-            Assert.IsTrue(_mc.IsLoaded("ecx-ld-01"));
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-01"));
         }
 
         // ecx-ld-02 - Loading with no dependencies, single dir search path, not found.
         [Test]
         public void TestLoadingSingleDirNotFound()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
-            Assert.Throws<ModuleNotFoundException>(() => { _mc.LoadModule("ecx-ld-02"); });
+            Assert.Throws<ModuleNotFoundException>(() => { mc.LoadModule("ecx-ld-02"); });
         }
 
         // ecx-ld-03 - Loading with no dependencies, multiple dir search path, first dir.
         [Test]
         public void TestLoadingMultipleDirFirstDir()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
-            _mc.LoadModule("ecx-ld-03");
+            mc.LoadModule("ecx-ld-03");
 
-            Assert.IsTrue(_mc.IsLoaded("ecx-ld-03"));
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-03"));
         }
 
         // ecx-ld-04 - Loading with no dependencies, multiple dir search path, middle dir.
         [Test]
         public void TestLoadingMultipleDirMiddleDir()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
-            _mc.LoadModule("ecx-ld-04");
-            Assert.IsTrue(_mc.IsLoaded("ecx-ld-04"));
+            mc.LoadModule("ecx-ld-04");
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-04"));
         }
 
         // ecx-ld-05 - Loading with no dependencies, multiple dir search path, last dir.
         [Test]
         public void TestLoadingMultipleDirLastDir()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
-            _mc.LoadModule("ecx-ld-05");
-            Assert.IsTrue(_mc.IsLoaded("ecx-ld-05"));
+            mc.LoadModule("ecx-ld-05");
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-05"));
         }
 
         // ecx-ld-06 - Loading with no dependencies, multiple dir search path, not found.
         [Test]
         public void TestLoadingMultipleDirNotFound()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-2");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
-            Assert.Throws<ModuleNotFoundException>(() => _mc.LoadModule("ecx-ld-06"));
+            Assert.Throws<ModuleNotFoundException>(() => mc.LoadModule("ecx-ld-06"));
         }
     }
 }

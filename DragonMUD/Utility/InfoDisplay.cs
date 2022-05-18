@@ -54,7 +54,7 @@ namespace DragonMUD.Utility
                 var tmpLine = new StringBuilder();
                 var i = 1;
                 string areWeTooLong;
-                string areWeTooLongNC;
+                string areWeTooLongNc;
                 tmpLine.Append(components[0]);
                 int o;
                 OldColor = "";
@@ -62,8 +62,8 @@ namespace DragonMUD.Utility
                 {
                     o = i;
                     areWeTooLong = $"{tmpLine} {components[i]}";
-                    areWeTooLongNC = hook.ProcessMessage(areWeTooLong, false);
-                    if (areWeTooLongNC.Length + 4 < 80)
+                    areWeTooLongNc = hook.ProcessMessage(areWeTooLong, false);
+                    if (areWeTooLongNc.Length + 4 < 80)
                     {
                         var c = components[i++];
                         var location = c.IndexOf("`", StringComparison.InvariantCulture);

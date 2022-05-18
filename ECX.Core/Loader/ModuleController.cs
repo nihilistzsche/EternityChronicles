@@ -132,29 +132,29 @@ namespace ECX.Core.Loader
             }
 
 
-            var _domain = Loader.LoadModule(parents, name, out var _info, false, true);
+            var domain = Loader.LoadModule(parents, name, out var info, false, true);
 
             // set up the map
-            AppDomainMap.Add(name, _domain);
-            AppDomainAssemblyMap.Add(Loader.GetAssembly(_domain, name), _domain);
+            AppDomainMap.Add(name, domain);
+            AppDomainAssemblyMap.Add(Loader.GetAssembly(domain, name), domain);
 
             // increment the reference count on the domain.
-            IncRef(_domain);
+            IncRef(domain);
 
             // increment the reference count for all the dependencies recursively (i.e.
             // if module A depends on B which depends on C, B gets inc ref'd once, while C
             // gets inc ref'd twice, for both A and B).
 
             // Entry handlers
-            foreach (var asm in _domain.GetAssemblies()) CallEntryHandler(asm);
+            foreach (var asm in domain.GetAssemblies()) CallEntryHandler(asm);
 
             // Set up roles.
-            CallRoleHandlers(_info);
+            CallRoleHandlers(info);
 
             // Set up info map.
-            InfoMap.Add(name, _info);
+            InfoMap.Add(name, info);
 
-            ModuleLoaded?.Invoke(_info, new EventArgs());
+            ModuleLoaded?.Invoke(info, new EventArgs());
         }
 
         /// <summary>
@@ -228,9 +228,9 @@ namespace ECX.Core.Loader
             // okay, everything's good.  This will remove the domain from the reference list since its reference count is now 0.
             DecRef(domain);
 
-            var _root = info.Dependencies;
+            var root = info.Dependencies;
 
-            DecRefs(_root);
+            DecRefs(root);
 
             // okay, lets remove the domain map association
             AppDomainMap.Remove(name);
@@ -327,11 +327,11 @@ namespace ECX.Core.Loader
         /// <param name="_unreg">The unregistration handler for the new role.</param>
         public void RegisterNewRole(string name, Type type, RoleRegisterHandler reg, RoleUnregisterHandler unreg)
         {
-            var _role = new ModuleRole(name, type, reg, unreg);
+            var role = new ModuleRole(name, type, reg, unreg);
 
-            Roles.Add(_role);
+            Roles.Add(role);
 
-            foreach (var _key in InfoMap.Keys) CallRoleHandlers(InfoMap[_key], _role);
+            foreach (var key in InfoMap.Keys) CallRoleHandlers(InfoMap[key], role);
         }
 
         /// <summary>
@@ -343,18 +343,18 @@ namespace ECX.Core.Loader
         /// <param name="_name">The name of the role to unregister.</param>
         public void UnregisterRole(string name)
         {
-            ModuleRole _role = null;
-            foreach (var _r in Roles)
+            ModuleRole role = null;
+            foreach (var r in Roles)
             {
-                if (_r.RoleName == name)
-                    _role = _r;
+                if (r.RoleName == name)
+                    role = r;
             }
 
-            if (_role == null)
+            if (role == null)
                 return;
 
-            Roles.Remove(_role);
-            foreach (var _key in InfoMap.Keys) CallRoleUnregisterHandlers(InfoMap[_key], _role);
+            Roles.Remove(role);
+            foreach (var key in InfoMap.Keys) CallRoleUnregisterHandlers(InfoMap[key], role);
         }
 
         #endregion
@@ -397,21 +397,21 @@ namespace ECX.Core.Loader
 
         protected bool DoesAssemblyFulfillRole(Assembly assembly, ModuleRole role, out Type type)
         {
-            foreach (var _type in assembly.GetTypes())
+            foreach (var innerType in assembly.GetTypes())
             {
                 if (role.BaseType.IsClass)
                 {
-                    if (_type.IsSubclassOf(role.BaseType))
+                    if (innerType.IsSubclassOf(role.BaseType))
                     {
-                        type = _type;
+                        type = innerType;
                         return true;
                     }
                 }
                 else if (role.BaseType.IsInterface)
                 {
-                    if (_type.GetInterfaces().Contains(role.BaseType))
+                    if (innerType.GetInterfaces().Contains(role.BaseType))
                     {
-                        type = _type;
+                        type = innerType;
                         return true;
                     }
                 }
@@ -431,7 +431,7 @@ namespace ECX.Core.Loader
         /// <param name="_info">The <see cref="ModuleInfo" /> object to determine which role handlers to call.</param>
         protected void CallRoleHandlers(ModuleInfo info)
         {
-            foreach (var _role in Roles) CallRoleHandlers(info, _role);
+            foreach (var role in Roles) CallRoleHandlers(info, role);
         }
 
         /// <summary>
@@ -443,22 +443,22 @@ namespace ECX.Core.Loader
         /// </remarks>
         /// <param name="_info">The <see cref="ModuleInfo" /> object to determine if the role handler should be called.</param>
         /// <param name="_role">The role to fulfill.</param>
-        protected void CallRoleHandlers(ModuleInfo info, ModuleRole _role)
+        protected void CallRoleHandlers(ModuleInfo info, ModuleRole role)
         {
             if (info.Roles == null)
                 return;
 
-            foreach (var _myRole in info.Roles.Split(','))
+            foreach (var myRole in info.Roles.Split(','))
             {
-                if (_role.RoleName == _myRole)
+                if (role.RoleName == myRole)
                 {
-                    var _asm = info.Owner;
+                    var asm = info.Owner;
 
 
-                    if (!DoesAssemblyFulfillRole(_asm, _role, out var _type))
+                    if (!DoesAssemblyFulfillRole(asm, role, out var type))
                         continue; // don't have a type for this role.
 
-                    _role.RegistrationHandler(_asm, _type);
+                    role.RegistrationHandler(asm, type);
                 }
             }
         }
@@ -473,7 +473,7 @@ namespace ECX.Core.Loader
         /// <param name="_info">The <see cref="ModuleInfo" /> object to determine which role handlers to call.</param>
         protected void CallRoleUnregisterHandlers(ModuleInfo info)
         {
-            foreach (var _role in Roles) CallRoleUnregisterHandlers(info, _role);
+            foreach (var role in Roles) CallRoleUnregisterHandlers(info, role);
         }
 
         /// <summary>
@@ -490,17 +490,17 @@ namespace ECX.Core.Loader
             if (info.Roles != null)
                 return;
 
-            foreach (var _myRole in info.Roles.Split(','))
+            foreach (var myRole in info.Roles.Split(','))
             {
-                if (role.RoleName == _myRole)
+                if (role.RoleName == myRole)
                 {
-                    var _asm = info.Owner;
+                    var asm = info.Owner;
 
 
-                    if (!DoesAssemblyFulfillRole(_asm, role, out var _type))
+                    if (!DoesAssemblyFulfillRole(asm, role, out var type))
                         continue; // don't have a type for this role.
 
-                    role.UnregistrationHandler(_asm);
+                    role.UnregistrationHandler(asm);
                 }
             }
         }
@@ -518,14 +518,14 @@ namespace ECX.Core.Loader
         /// <param name="_asm">The assembly to call the entry handler for.</param>
         protected void CallEntryHandler(_Assembly assembly)
         {
-            foreach (var _type in assembly.GetTypes())
+            foreach (var type in assembly.GetTypes())
             {
-                if (_type.GetInterface(typeof(IModule).ToString()) != null)
+                if (type.GetInterface(typeof(IModule).ToString()) != null)
                 {
-                    var _method = _type.GetMethod("ModuleEntry");
+                    var method = type.GetMethod("ModuleEntry");
 
-                    if (_method != null)
-                        _method.Invoke(assembly.CreateInstance(_type.ToString()), new object[] { this });
+                    if (method != null)
+                        method.Invoke(assembly.CreateInstance(type.ToString()), new object[] { this });
                 }
             }
         }
@@ -539,14 +539,14 @@ namespace ECX.Core.Loader
         /// <param name="_asm">The assembly to call the exit handler for.</param>
         protected void CallExitHandler(_Assembly assembly)
         {
-            foreach (var _type in assembly.GetTypes())
+            foreach (var type in assembly.GetTypes())
             {
-                if (_type.GetInterface(typeof(IModule).ToString()) != null)
+                if (type.GetInterface(typeof(IModule).ToString()) != null)
                 {
-                    var _method = _type.GetMethod("ModuleExit");
+                    var method = type.GetMethod("ModuleExit");
 
-                    if (_method != null)
-                        _method.Invoke(assembly.CreateInstance(_type.ToString()), new object[] { this });
+                    if (method != null)
+                        method.Invoke(assembly.CreateInstance(type.ToString()), new object[] { this });
                 }
             }
         }

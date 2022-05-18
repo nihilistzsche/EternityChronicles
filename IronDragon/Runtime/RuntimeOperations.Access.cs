@@ -92,7 +92,7 @@ namespace IronDragon.Runtime
 
             if (incDecMap.Contains(type))
             {
-                if (type == E.PostIncrementAssign || type == E.PostDecrementAssign)
+                if (type is E.PostIncrementAssign or E.PostDecrementAssign)
                 {
                     var val = Access(container, args, scope);
                     AccessSet(container, args, 1, type == E.PostIncrementAssign ? E.AddAssign : E.SubtractAssign,
@@ -141,7 +141,7 @@ namespace IronDragon.Runtime
         internal static dynamic CreateDictionary(IEnumerable<Expression> values)
         {
             var dict = new Dictionary<object, object>();
-            foreach (var val in values.Select(_val => CompilerServices.CreateLambdaForExpression(_val)()))
+            foreach (var val in values.Select(val => CompilerServices.CreateLambdaForExpression(val)()))
                 dict[((KeyValuePair<object, object>)val).Key] = ((KeyValuePair<object, object>)val).Value;
             return new DragonDictionary(dict);
         }

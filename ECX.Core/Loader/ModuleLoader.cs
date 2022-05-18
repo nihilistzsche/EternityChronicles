@@ -35,7 +35,7 @@ namespace ECX.Core.Loader
     /// <preliminary />
     public class ModuleLoader
     {
-        private static string s_currentDLLPath;
+        private static string _sCurrentDllPath;
 
         /// <summary>
         ///     The controller which this loader belongs to.
@@ -91,15 +91,15 @@ namespace ECX.Core.Loader
             var res = (from s in SearchPath
                        where Directory.Exists(s)
                        from f in Directory.GetFiles(s, "*.dll")
-                       let _f = f.Replace(s, "").Replace(Path.DirectorySeparatorChar.ToString(), "")
-                       where _f.Substring(0, _f.Length - 4) == name
-                       select s + Path.DirectorySeparatorChar + _f).FirstOrDefault() ??
-                      (from f in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll")
-                       let _f =
-                           f.Replace(Directory.GetCurrentDirectory(), "")
+                       let g = f.Replace(s, "").Replace(Path.DirectorySeparatorChar.ToString(), "")
+                       where g[..^4] == name
+                       select s + Path.DirectorySeparatorChar + g).FirstOrDefault() ??
+                      (from h in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll")
+                       let j =
+                           h.Replace(Directory.GetCurrentDirectory(), "")
                             .Replace(Path.DirectorySeparatorChar.ToString(), "")
-                       where _f.Substring(0, _f.Length - 4) == name
-                       select Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + _f).FirstOrDefault();
+                       where j[..^4] == name
+                       select Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + j).FirstOrDefault();
 
             return res;
         }
@@ -145,12 +145,12 @@ namespace ECX.Core.Loader
         /// <returns>An assembly object with the same name or null.</returns>
         public Assembly GetAssembly(_AppDomain domain, string name)
         {
-            return domain.GetAssemblies().FirstOrDefault(_asm => _asm.GetName().Name == name);
+            return domain.GetAssemblies().FirstOrDefault(asm => asm.GetName().Name == name);
         }
 
         private static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
         {
-            using var fs = new FileStream(s_currentDLLPath, FileMode.Open);
+            using var fs = new FileStream(_sCurrentDllPath, FileMode.Open);
             var bytes = new byte[fs.Length];
             fs.Read(bytes, 0, bytes.Length);
             return Assembly.Load(bytes);
@@ -180,14 +180,14 @@ namespace ECX.Core.Loader
 
             // Try to find the module on the search path.
 
-            var _filename = SearchForModule(name);
+            var filename = SearchForModule(name);
 
-            if (_filename == null)
+            if (filename == null)
                 throw new ModuleNotFoundException($"The module {name} was not found along the module search path.");
 
             // Okay, well, now we know the module exists at least in the file (we hope its a proper dll, but we'll see :).  Now we
             // need to create the temporary AppDomain and load it to get the info from it.
-            var _setup = new AppDomainSetup();
+            var setup = new AppDomainSetup();
 
             var sb = new StringBuilder();
             var sep = "";
@@ -197,26 +197,26 @@ namespace ECX.Core.Loader
                 sep = ";";
             }
 
-            _setup.ApplicationBase = Directory.GetCurrentDirectory();
-            _setup.PrivateBinPath = sb.ToString();
-            var _tempDomain = AppDomain.CreateDomain(name, new Evidence(), _setup);
-            s_currentDLLPath = _filename.Replace('/', Path.DirectorySeparatorChar);
+            setup.ApplicationBase = Directory.GetCurrentDirectory();
+            setup.PrivateBinPath = sb.ToString();
+            var tempDomain = AppDomain.CreateDomain(name, new Evidence(), setup);
+            _sCurrentDllPath = filename.Replace('/', Path.DirectorySeparatorChar);
 
             try
             {
-                _tempDomain.Load(LoadRawFile(_filename));
+                tempDomain.Load(LoadRawFile(filename));
             }
             catch (BadImageFormatException e)
             {
-                AppDomain.Unload(_tempDomain);
+                AppDomain.Unload(tempDomain);
                 throw new ModuleImageException(e.Message);
             }
 
             // Okay, now lets grab the module info from the assembly attributes.
 
-            var _asm = GetAssembly(_tempDomain, name);
+            var asm = GetAssembly(tempDomain, name);
 
-            info = new ModuleInfo(_asm);
+            info = new ModuleInfo(asm);
 
             // okay, now we've got the info, let's do some magic with the dependencies.
             // this will recursively load all of the appropriate assemblies as per the parsed
@@ -233,23 +233,23 @@ namespace ECX.Core.Loader
 
             if (depcheck)
             {
-                var _resolver = new DepResolver(Controller, SearchPath);
+                var resolver = new DepResolver(Controller, SearchPath);
 
                 parents.Add(name);
 
                 try
                 {
-                    _resolver.Resolve(parents, info);
+                    resolver.Resolve(parents, info);
                 }
                 catch (Exception)
                 {
-                    AppDomain.Unload(_tempDomain);
+                    AppDomain.Unload(tempDomain);
                     throw;
                 }
             }
 
-            if (!checking) return _tempDomain;
-            AppDomain.Unload(_tempDomain);
+            if (!checking) return tempDomain;
+            AppDomain.Unload(tempDomain);
             return null;
         }
     }

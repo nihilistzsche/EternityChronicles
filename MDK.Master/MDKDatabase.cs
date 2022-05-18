@@ -21,23 +21,23 @@ using MongoDB.Driver;
 
 namespace MDK.Master
 {
-    public interface IMDKDatabase
+    public interface IMdkDatabase
     {
     }
 
-    public class MDKDatabase<T> : IMDKDatabase where T : IMDKDataSchema, new()
+    public class MdkDatabase<T> : IMdkDatabase where T : IMdkDataSchema, new()
     {
-        public MDKDatabase(MDKMaster master)
+        public MdkDatabase(MdkMaster master)
         {
             BsonClassMap.RegisterClassMap<T>();
-            DBMaster = master;
+            DbMaster = master;
         }
 
-        public MDKMaster DBMaster { get; }
+        public MdkMaster DbMaster { get; }
 
         public void Save(List<T> objects)
         {
-            var db = DBMaster.Client.GetDatabase(DBMaster.DBName);
+            var db = DbMaster.Client.GetDatabase(DbMaster.DbName);
             var x = new T();
             var collection = db.GetCollection<T>(x.CollectionName);
             collection.InsertMany(objects);
@@ -45,7 +45,7 @@ namespace MDK.Master
 
         public List<T> Load()
         {
-            var db = DBMaster.Client.GetDatabase(DBMaster.DBName);
+            var db = DbMaster.Client.GetDatabase(DbMaster.DbName);
             var x = new T();
             var collection = db.GetCollection<T>(x.CollectionName);
             return collection.AsQueryable().ToList();

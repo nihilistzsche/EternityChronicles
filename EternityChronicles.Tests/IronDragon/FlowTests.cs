@@ -186,21 +186,21 @@ namespace EternityChronicles.Tests.IronDragon
         }
 
         [Test]
-        public void TestSwitch2CB1()
+        public void TestSwitch2Cb1()
         {
             Assert.That(CompileAndExecute("i = 5; switch(i) { case 5: { 'case 5!'; } case 10: { 'case 10!'; } };"),
                         Is.EqualTo("case 5!"));
         }
 
         [Test]
-        public void TestSwitch2CB2()
+        public void TestSwitch2Cb2()
         {
             Assert.That(CompileAndExecute("i = 10; switch(i) { case 5: { 'case 5!'; } case 10: { 'case 10!'; } };"),
                         Is.EqualTo("case 10!"));
         }
 
         [Test]
-        public void TestSwitch2CBD()
+        public void TestSwitch2Cbd()
         {
             Assert.That(
                         CompileAndExecute(

@@ -39,9 +39,9 @@ namespace EternityChronicles.Tests.ECX
         [Test]
         public void TestUnresolvedDependencyEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             Assert.Throws<UnresolvedDependencyException>(() =>
                                                          {
@@ -49,26 +49,26 @@ namespace EternityChronicles.Tests.ECX
                                                              // This will look for a specific version of ecx-ur-01b
                                                              try
                                                              {
-                                                                 _mc.LoadModule("ecx-ur-01a");
+                                                                 mc.LoadModule("ecx-ur-01a");
                                                              }
                                                              catch (UnresolvedDependencyException exc)
                                                              {
                                                                  e = exc;
                                                              }
 
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01a"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01a"),
                                                                             "ecx-ur-01a is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01b"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01b"),
                                                                             "ecx-ur-01b is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01c"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01c"),
                                                                             "ecx-ur-01c is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01d"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01d"),
                                                                             "ecx-ur-01d is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01e"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01e"),
                                                                             "ecx-ur-01e is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01f"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01f"),
                                                                             "ecx-ur-01f is loaded, it should not be.");
-                                                             Assert.IsFalse(_mc.IsLoaded("ecx-ur-01g"),
+                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01g"),
                                                                             "ecx-ur-01g is loaded, it should not be.");
 
 
@@ -81,151 +81,151 @@ namespace EternityChronicles.Tests.ECX
         [Test]
         public void TestUnresolvedDependencyNotEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             // This will look for a specific version of ecx-ur-01b
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-02a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-02a"); });
         }
 
         // <<
         [Test]
         public void TestUnresolvedDependencyLessThan()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             // This will look for a specific version of ecx-ur-01b
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-03a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-03a"); });
         }
 
         // >>
         [Test]
         public void TestUnresolvedDependencyGreaterThan()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             // This will look for a specific version of ecx-ur-01b
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-04a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-04a"); });
         }
 
         // <=
         [Test]
         public void TestUnresolvedDependencyLessThanEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             // This will look for a specific version of ecx-ur-01b
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-05a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-05a"); });
         }
 
         // >=
         [Test]
         public void TestUnresolvedDependencyGreaterThanEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             // This will look for a specific version of ecx-ur-01b
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-06a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-06a"); });
         }
 
         // ##
         [Test]
         public void TestUnresolvedDependencyLoaded()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
             // This will look for a specific version of ecx-ur-01b
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-07a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-07a"); });
         }
 
         // (&& (==) (>=))
         [Test]
         public void TestUnresolvedDependencyAndEqualGreaterThanEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-08a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-08a"); });
         }
 
         // (|| (>>) (<<))
         [Test]
         public void TestUnresolvedDependencyGreaterThanLessThan()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-09a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-09a"); });
         }
 
         // (^^ (>>) (!=))
         [Test]
         public void TestUnresolvedDependencyXorGreaterThanNotEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-10a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-10a"); });
         }
 
         // (!#)
         [Test]
         public void TestUnresolvedDependencyNotLoaded()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            _mc.LoadModule("ecx-ur-11b");
-            _mc.LoadModule("ecx-ur-11b");
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-11a"); });
+            mc.LoadModule("ecx-ur-11b");
+            mc.LoadModule("ecx-ur-11b");
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-11a"); });
         }
 
         // (>=)
         [Test]
         public void TestUnresolvedDependencyGreaterThanEqualWrongVersion()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-12a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-12a"); });
         }
 
         // (&& (|| (==) (!=)) (?? (##)))
         [Test]
         public void TestUnresolvedDependencyAndOrEqualNotEqualOptionalLoaded()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-13a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-13a"); });
         }
 
         // (|| (&& (##) (##)) (==))
         [Test]
         public void TestUnresolvedDependencyOrAndLoadedLoadedEqual()
         {
-            var _mc = new ModuleController();
+            var mc = new ModuleController();
 
-            _mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
+            mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ur");
 
-            Assert.Throws<UnresolvedDependencyException>(() => { _mc.LoadModule("ecx-ur-14a"); });
+            Assert.Throws<UnresolvedDependencyException>(() => { mc.LoadModule("ecx-ur-14a"); });
         }
     }
 }

@@ -411,12 +411,12 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestPassStringToDragon()
         {
             var engine = GetRuntime().GetEngine("IronDragon");
-            var Dragonscope1 = engine.CreateScope();
+            var dragonscope1 = engine.CreateScope();
 
             var source1 = engine.CreateScriptSourceFromString("def test1(x) { x << ' world!'; x; }");
-            source1.Execute(Dragonscope1);
+            source1.Execute(dragonscope1);
 
-            var test = Dragonscope1.GetVariable("test1");
+            var test = dragonscope1.GetVariable("test1");
 
             Assert.That((string)test("Hello"), Is.EqualTo("Hello world!"));
         }

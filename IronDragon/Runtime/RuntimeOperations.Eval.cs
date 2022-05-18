@@ -50,7 +50,7 @@ namespace IronDragon.Runtime
                 if (expression != null && expression[0] == ':')
                 {
                     escapeString = true;
-                    expression = expression.Substring(1);
+                    expression = expression[1..];
                 }
 
                 if (expression != null)

@@ -107,7 +107,7 @@ namespace IronDragon.Parser
                                             severity);
         }
 
-        private static T VisitIf<T, U>(U value, Func<U, T> func)
+        private static T VisitIf<T, TU>(TU value, Func<TU, T> func)
         {
             return value != null ? func(value) : default;
         }
@@ -118,7 +118,7 @@ namespace IronDragon.Parser
             return chkMap.First(o => o.HasValue).ValueOr(() => null);
         }
 
-        private static Option<object> M<T, U>(U value, Func<U, T> func)
+        private static Option<object> M<T, TU>(TU value, Func<TU, T> func)
         {
             return value != null ? Option.Some<object>(func(value)) : Option.None<object>();
         }
@@ -139,27 +139,27 @@ namespace IronDragon.Parser
             return DragonBlock(expr);
         }
 
-        private static T CV<T>(ITerminalNode node)
+        private static T Cv<T>(ITerminalNode node)
         {
             return ((DragonToken<T>)node.Symbol).Value;
         }
 
         private static double D(ITerminalNode node)
         {
-            return CV<double>(node);
+            return Cv<double>(node);
         }
 
         private static int I(ITerminalNode node)
         {
-            return CV<int>(node);
+            return Cv<int>(node);
         }
 
         private static string S(ITerminalNode node)
         {
-            return CV<string>(node);
+            return Cv<string>(node);
         }
 
-        private static FunctionArgument DA(string name, Expression defaultValue, bool isVarArg, bool isFunction,
+        private static FunctionArgument Da(string name, Expression defaultValue, bool isVarArg, bool isFunction,
                                            bool isLiteral)
         {
             return new FunctionArgument(name, 0)
@@ -1106,9 +1106,9 @@ namespace IronDragon.Parser
                     return result;
                 }
 
-                string ChooseName(Unary_expressionContext _context)
+                string ChooseName(Unary_expressionContext context)
                 {
-                    if (_context.symbol() != null)
+                    if (context.symbol() != null)
                         return new SymbolVisitor().VisitSymbol(context.symbol()).Name;
                     return S(context.STRING());
                 }
@@ -1344,16 +1344,16 @@ namespace IronDragon.Parser
         {
             public override Expression VisitLiteral(LiteralContext context)
             {
-                Func<object, Expression> C = Constant;
+                Func<object, Expression> c = Constant;
 
                 return (Expression)ChooseNode(
                                               M(context.NUMBER(), o => Number(D(o))),
                                               M(context.INTEGER(), o => Number(I(o))),
                                               M(context.STRING(), o => String(S(o))),
                                               M(context.REGEX(), o => Regex(S(o))),
-                                              M(context.NIL(), o => C(null)),
-                                              M(context.TRUE(), o => C(true)),
-                                              M(context.FALSE(), o => C(false)),
+                                              M(context.NIL(), o => c(null)),
+                                              M(context.TRUE(), o => c(true)),
+                                              M(context.FALSE(), o => c(false)),
                                               M(context.symbol(), o => Constant(new SymbolVisitor().VisitSymbol(o)))
                                              );
             }
@@ -1505,7 +1505,7 @@ namespace IronDragon.Parser
                 if (isLiteral && defaultValue != null)
                     throw new SyntaxErrorException(
                                                    $"Argument {argumentName} is declared both literal and with a default value.");
-                return DA(argumentName, defaultValue, false, false, isLiteral);
+                return Da(argumentName, defaultValue, false, false, isLiteral);
             }
         }
 
@@ -1513,7 +1513,7 @@ namespace IronDragon.Parser
         {
             public override FunctionArgument VisitFirst_var_arg(First_var_argContext context)
             {
-                return DA(S(context.IDENTIFIER()), null, true, false, false);
+                return Da(S(context.IDENTIFIER()), null, true, false, false);
             }
         }
 
@@ -1521,7 +1521,7 @@ namespace IronDragon.Parser
         {
             public override FunctionArgument VisitFirst_block_arg(First_block_argContext context)
             {
-                return DA(S(context.IDENTIFIER()), null, false, true, false);
+                return Da(S(context.IDENTIFIER()), null, false, true, false);
             }
         }
 
@@ -1529,7 +1529,7 @@ namespace IronDragon.Parser
         {
             public override FunctionArgument VisitEnd_var_arg(End_var_argContext context)
             {
-                return DA(S(context.IDENTIFIER()), null, true, false, false);
+                return Da(S(context.IDENTIFIER()), null, true, false, false);
             }
         }
 
@@ -1537,7 +1537,7 @@ namespace IronDragon.Parser
         {
             public override FunctionArgument VisitEnd_block_arg(End_block_argContext context)
             {
-                return DA(S(context.IDENTIFIER()), null, false, true, false);
+                return Da(S(context.IDENTIFIER()), null, false, true, false);
             }
         }
 
@@ -1553,7 +1553,7 @@ namespace IronDragon.Parser
                     throw new SyntaxErrorException(
                                                    $"Argument {argumentName} is declared both literal and with a default value.");
 
-                return DA(argumentName, defaultValue, false, false, isLiteral);
+                return Da(argumentName, defaultValue, false, false, isLiteral);
             }
         }
 

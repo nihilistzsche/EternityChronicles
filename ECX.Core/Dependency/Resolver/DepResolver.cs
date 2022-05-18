@@ -81,8 +81,8 @@ namespace ECX.Core.Dependency.Resolver
                 if (Directory.Exists(s))
                     foreach (var f in Directory.GetFiles(s, "*.dll"))
                     {
-                        var _f = f.Replace(s, "").Replace(Path.DirectorySeparatorChar.ToString(), "");
-                        if (_f.Substring(0, _f.Length - 4) == name) return s + Path.DirectorySeparatorChar + _f;
+                        var g = f.Replace(s, "").Replace(Path.DirectorySeparatorChar.ToString(), "");
+                        if (g[..^4] == name) return s + Path.DirectorySeparatorChar + g;
                     }
             }
 
@@ -108,8 +108,8 @@ namespace ECX.Core.Dependency.Resolver
         /// <exception cref="CircularDependencyException">Thrown if two modules depend on each other.</exception>
         protected void OpResolve(DepNode node, List<string> parents, ModuleInfo info, bool checking, bool opt)
         {
-            bool _ret;
-            var _op = node.DepOp;
+            bool ret;
+            var op = node.DepOp;
 
             // This is a large process.  I've chosen to use recursion here because it makes sense from a tree
             // point of view.  Our first step is to check our operator to see if its one of the "combination"
@@ -118,15 +118,15 @@ namespace ECX.Core.Dependency.Resolver
             // we need (and, or, xor) we can't really make a decision at this point.  When we go through
             // the children, they simply go through this process to until we reach a bottom node, which would
             // be one of the "single" operators.  They are dealt with in the second part of this function.
-            if (_op is DepOps.And or DepOps.Opt or DepOps.Or or DepOps.Xor)
+            if (op is DepOps.And or DepOps.Opt or DepOps.Or or DepOps.Xor)
             {
                 // This is our list of results for the children nodes.
-                var _results = new List<bool>();
+                var results = new List<bool>();
 
                 // This is a list of constraints for the children nodes so we can output sensible information.
-                var _c = new List<DepConstraint>();
+                var c = new List<DepConstraint>();
 
-                foreach (var _child in node.Children) // Try to resolve the child node, if it suceeds, store
+                foreach (var child in node.Children) // Try to resolve the child node, if it suceeds, store
                     // true into the results table, if an exception is thrown
                     // store false into the results table.  Store the constraints
                     // into the constraints table regardless of result so the indexes
@@ -134,36 +134,36 @@ namespace ECX.Core.Dependency.Resolver
                 {
                     try
                     {
-                        OpResolve(_child, parents, info, checking, _op == DepOps.Opt);
-                        _results.Add(true);
-                        _c.Add(_child.Constraint);
+                        OpResolve(child, parents, info, checking, op == DepOps.Opt);
+                        results.Add(true);
+                        c.Add(child.Constraint);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine("Failed to resolve op with exception: {0}", e.Message);
-                        _results.Add(false);
-                        _c.Add(_child.Constraint);
+                        results.Add(false);
+                        c.Add(child.Constraint);
                     }
                 }
 
                 // This switch statement is where we go through the results table and apply
                 // the operator logic to the table to figure out if the results sastify
                 // the given operator.
-                switch (_op)
+                switch (op)
                 {
                 case DepOps.And:
                     var r = 0;
 
-                    foreach (var _result in _results)
+                    foreach (var result in results)
                     {
-                        if (!_result)
+                        if (!result)
                             if (!opt)
                             {
-                                if (_c[r] != null)
+                                if (c[r] != null)
                                     throw new UnresolvedDependencyException(
                                                                             string.Format(
                                                                              "The following dependency for the module {0} could not be resolved: ({3} operator)\n\t{1} ({2})",
-                                                                             info.Name, _c[r].Name, _c[r].Version,
+                                                                             info.Name, c[r].Name, c[r].Version,
                                                                              OpToString(DepOps.And))
                                                                            );
                                 throw new UnresolvedDependencyException(
@@ -178,72 +178,72 @@ namespace ECX.Core.Dependency.Resolver
                 case DepOps.Opt: // This is optional so stuff is true regardless
                     break;
                 case DepOps.Or:
-                    _ret = false;
-                    var _urexc = new List<string>();
+                    ret = false;
+                    var urexc = new List<string>();
                     r = 0;
-                    foreach (var _result in _results)
+                    foreach (var result in results)
                     {
-                        if (_result)
+                        if (result)
                         {
-                            _ret = true;
+                            ret = true;
                             break;
                         }
 
-                        if (_c[r] != null)
-                            _urexc.Add($"{_c[r].Name} ({_c[r].Version})");
+                        if (c[r] != null)
+                            urexc.Add($"{c[r].Name} ({c[r].Version})");
                         r++;
                     }
 
-                    if (!_ret)
+                    if (!ret)
                     {
-                        var _sb = new StringBuilder(
+                        var sb = new StringBuilder(
                                                     $"The following dependency for the module {info.Name} could not be resolved: (OR operator)\n"
                                                    );
-                        _urexc.ForEach(innerException => _sb.Append($"\t{innerException}\n"));
+                        urexc.ForEach(innerException => sb.Append($"\t{innerException}\n"));
                         if (!opt)
-                            throw new UnresolvedDependencyException(_sb.ToString());
+                            throw new UnresolvedDependencyException(sb.ToString());
                     }
 
                     break;
 
                 case DepOps.Xor:
-                    var _xt = true;
-                    var _xf = true;
-                    var _xexc = new List<string>();
+                    var xt = true;
+                    var xf = true;
+                    var xexc = new List<string>();
 
                     r = 0;
-                    _ret = true;
+                    ret = true;
 
-                    foreach (var _result in _results)
+                    foreach (var result in results)
                     {
-                        if (_result)
+                        if (result)
                         {
-                            _xf = false;
-                            if (_c[r] != null)
-                                _xexc.Add($"{_c[r].Name} ({_c[r].Version}) (True)");
+                            xf = false;
+                            if (c[r] != null)
+                                xexc.Add($"{c[r].Name} ({c[r].Version}) (True)");
                         }
 
-                        if (!_result)
+                        if (!result)
                         {
-                            _xt = false;
-                            if (_c[r] != null)
-                                _xexc.Add($"{_c[r].Name} ({_c[r].Version}) (False)");
+                            xt = false;
+                            if (c[r] != null)
+                                xexc.Add($"{c[r].Name} ({c[r].Version}) (False)");
                         }
 
                         r++;
                     }
 
                     // If one of these is still true, that means all of the other results are true or false.
-                    if (_xt || _xf)
-                        _ret = false;
+                    if (xt || xf)
+                        ret = false;
 
-                    if (!_ret)
+                    if (!ret)
                     {
-                        var _sb = new StringBuilder(
+                        var sb = new StringBuilder(
                                                     $"The following dependency for the module {info.Name} could not be resolved: (XOR operator)\n"
                                                    );
-                        _xexc.ForEach(innerException => _sb.Append($"\t{innerException}\n"));
-                        if (!opt) throw new UnresolvedDependencyException(_sb.ToString());
+                        xexc.ForEach(innerException => sb.Append($"\t{innerException}\n"));
+                        if (!opt) throw new UnresolvedDependencyException(sb.ToString());
                     }
 
                     break;
@@ -251,29 +251,29 @@ namespace ECX.Core.Dependency.Resolver
             }
             else
             {
-                var _constraint = node.Constraint;
+                var constraint = node.Constraint;
 
-                foreach (var _parent in parents)
+                foreach (var parent in parents)
                 {
-                    if (_parent == _constraint.Name)
+                    if (parent == constraint.Name)
                         throw new CircularDependencyException(
-                                                              $"{_parent} and {info.Name} have a circular dependency on each other");
+                                                              $"{parent} and {info.Name} have a circular dependency on each other");
                 }
 
                 // single operators
-                if (SearchForModule(_constraint.Name) == null)
-                    _ret = false;
+                if (SearchForModule(constraint.Name) == null)
+                    ret = false;
 
-                ModuleInfo _ninfo = null;
+                ModuleInfo ninfo = null;
 
-                var _loader = new ModuleLoader(SearchPath, Controller);
+                var loader = new ModuleLoader(SearchPath, Controller);
 
                 try
                 {
                     if (!parents.Contains(info.Name))
                         parents.Add(info.Name);
 
-                    _loader.LoadModule(parents, _constraint.Name, out _ninfo, true, true);
+                    loader.LoadModule(parents, constraint.Name, out ninfo, true, true);
                 }
                 catch (CircularDependencyException ce)
                 {
@@ -285,91 +285,90 @@ namespace ECX.Core.Dependency.Resolver
                         throw new UnresolvedDependencyException(
                                                                 string.Format(
                                                                               "The following dependency for the module {0} could not be resolved: ({3} operator)\n\t{1} ({2})",
-                                                                              info.Name, _constraint.Name,
-                                                                              _constraint.Version, OpToString(_op))
+                                                                              info.Name, constraint.Name,
+                                                                              constraint.Version, OpToString(op))
                                                                );
                 }
 
-                if (_op == DepOps.Equal || _op == DepOps.GreaterThan || _op == DepOps.GreaterThanEqual ||
-                    _op == DepOps.LessThan || _op == DepOps.LessThanEqual || _op == DepOps.NotEqual)
+                if (op is DepOps.Equal or DepOps.GreaterThan or DepOps.GreaterThanEqual or DepOps.LessThan or DepOps.LessThanEqual or DepOps.NotEqual)
                 {
-                    if (!IsEmptyVersion(_constraint.Version))
-                        if (!VersionMatch(_ninfo.Version, _constraint.Version, _op))
+                    if (!IsEmptyVersion(constraint.Version))
+                        if (!VersionMatch(ninfo.Version, constraint.Version, op))
                             if (!opt)
                                 throw new UnresolvedDependencyException(
                                                                         string.Format(
                                                                          "The following dependency for the module {0} could not be resolved: ({3} operator)\n\t{1} ({2})",
-                                                                         info.Name, _constraint.Name,
-                                                                         _constraint.Version, OpToString(_op))
+                                                                         info.Name, constraint.Name,
+                                                                         constraint.Version, OpToString(op))
                                                                        );
 
                     if (!checking)
                     {
-                        Controller.LoadModule(_constraint.Name);
+                        Controller.LoadModule(constraint.Name);
 
                         parents.Sort();
 
-                        var _seen = new List<string>
+                        var seen = new List<string>
                                     {
                                         info.Name,
-                                        _constraint.Name
+                                        constraint.Name
                                     };
-                        foreach (var _p in parents)
+                        foreach (var p in parents)
                         {
-                            if (!_seen.Contains(_p))
+                            if (!seen.Contains(p))
                             {
-                                Controller.IncRef(_constraint.Name);
-                                _seen.Add(_p);
+                                Controller.IncRef(constraint.Name);
+                                seen.Add(p);
                             }
                         }
                     }
                 }
 
-                if (_op == DepOps.Loaded)
+                if (op == DepOps.Loaded)
                 {
-                    if (Controller.Loader.SearchForModule(_constraint.Name) == null)
+                    if (Controller.Loader.SearchForModule(constraint.Name) == null)
                         if (!opt)
                             throw new UnresolvedDependencyException(
                                                                     string.Format(
                                                                      "The following dependency for the module {0} could not be resolved: ({3} operator)\n\t{1} ({2})",
-                                                                     info.Name, _constraint.Name,
-                                                                     _constraint.Version, OpToString(_op))
+                                                                     info.Name, constraint.Name,
+                                                                     constraint.Version, OpToString(op))
                                                                    );
 
                     if (!checking)
                     {
-                        Controller.LoadModule(_constraint.Name);
+                        Controller.LoadModule(constraint.Name);
 
                         parents.Sort();
 
-                        var _seen = new List<string>
+                        var seen = new List<string>
                                     {
                                         info.Name,
-                                        _constraint.Name
+                                        constraint.Name
                                     };
-                        foreach (var _p in parents)
+                        foreach (var p in parents)
                         {
-                            if (!_seen.Contains(_p))
+                            if (!seen.Contains(p))
                             {
-                                Controller.IncRef(_constraint.Name);
-                                _seen.Add(_p);
+                                Controller.IncRef(constraint.Name);
+                                seen.Add(p);
                             }
                         }
                     }
                 }
 
-                if (_op == DepOps.NotLoaded)
-                    if (Controller.IsLoaded(_constraint.Name))
+                if (op == DepOps.NotLoaded)
+                    if (Controller.IsLoaded(constraint.Name))
                     {
-                        if (Controller.RefCount(_constraint.Name) > 1)
+                        if (Controller.RefCount(constraint.Name) > 1)
                             if (!opt)
                                 throw new UnresolvedDependencyException(
                                                                         string.Format(
                                                                          "The following dependency for the module {0} could not be resolved: ({3} operator)\n\t{1} ({2})",
-                                                                         info.Name, _constraint.Name,
-                                                                         _constraint.Version, OpToString(_op))
+                                                                         info.Name, constraint.Name,
+                                                                         constraint.Version, OpToString(op))
                                                                        );
-                        if (!checking) Controller.UnloadModule(_constraint.Name);
+                        if (!checking) Controller.UnloadModule(constraint.Name);
                     }
             }
         }
@@ -425,30 +424,30 @@ namespace ECX.Core.Dependency.Resolver
         /// <returns>Returns true is the version matches the constraint version with the given operator, otherwise returns false.</returns>
         protected bool VersionMatch(DepVersion moduleVersion, DepVersion dependencyVersion, DepOps op)
         {
-            Version _mver, _drver;
+            Version mver, drver;
 
             if (dependencyVersion.Major == -1)
                 return true;
 
-            _mver = new Version(dependencyVersion.Major != -1 ? moduleVersion.Major : 0,
+            mver = new Version(dependencyVersion.Major != -1 ? moduleVersion.Major : 0,
                                 dependencyVersion.Minor != -1 ? moduleVersion.Minor : 0,
                                 dependencyVersion.Build != -1 ? moduleVersion.Build : 0,
                                 dependencyVersion.Revision != -1 ? moduleVersion.Revision : 0);
 
-            _drver = new Version(dependencyVersion.Major != -1 ? dependencyVersion.Major : 0,
+            drver = new Version(dependencyVersion.Major != -1 ? dependencyVersion.Major : 0,
                                  dependencyVersion.Minor != -1 ? dependencyVersion.Minor : 0,
                                  dependencyVersion.Build != -1 ? dependencyVersion.Build : 0,
                                  dependencyVersion.Revision != -1 ? dependencyVersion.Revision : 0);
 
-            var vres = _mver.CompareTo(_drver);
+            var vres = mver.CompareTo(drver);
 
             return op switch
                    {
                        DepOps.Equal => vres == 0,
                        DepOps.GreaterThan => vres > 0,
-                       DepOps.GreaterThanEqual => vres > 0 || vres == 0,
+                       DepOps.GreaterThanEqual => vres >= 0,
                        DepOps.LessThan => vres < 0,
-                       DepOps.LessThanEqual => vres < 0 || vres == 0,
+                       DepOps.LessThanEqual => vres <= 0,
                        DepOps.NotEqual => vres != 0,
                        DepOps.Loaded => true,
                        _ => false

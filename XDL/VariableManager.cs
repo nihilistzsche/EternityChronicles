@@ -57,7 +57,7 @@ namespace XDL
                 var name = parts[0];
                 var value = parts[1];
 
-                if (value[value.Length - 1] == ';') value = value.Substring(0, value.Length - 1);
+                if (value[value.Length - 1] == ';') value = value[..^1];
 
                 DefaultManager.Variables[name] = value;
                 Variables[name] = value;

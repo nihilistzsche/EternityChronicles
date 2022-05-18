@@ -56,8 +56,8 @@ namespace EternityChronicles.Tests.IronDragon
         public void TestAnotherHash()
         {
             var expect =
-                SD(new Dictionary<object, object>
-                   { { XS("hello"), "world" }, { XS("john"), "doe" }, { XS("jack"), "black" } });
+                Sd(new Dictionary<object, object>
+                   { { Xs("hello"), "world" }, { Xs("john"), "doe" }, { Xs("jack"), "black" } });
 
             var real = CompileAndExecute("{:hello => 'world',:john => 'doe',:jack => 'black'};");
 
@@ -117,7 +117,7 @@ namespace EternityChronicles.Tests.IronDragon
         [Test]
         public void TestHash()
         {
-            var expect = SD(new Dictionary<object, object> { { "hello", "world" } });
+            var expect = Sd(new Dictionary<object, object> { { "hello", "world" } });
 
             var real = CompileAndExecute("{ 'hello' => 'world' };");
 

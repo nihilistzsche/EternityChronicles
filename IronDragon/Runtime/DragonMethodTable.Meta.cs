@@ -71,19 +71,19 @@ namespace IronDragon.Runtime
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] args)
+            public override DynamicMetaObject BindInvoke(InvokeBinder binder, DynamicMetaObject[] rawArgs)
             {
                 var realArgs = new List<object>();
-                args.ToList().ForEach(arg => realArgs.Add(Arg(arg.Value)));
+                rawArgs.ToList().ForEach(arg => realArgs.Add(Arg(arg.Value)));
                 if (DragonScopeFound) realArgs.RemoveAt(0);
                 DragonScopeFound = false;
-                var _args = realArgs.ConvertAll(arg => (FunctionArgument)arg);
-                var func = Value.Resolve(_args);
+                var args = realArgs.ConvertAll(arg => (FunctionArgument)arg);
+                var func = Value.Resolve(args);
                 if (func == null)
                     return new DynamicMetaObject(Expression.Constant(null),
                                                  BindingRestrictions
                                                      .GetExpressionRestriction(Expression.Constant(true)));
-                return func.GetMetaObject(Expression).BindInvoke(binder, args);
+                return func.GetMetaObject(Expression).BindInvoke(binder, rawArgs);
             }
         }
     }

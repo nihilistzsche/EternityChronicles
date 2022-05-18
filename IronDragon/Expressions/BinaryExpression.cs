@@ -107,7 +107,7 @@ namespace IronDragon.Expressions
                     return ReduceMatch();
                 }
 
-            if (BinaryNodeType == ExpressionType.OrElse || BinaryNodeType == ExpressionType.AndAlso)
+            if (BinaryNodeType is ExpressionType.OrElse or ExpressionType.AndAlso)
                 return MakeBinary(BinaryNodeType, Convert<bool>(Left), Convert<bool>(Right));
             return Operation.Binary(Type, Convert<object>(Left), Convert<object>(Right), Constant(BinaryNodeType),
                                     Constant(Scope));

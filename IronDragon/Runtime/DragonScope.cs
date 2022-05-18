@@ -32,12 +32,12 @@ namespace IronDragon.Runtime
         // Keeps the type of 'this', which must be default-instantiable.
         // Example:
         //   result = map.MergeLeft(other1, other2, ...)
-        public static T MergeLeft<T, K, V>(this T me, params IDictionary<K, V>[] others)
-            where T : IDictionary<K, V>, new()
+        public static T MergeLeft<T, TK, TV>(this T me, params IDictionary<TK, TV>[] others)
+            where T : IDictionary<TK, TV>, new()
         {
             var newMap = new T();
             foreach (var src in
-                     new List<IDictionary<K, V>> { me }.Concat(others))
+                     new List<IDictionary<TK, TV>> { me }.Concat(others))
             {
                 // ^-- echk. Not quite there type-system.
                 foreach (var p in src) newMap[p.Key] = p.Value;
@@ -130,7 +130,7 @@ namespace IronDragon.Runtime
                 {
                     var val = item.Value;
                     // Runtime classes we should wrap to get desired effect
-                    if (val is DragonArray || val is DragonDictionary || val is DragonString || val is DragonNumber)
+                    if (val is DragonArray or DragonDictionary or DragonString or DragonNumber)
                         val = Dragon.Box(val);
                     Variables[item.Key] = val;
                 }
@@ -143,8 +143,7 @@ namespace IronDragon.Runtime
                                                       {
                                                           var val = scope.GetVariable(name);
                                                           // Runtime classes we should wrap to get desired effect
-                                                          if (val is DragonArray || val is DragonDictionary ||
-                                                              val is DragonString || val is DragonNumber)
+                                                          if (val is DragonArray or DragonDictionary or DragonString or DragonNumber)
                                                               val = Dragon.Box(val);
                                                           Variables[name] = val;
                                                       });

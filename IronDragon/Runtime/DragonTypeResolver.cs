@@ -24,26 +24,24 @@ namespace IronDragon.Runtime
 {
     public static class DragonTypeResolver
     {
-        private static readonly List<string> _includedNamespaces = new();
 
         static DragonTypeResolver()
         {
-            var namespaces = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetTypes()).Flatten()
-                                      .Select(t => t.Namespace).Distinct();
-            _includedNamespaces.AddRange(namespaces);
+            IncludedNamespaces.AddRange(AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetTypes()).Flatten()
+                                      .Select(t => t.Namespace).Distinct());
         }
 
-        public static List<string> IncludedNamespaces => _includedNamespaces;
+        public static readonly List<string> IncludedNamespaces = new();
 
         public static void Include(string @namespace)
         {
-            _includedNamespaces.Add(@namespace);
+            IncludedNamespaces.Add(@namespace);
         }
 
         public static Type Resolve(string name)
         {
             var mq =
-                _includedNamespaces.Where(
+                IncludedNamespaces.Where(
                                           @namespace =>
                                               Type.GetType(string.Format("{0}.{1}", @namespace, name)) != null);
             return mq.Any() ? Type.GetType($"{mq.First()}.{name}") : null;

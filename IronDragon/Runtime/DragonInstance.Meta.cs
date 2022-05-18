@@ -45,7 +45,7 @@ namespace IronDragon.Runtime
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            private static DynamicMetaObject DMO(dynamic val)
+            private static DynamicMetaObject Dmo(dynamic val)
             {
                 return Create(val, System.Linq.Expressions.Expression.Constant(val));
             }

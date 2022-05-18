@@ -39,24 +39,24 @@ namespace ECX.Core.Module
             Name = assembly.GetName().Name;
             Version = DepVersion.VersionParse(assembly.GetName().Version.ToString());
 
-            var _depAttr = assembly.GetCustomAttributes(typeof(ModuleDependencyAttribute), false);
+            var depAttr = assembly.GetCustomAttributes(typeof(ModuleDependencyAttribute), false);
 
-            if (_depAttr.Any())
+            if (depAttr.Any())
             {
-                var _lexer =
-                    new ECXLexer(new ANTLRStringStream(((ModuleDependencyAttribute)_depAttr.First()).DepString));
-                var _parser = new ECXParser(new CommonTokenStream(_lexer));
-                Dependencies = _parser.expr();
+                var lexer =
+                    new ECXLexer(new ANTLRStringStream(((ModuleDependencyAttribute)depAttr.First()).DepString));
+                var parser = new ECXParser(new CommonTokenStream(lexer));
+                Dependencies = parser.expr();
             }
             else
             {
                 Dependencies = null;
             }
 
-            var _roleAttr = assembly.GetCustomAttributes(typeof(ModuleRoleAttribute), false);
+            var roleAttr = assembly.GetCustomAttributes(typeof(ModuleRoleAttribute), false);
 
-            if (_roleAttr.Any())
-                Roles = ((ModuleRoleAttribute)_roleAttr.First()).Roles;
+            if (roleAttr.Any())
+                Roles = ((ModuleRoleAttribute)roleAttr.First()).Roles;
             else
                 Roles = null;
 

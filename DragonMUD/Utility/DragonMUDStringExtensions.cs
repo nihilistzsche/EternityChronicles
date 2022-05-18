@@ -19,14 +19,14 @@ using System.Text;
 
 namespace DragonMUD.Utility
 {
-    public static class DragonMUDStringExtensions
+    public static class DragonMudStringExtensions
     {
         public static string GetSpacing(this string @this)
         {
             var hook = new ColorProcessWriteHook();
 
             // ReSharper disable once ConvertToLocalFunction
-            string getStringSpacing(string s)
+            string GetStringSpacing(string s)
             {
                 var spacing = new StringBuilder();
                 var clrString = hook.ProcessMessage(s, false);
@@ -36,7 +36,7 @@ namespace DragonMUD.Utility
                 return spacing.ToString();
             }
 
-            return getStringSpacing(@this);
+            return GetStringSpacing(@this);
         }
     }
 }

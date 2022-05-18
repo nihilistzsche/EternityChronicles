@@ -68,7 +68,7 @@ namespace IronDragon.Runtime
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            private static DynamicMetaObject DMO(dynamic val)
+            private static DynamicMetaObject Dmo(dynamic val)
             {
                 return DynamicMetaObject.Create(val, Expression.Constant(val));
             }
@@ -89,18 +89,18 @@ namespace IronDragon.Runtime
                 object left = Check(target.Value);
                 object right = Check(arg.Value);
 
-                DragonInstance Value = Dragon.Box(left);
-                var DragonName = MapExpressionType(Operation);
-                if (DragonName != null)
+                DragonInstance value = Dragon.Box(left);
+                var dragonName = MapExpressionType(Operation);
+                if (dragonName != null)
                 {
-                    var dmo = Value.GetMetaObject(Expression.Constant(Value));
-                    if (InvokeMember.SearchForFunction(Value.Class, DragonName, Value, L(Arg(arg.Value)), true) != null)
-                        return dmo.BindInvokeMember(new InvokeMember(DragonName, new CallInfo(1), Scope),
-                                                    _DMO(DMO(Scope), DMO(Arg(arg.Value))));
-                    var clrName = ToClrOperatorName(DragonName);
-                    if (InvokeMember.SearchForFunction(Value.Class, clrName, Value, L(Arg(arg.Value)), true) != null)
+                    var dmo = value.GetMetaObject(Expression.Constant(value));
+                    if (InvokeMember.SearchForFunction(value.Class, dragonName, value, L(Arg(arg.Value)), true) != null)
+                        return dmo.BindInvokeMember(new InvokeMember(dragonName, new CallInfo(1), Scope),
+                                                    _DMO(Dmo(Scope), Dmo(Arg(arg.Value))));
+                    var clrName = ToClrOperatorName(dragonName);
+                    if (InvokeMember.SearchForFunction(value.Class, clrName, value, L(Arg(arg.Value)), true) != null)
                         return dmo.BindInvokeMember(new InvokeMember(clrName, new CallInfo(1), Scope),
-                                                    _DMO(DMO(Scope), DMO(Arg(arg.Value))));
+                                                    _DMO(Dmo(Scope), Dmo(Arg(arg.Value))));
                 }
 
                 Expression eleft = Expression.Constant(left);
@@ -126,7 +126,7 @@ namespace IronDragon.Runtime
                 else
                 {
                     if (rl.Type == typeof(object) &&
-                        (Operation != ExpressionType.Equal || Operation != ExpressionType.NotEqual))
+                        Operation is not ExpressionType.Equal and not ExpressionType.NotEqual)
                     {
                         if (rr.Type != typeof(object))
                             rl = DragonExpression.Convert(rl, rr.Type);
@@ -384,7 +384,7 @@ namespace IronDragon.Runtime
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            private static DynamicMetaObject DMO(dynamic val)
+            private static DynamicMetaObject Dmo(dynamic val)
             {
                 return DynamicMetaObject.Create(val, Expression.Constant(val));
             }
@@ -393,10 +393,10 @@ namespace IronDragon.Runtime
                                                        DragonMetaObject target, DynamicMetaObject[] args)
             {
                 var realArgs = new List<DynamicMetaObject>();
-                args.ToList().ForEach(arg => realArgs.Add(DMO(Arg(arg.Value))));
+                args.ToList().ForEach(arg => realArgs.Add(Dmo(Arg(arg.Value))));
 
                 if (!DragonScopeFound)
-                    realArgs.Insert(0, DMO(((Invoke)binder).Scope ?? new DragonScope()));
+                    realArgs.Insert(0, Dmo(((Invoke)binder).Scope ?? new DragonScope()));
                 else
                     DragonScopeFound = false;
 
@@ -641,7 +641,7 @@ namespace IronDragon.Runtime
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            private static DynamicMetaObject DMO(dynamic val)
+            private static DynamicMetaObject Dmo(dynamic val)
             {
                 return DynamicMetaObject.Create(val, Expression.Constant(val));
             }
@@ -653,12 +653,12 @@ namespace IronDragon.Runtime
                 var first = true;
                 args.ToList().ForEach(arg =>
                                       {
-                                          if ((first && arg.Value != null) || !first) realArgs.Add(DMO(Arg(arg.Value)));
+                                          if ((first && arg.Value != null) || !first) realArgs.Add(Dmo(Arg(arg.Value)));
                                           first = false;
                                       });
 
                 if (!DragonScopeFound)
-                    realArgs.Insert(0, DMO(((InvokeMember)binder).Scope ?? new DragonScope()));
+                    realArgs.Insert(0, Dmo(((InvokeMember)binder).Scope ?? new DragonScope()));
                 else
                     DragonScopeFound = false;
 
@@ -732,8 +732,8 @@ namespace IronDragon.Runtime
             public override DynamicMetaObject FallbackInvokeMember(DynamicMetaObject target, DynamicMetaObject[] args,
                                                                    DynamicMetaObject errorSuggestion)
             {
-                dynamic _object = target.Value;
-                DragonClass _class;
+                dynamic @object = target.Value;
+                DragonClass @class;
 
                 var isInstance = false;
 
@@ -743,39 +743,39 @@ namespace IronDragon.Runtime
                 var scope = new DragonScope((DragonScope)myArgs[0]);
 
                 myArgs.Remove(myArgs[0]);
-                var _isSuperCall = false;
-                var _isOp = false;
-                var _isPostfix = false;
+                var isSuperCall = false;
+                var isOp = false;
+                var isPostfix = false;
                 if (myArgs.Any() && myArgs.Last() is DragonDoNotWrapBoolean && !(myArgs.Last() is DragonUnaryBoolean))
                 {
-                    _isSuperCall = ((DragonDoNotWrapBoolean)myArgs.Last()).Value;
+                    isSuperCall = ((DragonDoNotWrapBoolean)myArgs.Last()).Value;
                     myArgs.Remove(myArgs.Last());
                 }
 
                 if (myArgs.Any() && myArgs.Last() is DragonUnaryBoolean)
                 {
-                    _isOp = true;
-                    _isPostfix = ((DragonUnaryBoolean)myArgs.Last()).Value;
+                    isOp = true;
+                    isPostfix = ((DragonUnaryBoolean)myArgs.Last()).Value;
                     myArgs.Remove(myArgs.Last());
                 }
 
-                if (_object is DragonInstance)
+                if (@object is DragonInstance)
                 {
-                    _class = ((DragonInstance)_object).Class;
-                    scope.MergeWithScope(_class.Context);
+                    @class = ((DragonInstance)@object).Class;
+                    scope.MergeWithScope(@class.Context);
                     isInstance = true;
                 }
-                else if (_object is DragonClass)
+                else if (@object is DragonClass)
                 {
-                    _class = (DragonClass)_object;
-                    scope.MergeWithScope(_class.Context);
+                    @class = (DragonClass)@object;
+                    scope.MergeWithScope(@class.Context);
                 }
                 else // Native object
                 {
                     var types = new List<Type>();
                     myArgs.ForEach(arg => types.Add(arg.GetType()));
-                    var methods = ((object)_object).GetType().GetMethods();
-                    var method = ((object)_object).GetType().GetMethod(Name, types.ToArray());
+                    var methods = ((object)@object).GetType().GetMethods();
+                    var method = ((object)@object).GetType().GetMethod(Name, types.ToArray());
                     var methodCandidates = new List<MethodInfo>();
                     methods.ToList().ForEach(mi =>
                                              {
@@ -794,25 +794,25 @@ namespace IronDragon.Runtime
 
                     if (method == null)
                     {
-                        if (scope[_object.GetType().Name] != null)
+                        if (scope[@object.GetType().Name] != null)
                         {
-                            var obj = new DragonBoxedInstance(_object, scope, scope[_object.GetType().Name]);
-                            var dmo = obj.GetMetaObject(Expression.Constant(obj));
+                            var boxobj = new DragonBoxedInstance(@object, scope, scope[@object.GetType().Name]);
+                            var boxdmo = boxobj.GetMetaObject(Expression.Constant(boxobj));
 
-                            return dmo.BindInvokeMember(new InvokeMember(Name, CallInfo, Scope), args);
+                            return boxdmo.BindInvokeMember(new InvokeMember(Name, CallInfo, Scope), args);
                         }
 
-                        var _obj = Dragon.Box(_object);
-                        if (scope[((DragonInstance)_obj).Class.Name] != null)
+                        var dobj = Dragon.Box(@object);
+                        if (scope[((DragonInstance)dobj).Class.Name] != null)
                         {
-                            var obj = new DragonBoxedInstance(_object, scope, scope[((DragonInstance)_obj).Class.Name]);
-                            var dmo = obj.GetMetaObject(Expression.Constant(obj));
+                            var boxobj = new DragonBoxedInstance(@object, scope, scope[((DragonInstance)dobj).Class.Name]);
+                            var boxdmo = boxobj.GetMetaObject(Expression.Constant(boxobj));
 
-                            return dmo.BindInvokeMember(new InvokeMember(Name, CallInfo, Scope), args);
+                            return boxdmo.BindInvokeMember(new InvokeMember(Name, CallInfo, Scope), args);
                         }
 
-                        var _dmo = _obj.GetMetaObject(Expression.Constant(_object));
-                        return _dmo.BindInvokeMember(new InvokeMember(Name, CallInfo, Scope), args);
+                        var dmo = dobj.GetMetaObject(Expression.Constant(@object));
+                        return dmo.BindInvokeMember(new InvokeMember(Name, CallInfo, Scope), args);
                     }
 
                     var targs = new List<object>();
@@ -847,19 +847,19 @@ namespace IronDragon.Runtime
 
                     return
                         new DynamicMetaObject(
-                                              Expression.Constant(method.Invoke(_object, wargs.ToArray()),
+                                              Expression.Constant(method.Invoke(@object, wargs.ToArray()),
                                                                   typeof(object)),
                                               BindingRestrictions.GetExpressionRestriction(Expression.Constant(true)));
                 }
 
                 // Find the function in the function tables;
-                var function = SearchForFunction(_isSuperCall ? _class.Parent : _class, Name,
-                                                 isInstance ? _object as DragonInstance : null,
+                var function = SearchForFunction(isSuperCall ? @class.Parent : @class, Name,
+                                                 isInstance ? @object as DragonInstance : null,
                                                  myArgs.ConvertAll(arg => (FunctionArgument)arg), isInstance, true);
                 if (function == null)
                 {
-                    function = SearchForFunction(_isSuperCall ? _class.Parent : _class, Name,
-                                                 isInstance ? _object as DragonInstance : null,
+                    function = SearchForFunction(isSuperCall ? @class.Parent : @class, Name,
+                                                 isInstance ? @object as DragonInstance : null,
                                                  myArgs.ConvertAll(arg => (FunctionArgument)arg), isInstance);
 
                     if (function == null)
@@ -903,13 +903,13 @@ namespace IronDragon.Runtime
                     // preserve self and super for partial function and invoke member context
                     if (isInstance)
                     {
-                        var obj = (DragonInstance)_object;
+                        var obj = (DragonInstance)@object;
                         scope["self"] =
                             scope["super"] =
-                                obj is DragonBoxedInstance ? ((DragonBoxedInstance)obj).BoxedObject : _object;
+                                obj is DragonBoxedInstance ? ((DragonBoxedInstance)obj).BoxedObject : @object;
                         if (obj is DragonBoxedInstance)
                             scope = MergeScopes(((DragonBoxedInstance)obj).BoxedScope, scope);
-                        if (target.Expression is VariableExpression || target.Expression is InstanceReferenceExpression)
+                        if (target.Expression is VariableExpression or InstanceReferenceExpression)
                         {
                             if (target.Expression is InstanceReferenceExpression)
                             {
@@ -927,13 +927,13 @@ namespace IronDragon.Runtime
                     {
                         if (Name == "new")
                         {
-                            var newObj = new DragonInstance(_class);
+                            var newObj = new DragonInstance(@class);
                             newObj.SetScope(scope);
                             scope["self"] = scope["super"] = newObj;
                         }
                         else
                         {
-                            scope["self"] = scope["super"] = _isSuperCall ? _class.Parent : _class;
+                            scope["self"] = scope["super"] = isSuperCall ? @class.Parent : @class;
                         }
                     }
 
@@ -1047,22 +1047,22 @@ namespace IronDragon.Runtime
 
                 if (isInstance)
                 {
-                    var obj = (DragonInstance)_object;
+                    var obj = (DragonInstance)@object;
                     xScope["self"] =
-                        xScope["super"] = obj is DragonBoxedInstance ? ((DragonBoxedInstance)obj).BoxedObject : _object;
+                        xScope["super"] = obj is DragonBoxedInstance ? ((DragonBoxedInstance)obj).BoxedObject : @object;
                     if (obj is DragonBoxedInstance) xScope = MergeScopes(((DragonBoxedInstance)obj).BoxedScope, xScope);
                 }
                 else
                 {
                     if (Name == "new")
                     {
-                        var newObj = new DragonInstance(_class);
+                        var newObj = new DragonInstance(@class);
                         newObj.SetScope(scope);
                         xScope["self"] = xScope["super"] = newObj;
                     }
                     else
                     {
-                        xScope["self"] = xScope["super"] = _isSuperCall ? _class.Parent : _class;
+                        xScope["self"] = xScope["super"] = isSuperCall ? @class.Parent : @class;
                     }
                 }
 
@@ -1076,12 +1076,12 @@ namespace IronDragon.Runtime
                     xScope["<dragon_context_selfname>"] = xSelfName;
                 }
 
-                if (_isOp) xScope["__postfix"] = _isPostfix;
+                if (isOp) xScope["__postfix"] = isPostfix;
                 var realBody = new BlockExpression(xBody);
                 realBody.SetScope(xScope);
                 Expression expr = Expression.Block(new ParameterExpression[] { }, realBody);
 
-                if (_isSuperCall && isInstance) (_object as DragonInstance)._class = _class.Parent;
+                if (isSuperCall && isInstance) (@object as DragonInstance).Class = @class.Parent;
 
                 var xval = CompilerServices.CreateLambdaForExpression(expr)();
 
@@ -1094,12 +1094,12 @@ namespace IronDragon.Runtime
                         xval = ((DragonBoxedInstance)xval).BoxedObject;
                     if (Name == "new" && !(xval is DragonInstance))
                     {
-                        if (!(_class is DragonBoxedClass)) // we inherited from .NET but we have a Dragon class
+                        if (!(@class is DragonBoxedClass)) // we inherited from .NET but we have a Dragon class
                         {
-                            object _xval = xval;
-                            xval = new DragonInstance(_class);
-                            ((DragonInstance)xval).BackingObject = _xval;
-                            DragonBoxedInstance.SyncInstanceVariablesTo(xval, _xval);
+                            object yval = xval;
+                            xval = new DragonInstance(@class);
+                            ((DragonInstance)xval).BackingObject = yval;
+                            DragonBoxedInstance.SyncInstanceVariablesTo(xval, yval);
                         }
                         else
                         {
@@ -1113,7 +1113,7 @@ namespace IronDragon.Runtime
                     }
                 }
 
-                if (_isSuperCall && isInstance) (_object as DragonInstance)._class = _class;
+                if (isSuperCall && isInstance) (@object as DragonInstance).Class = @class;
 
                 L(xScope.Variables)
                     .ForEach(
@@ -1173,14 +1173,14 @@ namespace IronDragon.Runtime
                         return new DynamicMetaObject(Expression.Constant(obj.Class, typeof(object)), GetRes());
                     if (obj is DragonBoxedInstance)
                     {
-                        var _obj = ((DragonBoxedInstance)obj).BoxedObject;
-                        var fi = _obj.GetType()
+                        var boxobj = ((DragonBoxedInstance)obj).BoxedObject;
+                        var fi = boxobj.GetType()
                                      .GetField(Name,
                                                BindingFlags.Instance | BindingFlags.Public |
                                                BindingFlags.NonPublic);
                         try
                         {
-                            var val = fi.GetValue(_obj);
+                            var val = fi.GetValue(boxobj);
                             return new DynamicMetaObject(Expression.Constant(val, typeof(object)),
                                                          GetRes());
                         }
@@ -1256,7 +1256,7 @@ namespace IronDragon.Runtime
                 return val as FunctionArgument ?? new FunctionArgument(null, Expression.Constant(val));
             }
 
-            private static DynamicMetaObject DMO(dynamic val)
+            private static DynamicMetaObject Dmo(dynamic val)
             {
                 return DynamicMetaObject.Create(val, Expression.Constant(val));
             }
@@ -1270,8 +1270,8 @@ namespace IronDragon.Runtime
                     var obj = (DragonInstance)target.Value;
                     if (obj is DragonBoxedInstance)
                     {
-                        var _obj = ((DragonBoxedInstance)obj).BoxedObject;
-                        var fi = _obj.GetType()
+                        var boxobj = ((DragonBoxedInstance)obj).BoxedObject;
+                        var fi = boxobj.GetType()
                                      .GetField(Name,
                                                BindingFlags.Instance | BindingFlags.Public |
                                                BindingFlags.NonPublic);
@@ -1279,7 +1279,7 @@ namespace IronDragon.Runtime
                         {
                             dynamic val = value.Value;
                             if (val is DragonNumber) val = DragonNumber.Convert(val);
-                            fi.SetValue(_obj, val);
+                            fi.SetValue(boxobj, val);
                             return new DynamicMetaObject(Expression.Constant(value.Value, typeof(object)),
                                                          GetRes());
                         }
@@ -1292,7 +1292,7 @@ namespace IronDragon.Runtime
                     var dmo = obj.GetMetaObject(Expression.Constant(obj));
                     var args = new List<DynamicMetaObject>();
                     args.Add(DynamicMetaObject.Create(Scope, Expression.Constant(Scope)));
-                    args.Add(DMO(Arg(value.Value)));
+                    args.Add(Dmo(Arg(value.Value)));
                     if (
                         InvokeMember.SearchForFunction(obj.Class, set, obj,
                                                        new List<FunctionArgument> { Arg(value.Value) }, true) != null)
@@ -1435,9 +1435,9 @@ namespace IronDragon.Runtime
 			 *
 			 * ***************************************************************************/
 
-        internal static string ToClrOperatorName(string DragonName)
+        internal static string ToClrOperatorName(string dragonName)
         {
-            switch (DragonName)
+            switch (dragonName)
             {
             case "+":
                 return "op_Addition";
