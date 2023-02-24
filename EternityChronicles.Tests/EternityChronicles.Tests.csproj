@@ -121,7 +121,7 @@
             <Version>1.0.0.1</Version>
         </PackageReference>
         <PackageReference Include="Jint">
-            <Version>3.0.0-beta-2046</Version>
+            <Version>3.0.0-beta-2047</Version>
         </PackageReference>
         <PackageReference Include="NUnit">
             <Version>3.13.3</Version>
