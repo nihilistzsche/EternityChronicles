@@ -106,7 +106,7 @@
             <Version>1.0.0.1</Version>
         </PackageReference>
         <PackageReference Include="Jint">
-            <Version>3.0.0-beta-2048</Version>
+            <Version>3.0.0-beta-2049</Version>
         </PackageReference>
         <PackageReference Include="Rxx_Experimental">
             <Version>1.3.4451.34132</Version>
