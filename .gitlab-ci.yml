@@ -62,23 +62,23 @@ unit-test-job-linux:   # This job runs in the test stage.
   script:
     - nunit3-console EternityChronicles.Tests/bin/Release/EternityChronicles.Tests.dll
 
-build-job-windows:       # This job runs in the build stage, which runs first.
-  when: manual
-  artifacts:
-    paths:
-      - "*/bin"
-  tags:
-    - windows10
-  stage: build
-  script:
-    - nuget.exe restore EternityChronicles.sln
-    - msbuild.exe EternityChronicles.sln -m -property:Configuration=Release
+#build-job-windows:       # This job runs in the build stage, which runs first.
+#  when: manual
+#  artifacts:
+#    paths:
+#      - "*/bin"
+#  tags:
+#    - windows10
+#  stage: build
+#  script:
+#    - nuget.exe restore EternityChronicles.sln
+#    - msbuild.exe EternityChronicles.sln -m -property:Configuration=Release
 
-unit-test-job-windows:   # This job runs in the test stage.
-  when: manual
-  stage: test    # It only starts when the job in the build stage completes successfully.
-  tags:
-    - windows10
-  script:
-    - nunit3-console.exe EternityChronicles.Tests/bin/Release/EternityChronicles.Tests.dll
+#unit-test-job-windows:   # This job runs in the test stage.
+#  when: manual
+#  stage: test    # It only starts when the job in the build stage completes successfully.
+#  tags:
+#    - windows10
+#  script:
+#    - nunit3-console.exe EternityChronicles.Tests/bin/Release/EternityChronicles.Tests.dll
 
