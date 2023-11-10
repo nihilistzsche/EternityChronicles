@@ -100,7 +100,7 @@
             <Version>2.0.10.189</Version>
         </PackageReference>
         <PackageReference Include="ImpromptuInterface">
-            <Version>7.0.1</Version>
+            <Version>8.0.4</Version>
         </PackageReference>
         <PackageReference Include="IronJint">
             <Version>1.0.0.1</Version>
