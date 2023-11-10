@@ -57,7 +57,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Dynamitey">
-            <Version>2.0.10.189</Version>
+            <Version>3.0.3</Version>
         </PackageReference>
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation">
             <Version>4.3.0</Version>
