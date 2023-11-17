@@ -97,7 +97,7 @@
             <Version>1.3.4</Version>
         </PackageReference>
         <PackageReference Include="Dynamitey">
-            <Version>2.0.10.189</Version>
+            <Version>3.0.3</Version>
         </PackageReference>
         <PackageReference Include="ImpromptuInterface">
             <Version>8.0.4</Version>
