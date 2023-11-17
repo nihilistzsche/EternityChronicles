@@ -58,13 +58,13 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.Build.Framework">
-            <Version>17.7.2</Version>
+            <Version>17.8.3</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.Build.Tasks.Core">
-            <Version>17.7.2</Version>
+            <Version>17.8.3</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.Build.Utilities.Core">
-            <Version>17.7.2</Version>
+            <Version>17.8.3</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.Build.Tasks">
             <Version>3.9.0-5.21120.8</Version>
