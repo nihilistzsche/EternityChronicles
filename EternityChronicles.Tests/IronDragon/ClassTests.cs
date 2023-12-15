@@ -22,6 +22,7 @@ using IronDragon;
 using IronDragon.Builtins;
 using IronDragon.Runtime;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace EternityChronicles.Tests.IronDragon
 {
@@ -220,7 +221,7 @@ namespace EternityChronicles.Tests.IronDragon
             var ftx = Dragon.Box(ft);
             ftx.x = 15;
             ftx.FieldTest = ftx.x + 10;
-            Assert.AreEqual(25, ft.FieldTest);
+            Assert.That(25, Is.EqualTo(ft.FieldTest));
         }
 
         [Test]
@@ -405,7 +406,7 @@ namespace EternityChronicles.Tests.IronDragon
             defscope.SetVariable("ft", new NativeHelper(0));
             defsource.Execute(defscope);
             var ft = defscope.GetVariable("ft");
-            Assert.IsInstanceOf(typeof(NativeHelper), ft);
+            ClassicAssert.IsInstanceOf(typeof(NativeHelper), ft);
             var source = engine.CreateScriptSourceFromString("ft.x + ft._fieldTest;");
             var scope = engine.CreateScope();
             scope.SetVariable("ft", ft);
@@ -840,7 +841,7 @@ namespace EternityChronicles.Tests.IronDragon
 
             var x = testClass();
             x.x = 17;
-            Assert.AreEqual(27, x + 10);
+            Assert.That(27, Is.EqualTo(x + 10));
         }
 
         [Test]

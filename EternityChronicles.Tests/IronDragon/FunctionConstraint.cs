@@ -39,9 +39,10 @@ namespace EternityChronicles.Tests.IronDragon
 
         public DragonFunction Expected { get; }
 
-        public override string Description
-        {
-            get => base.Description;
+        private string _description;
+
+        override public string Description {
+            get => _description;
         }
 
         private ConstraintResult Check()
@@ -58,7 +59,7 @@ namespace EternityChronicles.Tests.IronDragon
             }
             catch (AssertionException)
             {
-                Description = $"Expected {_actual}, but got {Expected} instead";
+                _description = $"Expected {_actual}, but got {Expected} instead";
                 success = false;
             }
 
@@ -70,7 +71,7 @@ namespace EternityChronicles.Tests.IronDragon
             this._actual = actual;
             if (actual is not DragonFunction)
             {
-                Description = $"Expected DragonFunction, but got {actual.GetType()} instead";
+                _description = $"Expected DragonFunction, but got {actual.GetType()} instead";
                 return new ConstraintResult(this, actual, false);
             }
 

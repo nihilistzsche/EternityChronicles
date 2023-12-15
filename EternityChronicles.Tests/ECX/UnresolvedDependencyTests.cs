@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using ECX.Core.Loader;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable HeapView.DelegateAllocation
 // ReSharper disable HeapView.BoxingAllocation
@@ -56,19 +57,19 @@ namespace EternityChronicles.Tests.ECX
                                                                  e = exc;
                                                              }
 
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01a"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01a"),
                                                                             "ecx-ur-01a is loaded, it should not be.");
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01b"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01b"),
                                                                             "ecx-ur-01b is loaded, it should not be.");
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01c"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01c"),
                                                                             "ecx-ur-01c is loaded, it should not be.");
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01d"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01d"),
                                                                             "ecx-ur-01d is loaded, it should not be.");
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01e"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01e"),
                                                                             "ecx-ur-01e is loaded, it should not be.");
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01f"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01f"),
                                                                             "ecx-ur-01f is loaded, it should not be.");
-                                                             Assert.IsFalse(mc.IsLoaded("ecx-ur-01g"),
+                                                             ClassicAssert.IsFalse(mc.IsLoaded("ecx-ur-01g"),
                                                                             "ecx-ur-01g is loaded, it should not be.");
 
 
