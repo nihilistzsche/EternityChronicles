@@ -19,7 +19,6 @@ using System.IO;
 using System.Reflection;
 using ECX.Core.Loader;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace EternityChronicles.Tests.ECX
 {
@@ -44,8 +43,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-01a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-01a"));
-            Assert.That(mc.IsLoaded("ecx-dr-01b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-01a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-01b"));
         }
 
         // !=
@@ -60,8 +59,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-02a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-02a"));
-            Assert.That(mc.IsLoaded("ecx-dr-02b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-02a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-02b"));
         }
 
         // <<
@@ -76,8 +75,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-03a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-03a"));
-            Assert.That(mc.IsLoaded("ecx-dr-03b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-03a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-03b"));
         }
 
         // >>
@@ -92,8 +91,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-04a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-04a"));
-            Assert.That(mc.IsLoaded("ecx-dr-04b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-04a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-04b"));
         }
 
         // <=
@@ -108,8 +107,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-05a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-05a"));
-            Assert.That(mc.IsLoaded("ecx-dr-05b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-05a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-05b"));
         }
 
         // >=
@@ -124,8 +123,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-06a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-06a"));
-            Assert.That(mc.IsLoaded("ecx-dr-06b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-06a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-06b"));
         }
 
         // ##
@@ -140,8 +139,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-dr-07a");
 
             // If it worked, we should have a domain for ecx-dr-01b
-            Assert.That(mc.IsLoaded("ecx-dr-07a"));
-            Assert.That(mc.IsLoaded("ecx-dr-07b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-07a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-07b"));
         }
 
         // (&& (==) (>=))
@@ -154,9 +153,9 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-08a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-08a"));
-            Assert.That(mc.IsLoaded("ecx-dr-08b"));
-            Assert.That(mc.IsLoaded("ecx-dr-08c"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-08a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-08b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-08c"));
         }
 
         // (|| (>>) (<<))
@@ -169,9 +168,9 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-09a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-09a"));
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-dr-09b"));
-            Assert.That(mc.IsLoaded("ecx-dr-09c"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-09a"));
+            Assert.IsFalse(mc.IsLoaded("ecx-dr-09b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-09c"));
         }
 
         // (^^ (>>) (!=))
@@ -184,9 +183,9 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-10a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-10a"));
-            Assert.That(mc.IsLoaded("ecx-dr-10b"));
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-dr-10c"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-10a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-10b"));
+            Assert.IsFalse(mc.IsLoaded("ecx-dr-10c"));
         }
 
         // (!#))
@@ -199,8 +198,8 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-11a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-11a"));
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-dr-11b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-11a"));
+            Assert.IsFalse(mc.IsLoaded("ecx-dr-11b"));
         }
 
         // (?? (>=))
@@ -213,8 +212,8 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-12a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-12a"));
-            Assert.That(mc.IsLoaded("ecx-dr-12b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-12a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-12b"));
         }
 
         // (&& (|| (==) (!=)) (?? (##)))
@@ -227,10 +226,10 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-13a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-13a"));
-            Assert.That(mc.IsLoaded("ecx-dr-13b"));
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-dr-13c"));
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-dr-13d"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-13a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-13b"));
+            Assert.IsFalse(mc.IsLoaded("ecx-dr-13c"));
+            Assert.IsFalse(mc.IsLoaded("ecx-dr-13d"));
         }
 
         // (|| (&& (##) (##)) (==)))
@@ -243,10 +242,10 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-dr-14a");
 
-            Assert.That(mc.IsLoaded("ecx-dr-14a"));
-            Assert.That(mc.IsLoaded("ecx-dr-14b"));
-            Assert.That(mc.IsLoaded("ecx-dr-14c"));
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-dr-14d"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-14a"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-14b"));
+            Assert.IsTrue(mc.IsLoaded("ecx-dr-14c"));
+            Assert.IsFalse(mc.IsLoaded("ecx-dr-14d"));
         }
     }
 }

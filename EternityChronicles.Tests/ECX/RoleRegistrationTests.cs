@@ -102,7 +102,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-rr-01a");
 
-            Assert.That("I am an instantiated ecx_rr_01a, go me!", Is.EqualTo(CallIecxTestRole1()));
+            Assert.AreEqual("I am an instantiated ecx_rr_01a, go me!", CallIecxTestRole1());
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-rr-02a");
 
-            Assert.That("Module initiated role!", Is.EqualTo(CallIecxTestRole1()));
+            Assert.AreEqual("Module initiated role!", CallIecxTestRole1());
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-rr-01a");
 
-            Assert.That("I am an instantiated ecx_rr_01a, go me!", Is.EqualTo(Di.GetMessage()));
+            Assert.AreEqual("I am an instantiated ecx_rr_01a, go me!", Di.GetMessage());
         }
 
         [Test]
@@ -144,9 +144,9 @@ namespace EternityChronicles.Tests.ECX
 
             var m = mc.SearchForModulesForRole("IECXTestRole1");
 
-            Assert.That(new List<string> { "ecx-rs-01a", "ecx-rs-01c" }, Is.EqualTo(m));
+            Assert.AreEqual(new List<string> { "ecx-rs-01a", "ecx-rs-01c" }, m);
 
-            foreach (var n in m) Assert.That(false, Is.EqualTo(mc.IsLoaded(n)));
+            foreach (var n in m) Assert.AreEqual(false, mc.IsLoaded(n));
         }
     }
 }

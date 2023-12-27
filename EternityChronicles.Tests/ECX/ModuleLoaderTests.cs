@@ -41,7 +41,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-ld-01");
 
-            Assert.That(mc.IsLoaded("ecx-ld-01"));
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-01"));
         }
 
         // ecx-ld-02 - Loading with no dependencies, single dir search path, not found.
@@ -67,7 +67,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-ld-03");
 
-            Assert.That(mc.IsLoaded("ecx-ld-03"));
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-03"));
         }
 
         // ecx-ld-04 - Loading with no dependencies, multiple dir search path, middle dir.
@@ -81,7 +81,7 @@ namespace EternityChronicles.Tests.ECX
             mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld-3");
 
             mc.LoadModule("ecx-ld-04");
-            Assert.That(mc.IsLoaded("ecx-ld-04"));
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-04"));
         }
 
         // ecx-ld-05 - Loading with no dependencies, multiple dir search path, last dir.
@@ -95,7 +95,7 @@ namespace EternityChronicles.Tests.ECX
             mc.SearchPath.Add($"data{Path.DirectorySeparatorChar}ecx-ld");
 
             mc.LoadModule("ecx-ld-05");
-            Assert.That(mc.IsLoaded("ecx-ld-05"));
+            Assert.IsTrue(mc.IsLoaded("ecx-ld-05"));
         }
 
         // ecx-ld-06 - Loading with no dependencies, multiple dir search path, not found.

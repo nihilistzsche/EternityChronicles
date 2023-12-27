@@ -100,7 +100,7 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var val = CompileAndExecute("typeof(typeof(2));");
             bool isType = val == typeof(Type);
-            Assert.That(isType);
+            Assert.IsTrue(isType);
         }
 
         [Test]
@@ -497,7 +497,7 @@ namespace EternityChronicles.Tests.IronDragon
         {
             var val = CompileAndExecute("typeof(1 ** 2);");
             bool isType = val == typeof(double);
-            Assert.That(isType);
+            Assert.IsTrue(isType);
         }
 
         [Test]

@@ -40,7 +40,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-rc-01");
 
-            Assert.That(mc.RefCount("ecx-rc-01") == 1);
+            Assert.IsTrue(mc.RefCount("ecx-rc-01") == 1);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-rc-02");
             mc.LoadModule("ecx-rc-02");
 
-            Assert.That(mc.RefCount("ecx-rc-02") == 2);
+            Assert.IsTrue(mc.RefCount("ecx-rc-02") == 2);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.LoadModule("ecx-rc-03a");
 
-            Assert.That(mc.RefCount("ecx-rc-03c") == 3);
+            Assert.IsTrue(mc.RefCount("ecx-rc-03c") == 3);
         }
 
         [Test]
@@ -78,8 +78,8 @@ namespace EternityChronicles.Tests.ECX
             mc.LoadModule("ecx-rc-04a");
             mc.LoadModule("ecx-rc-04b");
 
-            Assert.That(mc.RefCount("ecx-rc-04a") == 2);
-            Assert.That(mc.RefCount("ecx-rc-04b") == 1);
+            Assert.IsTrue(mc.RefCount("ecx-rc-04a") == 2);
+            Assert.IsTrue(mc.RefCount("ecx-rc-04b") == 1);
         }
     }
 }

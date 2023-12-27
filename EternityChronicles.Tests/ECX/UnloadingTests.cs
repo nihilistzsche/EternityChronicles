@@ -20,7 +20,6 @@ using System.Reflection;
 using ECX.Core.Loader;
 using ECX.Core.Module;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace EternityChronicles.Tests.ECX
 {
@@ -45,7 +44,7 @@ namespace EternityChronicles.Tests.ECX
 
             mc.UnloadModule("ecx-ul-01");
 
-            ClassicAssert.IsFalse(mc.IsLoaded("ecx-ul-01"));
+            Assert.IsFalse(mc.IsLoaded("ecx-ul-01"));
         }
 
         // ecx-ul-02 - Unloading with ref count > 1
