@@ -42,6 +42,8 @@ namespace EternityChronicles.Tests.IronDragon
         public override string Description
         {
             get => base.Description;
+
+            protected set => base.Description = value;
         }
 
         private ConstraintResult Check()
