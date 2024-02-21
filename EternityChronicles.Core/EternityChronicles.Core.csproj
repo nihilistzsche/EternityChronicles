@@ -103,7 +103,7 @@
             <Version>3.0.0-beta-2057</Version>
         </PackageReference>
         <PackageReference Include="MongoDB.Driver">
-            <Version>2.23.1</Version>
+            <Version>2.23.2</Version>
         </PackageReference>
         <PackageReference Include="MongoDB.LibMongocrypt">
             <Version>1.8.0</Version>
